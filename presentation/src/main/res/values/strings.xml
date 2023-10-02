@@ -3,4 +3,16 @@
     <string name="movies">Movies</string>
     <string name="favorites">Favorites</string>
     <string name="search">Search</string>
+    <string name="detail_error">Oops… something went wrong.</string>
+    <string name="detail_cast">Cast</string>
+    <string name="detail_crew">Crew</string>
+    <string name="detail_as">as</string>
+    <plurals name="detail_companies">
+        <item quantity="one">Company</item>
+        <item quantity="other">Companies</item>
+    </plurals>
+    <plurals name="detail_countries">
+        <item quantity="one">Country</item>
+        <item quantity="other">Countries</item>
+    </plurals>
 </resources>

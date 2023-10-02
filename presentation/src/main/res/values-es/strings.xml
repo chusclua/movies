@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Movies</string>
+    <string name="movies">Películas</string>
+    <string name="favorites">Favoritas</string>
+    <string name="search">Buscar</string>
+    <string name="detail_error">Huy… Algo salió mal.</string>
+    <string name="detail_cast">Elenco</string>
+    <string name="detail_crew">Equipo</string>
+    <string name="detail_as">como</string>
+    <plurals name="detail_companies">
+        <item quantity="one">Compañía</item>
+        <item quantity="other">Compañias</item>
+    </plurals>
+    <plurals name="detail_countries">
+        <item quantity="one">País</item>
+        <item quantity="other">Paises</item>
+    </plurals>
+</resources>

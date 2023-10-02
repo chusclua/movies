@@ -1,4 +1,4 @@
-package com.chus.clua.presentation.detail
+package com.chus.clua.presentation.moviedetail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -45,6 +45,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -54,7 +55,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.chus.clua.presentation.R
-import com.chus.clua.presentation.composable.ExpandableText
 import com.chus.clua.presentation.model.CastList
 import com.chus.clua.presentation.model.CrewList
 import com.chus.clua.presentation.model.MovieDetail
@@ -66,7 +66,7 @@ fun DetailScreenRoute(
     onPeopleClick: (Int) -> Unit
 ) {
 
-    val viewModel: DetailViewModel = hiltViewModel()
+    val viewModel: MovieDetailViewModel = hiltViewModel()
     val state = viewModel.detailState.collectAsStateWithLifecycle()
 
     DetailScreen(
@@ -133,6 +133,12 @@ private fun DetailScreen(
                 people = crew,
                 onPeopleClick = onPeopleClick
             )
+
+            MovieProductionDetail(
+                productionCompanies = detail?.productionCompanies,
+                productionCountries = detail?.productionCountries
+            )
+
         }
     }
 }
@@ -251,7 +257,7 @@ private fun MovieResume(detail: MovieDetail?) {
             }
         }
 
-        ExpandableText(
+        Text(
             text = detail?.overview.orEmpty(),
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(horizontal = 16.dp)
@@ -269,6 +275,7 @@ private fun MoviePeopleList(
     onPeopleClick: (Int) -> Unit
 ) {
     Column {
+
         Text(
             text = title,
             modifier = Modifier.padding(start = 16.dp, top = 16.dp),
@@ -308,6 +315,46 @@ private fun MoviePeopleList(
     }
 }
 
+@Composable
+private fun MovieProductionDetail(
+    productionCompanies: List<String>?,
+    productionCountries: List<String>?
+) {
+
+    Column(modifier = Modifier.padding(vertical = 16.dp)) {
+
+        Divider(modifier = Modifier.padding(bottom = 8.dp),)
+
+        val companies = pluralStringResource(id = R.plurals.detail_companies, count = productionCompanies?.size ?: 0)
+
+        Text(
+            text = companies,
+            modifier = Modifier.padding(horizontal = 16.dp),
+            style = MaterialTheme.typography.headlineSmall
+        )
+        Text(
+            text = productionCompanies?.joinToString(" | ").orEmpty(),
+            modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 16.dp),
+            style = MaterialTheme.typography.bodyLarge
+        )
+
+        Divider(modifier = Modifier.padding(top = 16.dp, bottom = 8.dp))
+
+        val countries = pluralStringResource(id = R.plurals.detail_countries, count = productionCountries?.size ?: 0)
+
+        Text(
+            text = countries,
+            modifier = Modifier.padding(horizontal = 16.dp),
+            style = MaterialTheme.typography.headlineSmall
+        )
+        Text(
+            text = productionCountries?.joinToString(" | ").orEmpty(),
+            modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 16.dp),
+            style = MaterialTheme.typography.bodyLarge
+        )
+    }
+}
+
 @Preview
 @Composable
 private fun PreviewMovieHeader() {
@@ -334,12 +381,20 @@ private fun PreviewMoviePeopleList() {
     )
 }
 
+@Preview
+@Composable
+private fun PreviewMovieProductionDetail() {
+    MovieProductionDetail(
+        productionCompanies = MovieDetail.productionCompanies,
+        productionCountries = MovieDetail.productionCountries
+    )
+}
+
 val MovieDetail = MovieDetail(
     backdropPath = "/tmU7GeKVybMWFButWEGl2M4GeiP.jpg",//
     genres = listOf("Drama", "Crime"),//
     id = 238,
     overview = "Spanning the years 1945 to 1955, a chronicle of the fictional Italian-American Corleone crime family. When organized crime family patriarch, Vito Corleone barely survives an attempt on his life, his youngest son, Michael steps in to take care of the would-be killers, launching a campaign of bloody revenge.",
-    popularity = 110.169,
     posterPath = "/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",//
     productionCompanies = listOf("Paramount", "Alfran Productions"),
     productionCountries = listOf("United States of America"),

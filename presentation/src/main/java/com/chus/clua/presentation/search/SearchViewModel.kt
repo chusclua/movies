@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chus.clua.domain.fold
 import com.chus.clua.domain.usecase.SearchMoviesUseCase
-import com.chus.clua.presentation.toMovieList
+import com.chus.clua.presentation.mapper.toMovieList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Job
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val useCase: SearchMoviesUseCase,
+    private val searchMoviesUseCase: SearchMoviesUseCase,
 ) : ViewModel() {
 
     private var recommendationJob: Job? = null
@@ -34,7 +34,7 @@ class SearchViewModel @Inject constructor(
         recommendationJob?.cancel()
         recommendationJob = viewModelScope.launch {
             delay(QUERY_DEBOUNCE)
-            useCase(query).fold(
+            searchMoviesUseCase(query).fold(
                 leftOp = {},
                 rightOp = { movies ->
                     _searchState.update {

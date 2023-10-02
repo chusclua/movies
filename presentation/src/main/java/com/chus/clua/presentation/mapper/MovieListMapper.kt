@@ -1,6 +1,7 @@
-package com.chus.clua.presentation
+package com.chus.clua.presentation.mapper
 
 import com.chus.clua.domain.model.Movie
+import com.chus.clua.presentation.extensions.toYear
 import com.chus.clua.presentation.model.MovieList
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -15,17 +16,4 @@ fun Movie.toMovieList() =
         voteAverage = voteAverage
     )
 
-private fun String.toYear(): String {
-    return try {
-        Calendar.getInstance().apply {
-            this.time = SimpleDateFormat(DATE_FORMAT).parse(this@toYear)
-        }.get(Calendar.YEAR).toString()
-    } catch (e: Exception) {
-        ""
-    }
-}
-
-private const val DATE_FORMAT = "yyyy-MM-dd"
-
 private const val BASE_POSTER_PATH = "https://image.tmdb.org/t/p/w342"
-private const val BASE_BACKDROP_PATH = "https://image.tmdb.org/t/p/w780"

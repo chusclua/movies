@@ -10,9 +10,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
-import com.chus.clua.presentation.detail.DetailScreenRoute
+import com.chus.clua.presentation.moviedetail.DetailScreenRoute
 import com.chus.clua.presentation.favorites.FavoritesScreenRoute
 import com.chus.clua.presentation.movies.MoviesScreenRoute
+import com.chus.clua.presentation.peopledetail.PeopleDetailScreenRoute
 import com.chus.clua.presentation.search.SearchScreenRoute
 
 @Composable
@@ -25,31 +26,46 @@ fun NavGraph(
         startDestination = BottomNavigationScreens.Movies.route
     ) {
         composable(route = BottomNavigationScreens.Movies.route) {
-            MoviesScreenRoute(navController::navigateToDetail, paddingValues)
+            MoviesScreenRoute(onMovieClick = navController::navigateToMovieDetail, paddingValues)
         }
         composable(route = BottomNavigationScreens.Favorites.route) {
             FavoritesScreenRoute(paddingValues)
         }
         composable(route = BottomNavigationScreens.Search.route) {
-            SearchScreenRoute(navController::navigateToDetail, paddingValues)
+            SearchScreenRoute(onMovieClick = navController::navigateToMovieDetail, paddingValues)
         }
         composable(
-            route = NavigationScreens.DETAIL.route,
+            route = NavigationScreens.MOVIE_DETAIL.route,
             arguments = listOf(
-                navArgument("movie_id") {
+                navArgument(NavigationScreens.MOVIE_DETAIL.param) {
                     type = NavType.IntType
                 }
             )
-        ) { navBackStackEntry ->
+        ) {
             DetailScreenRoute(
-                id = navBackStackEntry.arguments?.getInt("movie_id")
+                onBackClick = navController::popBackStack,
+                onPeopleClick = navController::navigateToPeopleDetail
             )
+        }
+        composable(
+            route = NavigationScreens.PEOPLE_DETAIL.route,
+            arguments = listOf(
+                navArgument(NavigationScreens.PEOPLE_DETAIL.param) {
+                    type = NavType.IntType
+                }
+            )
+        ) {
+            PeopleDetailScreenRoute()
         }
     }
 }
 
-private fun NavController.navigateToDetail(movieId: Int) {
-    navigate("detail/$movieId")
+private fun NavController.navigateToMovieDetail(movieId: Int) {
+    navigate("movie-detail/$movieId")
+}
+
+private fun NavController.navigateToPeopleDetail(peopleId: Int) {
+    navigate("people-detail/$peopleId")
 }
 
 @Composable

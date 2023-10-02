@@ -5,10 +5,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.chus.clua.domain.model.Movie
 import com.chus.clua.domain.usecase.GetDiscoverMoviesUseCase
 import com.chus.clua.presentation.model.MovieList
-import com.chus.clua.presentation.toMovieList
+import com.chus.clua.presentation.mapper.toMovieList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +19,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
-    private val useCase: GetDiscoverMoviesUseCase,
+    private val discoverMoviesUseCase: GetDiscoverMoviesUseCase,
 ): ViewModel() {
 
     private val _moviesFlow: MutableStateFlow<PagingData<MovieList>> =
@@ -29,7 +28,7 @@ class MoviesViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            useCase()
+            discoverMoviesUseCase()
                 .distinctUntilChanged()
                 .cachedIn(viewModelScope).map { pagingData ->
                     pagingData.map {
