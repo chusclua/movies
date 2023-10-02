@@ -5,8 +5,11 @@ import androidx.paging.PagingState
 import com.chus.clua.data.datasource.RemoteDataSource
 import com.chus.clua.data.network.model.MovieResponseModel
 import com.chus.clua.domain.onRight
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class MoviesPagingSource(
+@Singleton
+class MoviesPagingSource @Inject constructor(
     private val dataSource: RemoteDataSource,
 ): PagingSource<Int, MovieResponseModel>() {
     override fun getRefreshKey(state: PagingState<Int, MovieResponseModel>): Int? {

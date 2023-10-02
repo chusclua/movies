@@ -1,6 +1,7 @@
 package com.chus.clua.data.di
 
-import com.chus.clua.data.network.HeaderInterceptor
+import com.chus.clua.data.BuildConfig
+import com.chus.clua.data.network.RequestInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,13 +22,13 @@ class RetrofitModule {
     fun provideRetrofit(client: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("https://api.themoviedb.org")
+            .baseUrl(BuildConfig.BASE_URL)
             .client(client)
             .build()
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(headerInterceptor: HeaderInterceptor): OkHttpClient =
+    fun provideOkHttpClient(requestInterceptor: RequestInterceptor): OkHttpClient =
         OkHttpClient().newBuilder()
             .connectTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
             .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
@@ -35,7 +36,7 @@ class RetrofitModule {
             .addInterceptor(
                 HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
             )
-            .addInterceptor(headerInterceptor)
+            .addInterceptor(requestInterceptor)
             .build()
 
 }

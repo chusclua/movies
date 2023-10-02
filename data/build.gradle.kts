@@ -18,7 +18,6 @@ android {
 
         buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org\"")
         buildConfigField("String", "API_KEY", "\"a86a8d39027455bc4b9dde3345dbcacd\"")
-        buildConfigField("String", "ACCESS_TOKEN", "\"eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhODZhOGQzOTAyNzQ1NWJjNGI5ZGRlMzM0NWRiY2FjZCIsInN1YiI6IjY1MTY4MmE1OTNiZDY5MDBmZTQ4MTA5NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.EYwIJIh9MIsjbew6h1jXXY_ckPpPOXzg4xGyFdGZW4w\"")
 
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")
