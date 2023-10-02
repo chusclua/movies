@@ -3,8 +3,6 @@ package com.chus.clua.presentation.mapper
 import com.chus.clua.domain.model.Movie
 import com.chus.clua.presentation.extensions.toYear
 import com.chus.clua.presentation.model.MovieList
-import java.text.SimpleDateFormat
-import java.util.Calendar
 
 
 fun Movie.toMovieList() =

@@ -1,6 +1,6 @@
-# Breaking News
+# Movies
 
-📰 Repository to show an example of Compose with Compose navigation, Paging 3, testing and some android technologies.
+🎬 Repository to show an example of Compose with Compose navigation, Paging 3, testing and some android technologies.
 
 ### Design 🎨
 - Light mode
@@ -36,4 +36,4 @@
 - Hilt testing
 - Paging testing
 
-[NewsAPI](https://newsapi.org/)
+[NewsAPI](https://www.themoviedb.org/)
