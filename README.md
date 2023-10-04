@@ -17,7 +17,7 @@
  <img src="static/dark_webview.png" width=30% height=30%>
 </p>
 
-<img src="static/preview.mp4" align="right" width="32%"/>
+<img src="static/movie.gif" align="right" width="32%"/>
 
 ### 🏗️ Architecture 
 - Clean architecture
