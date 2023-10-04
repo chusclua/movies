@@ -107,6 +107,7 @@ private fun SearchScreen(
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         AnimatedVisibility(
             visible = showSearchView,
             enter = expandVertically(
@@ -163,6 +164,14 @@ private fun MovieItemList(
                 onMovieClick(movie.id)
             }
     ) {
+        GlideImage(
+            model = movie.posterPath,
+            contentScale = ContentScale.Crop,
+            contentDescription = "MoviePoster",
+            modifier = Modifier
+                .fillMaxHeight()
+                .width(100.dp)
+        )
         Column(
             modifier = Modifier
                 .background(
@@ -176,7 +185,7 @@ private fun MovieItemList(
             Text(
                 text = movie.title,
                 overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
+                maxLines = 2,
                 style = MaterialTheme.typography.titleMedium
             )
             Row(
@@ -200,14 +209,6 @@ private fun MovieItemList(
             }
 
         }
-        GlideImage(
-            model = movie.posterPath,
-            contentScale = ContentScale.Crop,
-            contentDescription = "MoviePoster",
-            modifier = Modifier
-                .fillMaxHeight()
-                .width(100.dp)
-        )
     }
 }
 

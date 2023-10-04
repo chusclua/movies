@@ -104,7 +104,7 @@ private fun MoviesScreen(
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-private fun MovieItemList(
+fun MovieItemList(
     movie: MovieList,
     onMovieClick: (Int) -> Unit
 ) {

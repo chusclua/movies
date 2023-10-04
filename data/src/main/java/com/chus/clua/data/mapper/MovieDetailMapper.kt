@@ -25,9 +25,10 @@ fun MovieDetailResponse.toMovieDetail() =
         voteCount = voteCount
     )
 
-private fun CollectionResponse.toMovieCollection() = MovieCollection(
-    backdropPath = backdropPath,
-    id = id,
-    name = name,
-    posterPath = posterPath
-)
+private fun CollectionResponse.toMovieCollection() =
+    MovieCollection(
+        backdropPath = backdropPath,
+        id = id,
+        name = name,
+        posterPath = posterPath
+    )

@@ -9,6 +9,8 @@ val <L, R> Either<L, R>.isLeft get() = this is Either.Left
 
 val <L, R> Either<L, R>.isRight get() = this is Either.Right
 
+fun <L, R> Either<L, R>.getOrNull(): R? = if (this is Either.Right) data else null
+
 val <L, R> Either<L, R>.error: L
     get() = when (this) {
         is Either.Left -> this.error

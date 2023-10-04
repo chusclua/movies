@@ -42,19 +42,23 @@ fun MainScreen() {
 
     val navController = rememberNavController()
 
-    val bottomNavigationItems = listOf(
+    val bottomNavigationScreens = listOf(
         BottomNavigationScreens.Movies,
         BottomNavigationScreens.Favorites,
         BottomNavigationScreens.Search
     )
 
     val shouldShowMainBars =
-        navController.shouldShowMainBottomBar(*bottomNavigationItems.map { it.route }.toTypedArray())
+        navController.shouldShowMainBottomBar(*bottomNavigationScreens.map { it.route }.toTypedArray())
 
     Scaffold(
         bottomBar = {
             if (shouldShowMainBars) {
-                MainBottomAppBar(navController, bottomNavigationItems)
+                MainBottomAppBar(
+                    modifier = Modifier,
+                    navController = navController,
+                    bottomNavigationScreens = bottomNavigationScreens
+                )
             }
         },
     ) { paddingValues ->

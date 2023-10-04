@@ -6,6 +6,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MonotonicFrameClock
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -14,10 +16,11 @@ import com.chus.clua.presentation.navigation.currentRoute
 
 @Composable
 fun MainBottomAppBar(
+    modifier: Modifier = Modifier,
     navController: NavHostController,
     bottomNavigationScreens: List<BottomNavigationScreens>
 ) {
-    BottomAppBar {
+    BottomAppBar(modifier = modifier) {
         val currentRoute = navController.currentRoute()
         bottomNavigationScreens.forEach { screen ->
             NavigationBarItem(

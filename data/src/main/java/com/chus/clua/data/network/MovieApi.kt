@@ -2,6 +2,7 @@ package com.chus.clua.data.network
 
 import com.chus.clua.data.network.model.MovieCreditsResponse
 import com.chus.clua.data.network.model.MovieDetailResponse
+import com.chus.clua.data.network.model.MovieVideosResponse
 import com.chus.clua.data.network.model.MoviesResponseModel
 import retrofit2.Response
 import retrofit2.http.GET
@@ -30,12 +31,18 @@ interface MovieApi {
         @Path(MOVIE_ID_PATH) movieId: Int
     ): Response<MovieCreditsResponse>
 
+    @GET(VIDEOS_PATH)
+    suspend fun movieVideos(
+        @Path(MOVIE_ID_PATH) movieId: Int
+    ): Response<MovieVideosResponse>
+
 }
 
 private const val DISCOVER_PATH = "/3/discover/movie"
 private const val SEARCH_PATH = "/3/search/movie"
 private const val DETAIL_PATH = "/3/movie/{movie_id}"
 private const val CREDITS_PATH = "/3/movie/{movie_id}/credits"
+private const val VIDEOS_PATH = "/3/movie/{movie_id}/videos"
 
 private const val PAGE_PARAM = "page"
 

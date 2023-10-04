@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,6 +26,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -41,6 +44,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -55,14 +60,17 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.chus.clua.presentation.R
+import com.chus.clua.presentation.composable.ExpandableText
 import com.chus.clua.presentation.model.CastList
 import com.chus.clua.presentation.model.CrewList
 import com.chus.clua.presentation.model.MovieDetail
 import com.chus.clua.presentation.model.People
+import com.chus.clua.presentation.model.VideoList
 
 @Composable
 fun DetailScreenRoute(
     onBackClick: () -> Unit,
+    onVideoClick: (String) -> Unit,
     onPeopleClick: (Int) -> Unit
 ) {
 
@@ -70,11 +78,14 @@ fun DetailScreenRoute(
     val state = viewModel.detailState.collectAsStateWithLifecycle()
 
     DetailScreen(
+        isFavorite = state.value.isFavorite,
         detail = state.value.movieDetail,
         cast = state.value.cast,
         crew = state.value.crew,
+        videos = state.value.videos,
         error = state.value.error,
         onBackClick = onBackClick,
+        onVideoClick = onVideoClick,
         onFavClick = viewModel::toggleOnFavorites,
         onPeopleClick = onPeopleClick
     )
@@ -83,11 +94,14 @@ fun DetailScreenRoute(
 
 @Composable
 private fun DetailScreen(
+    isFavorite: Boolean,
     detail: MovieDetail?,
     cast: List<CastList>,
     crew: List<CrewList>,
+    videos: List<VideoList>,
     error: Boolean,
     onBackClick: () -> Unit,
+    onVideoClick: (String) -> Unit,
     onFavClick: () -> Unit,
     onPeopleClick: (Int) -> Unit
 ) {
@@ -108,37 +122,45 @@ private fun DetailScreen(
     ) { innerPadding ->
 
         val scrollState = rememberScrollState()
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .verticalScroll(scrollState)
-        ) {
 
-            MovieHeader(
-                backdropPath = detail?.backdropPath,
-                onBackClick = onBackClick,
-                onFavClick = onFavClick
-            )
+        if (!error) {
+            Column(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .verticalScroll(scrollState)
+            ) {
 
-            MovieResume(detail = detail)
+                MovieHeader(
+                    backdropPath = detail?.backdropPath,
+                    isFavorite = isFavorite,
+                    onBackClick = onBackClick,
+                    onFavClick = onFavClick
+                )
 
-            MoviePeopleList(
-                title = stringResource(id = R.string.detail_cast),
-                people = cast,
-                onPeopleClick = onPeopleClick
-            )
+                MovieResume(
+                    detail = detail,
+                    videos = videos,
+                    onVideoClick = onVideoClick
+                )
 
-            MoviePeopleList(
-                title = stringResource(id = R.string.detail_crew),
-                people = crew,
-                onPeopleClick = onPeopleClick
-            )
+                MoviePeopleList(
+                    title = stringResource(id = R.string.detail_cast),
+                    people = cast,
+                    onPeopleClick = onPeopleClick
+                )
 
-            MovieProductionDetail(
-                productionCompanies = detail?.productionCompanies,
-                productionCountries = detail?.productionCountries
-            )
+                MoviePeopleList(
+                    title = stringResource(id = R.string.detail_crew),
+                    people = crew,
+                    onPeopleClick = onPeopleClick
+                )
 
+                MovieProductionDetail(
+                    productionCompanies = detail?.productionCompanies,
+                    productionCountries = detail?.productionCountries
+                )
+
+            }
         }
     }
 }
@@ -147,6 +169,7 @@ private fun DetailScreen(
 @OptIn(ExperimentalGlideComposeApi::class)
 private fun MovieHeader(
     backdropPath: String?,
+    isFavorite: Boolean,
     onBackClick: () -> Unit,
     onFavClick: () -> Unit
 ) {
@@ -168,41 +191,44 @@ private fun MovieHeader(
                 tint = Color.White
             )
         }
+        val favIcon = if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
         FloatingActionButton(
             onClick = { onFavClick() },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(bottom = 16.dp, end = 16.dp),
         ) {
-            Icon(Icons.Filled.Favorite, null)
+            Icon(favIcon, null)
         }
     }
 }
 
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
-private fun MovieResume(detail: MovieDetail?) {
+private fun MovieResume(
+    detail: MovieDetail?,
+    videos: List<VideoList>,
+    onVideoClick: (String) -> Unit,
+) {
 
     Column {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(all = 16.dp)
-                .height(160.dp)
         ) {
             GlideImage(
                 model = detail?.posterPath,
                 contentScale = ContentScale.Crop,
                 contentDescription = "MoviePoster",
                 modifier = Modifier
-                    .width(width = 100.dp)
+                    .size(width = 100.dp, height = 160.dp)
                     .clip(RoundedCornerShape(8.dp)),
             )
             Spacer(modifier = Modifier.padding(horizontal = 8.dp))
             Column(
-                modifier = Modifier
-                    .padding(vertical = 4.dp)
-                    .fillMaxHeight()
+                modifier = Modifier.defaultMinSize(minHeight = 160.dp),
+                //verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     text = detail?.title.orEmpty(),
@@ -236,8 +262,8 @@ private fun MovieResume(detail: MovieDetail?) {
                 Spacer(modifier = Modifier.weight(1F))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+//                    horizontalArrangement = Arrangement.SpaceBetween,
+//                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = detail?.releaseDate.orEmpty(),
@@ -257,13 +283,28 @@ private fun MovieResume(detail: MovieDetail?) {
             }
         }
 
-        Text(
+        LazyRow(
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .align(CenterHorizontally),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp)
+        ) {
+            items(items = videos) { video ->
+                VideoItemList(
+                    video = video,
+                    onVideoClick = onVideoClick
+                )
+            }
+        }
+
+        ExpandableText(
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
             text = detail?.overview.orEmpty(),
             style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.padding(horizontal = 16.dp)
         )
 
-        Divider(modifier = Modifier.padding(top = 16.dp))
+        Divider()
     }
 }
 
@@ -274,6 +315,7 @@ private fun MoviePeopleList(
     people: List<People>,
     onPeopleClick: (Int) -> Unit
 ) {
+
     Column {
 
         Text(
@@ -305,9 +347,7 @@ private fun MoviePeopleList(
                             .clip(CircleShape)
                             .size(120.dp)
                             .tooltipAnchor()
-                            .clickable {
-                                onPeopleClick(people.id)
-                            }
+                            .clickable { onPeopleClick(people.id) }
                     )
                 }
             }
@@ -323,9 +363,12 @@ private fun MovieProductionDetail(
 
     Column(modifier = Modifier.padding(vertical = 16.dp)) {
 
-        Divider(modifier = Modifier.padding(bottom = 8.dp),)
+        Divider(modifier = Modifier.padding(bottom = 8.dp))
 
-        val companies = pluralStringResource(id = R.plurals.detail_companies, count = productionCompanies?.size ?: 0)
+        val companies = pluralStringResource(
+            id = R.plurals.detail_companies,
+            count = productionCompanies?.size ?: 0
+        )
 
         Text(
             text = companies,
@@ -340,7 +383,10 @@ private fun MovieProductionDetail(
 
         Divider(modifier = Modifier.padding(top = 16.dp, bottom = 8.dp))
 
-        val countries = pluralStringResource(id = R.plurals.detail_countries, count = productionCountries?.size ?: 0)
+        val countries = pluralStringResource(
+            id = R.plurals.detail_countries,
+            count = productionCountries?.size ?: 0
+        )
 
         Text(
             text = countries,
@@ -355,11 +401,53 @@ private fun MovieProductionDetail(
     }
 }
 
+@Composable
+@OptIn(ExperimentalGlideComposeApi::class)
+private fun VideoItemList(
+    video: VideoList,
+    onVideoClick: (String) -> Unit,
+) {
+    Box(
+        modifier = Modifier
+            .size(width = 120.dp, height = 80.dp)
+            .border(1.dp, MaterialTheme.colorScheme.onBackground, RoundedCornerShape(8.dp))
+            .clickable { onVideoClick(video.youtubeUrl) }
+    ) {
+        GlideImage(
+            model = video.thumbnailUrl,
+            contentScale = ContentScale.Crop,
+            contentDescription = null,
+            modifier = Modifier
+                .clip(RoundedCornerShape(8.dp))
+                .align(Center)
+        )
+        Box(
+            modifier = Modifier
+                .size(width = 24.dp, height = 16.dp)
+                .background(
+                    Color.Red,
+                    RoundedCornerShape(4.dp)
+                )
+                .align(Center)
+        ) {
+            Icon(
+                imageVector = Icons.Filled.PlayArrow,
+                contentDescription = "",
+                modifier = Modifier
+                    .size(10.dp)
+                    .align(Center),
+                tint = Color.White
+            )
+        }
+    }
+}
+
 @Preview
 @Composable
 private fun PreviewMovieHeader() {
     MovieHeader(
         backdropPath = MovieDetail.backdropPath,
+        isFavorite = true,
         onBackClick = {},
         onFavClick = {}
     )
@@ -368,7 +456,20 @@ private fun PreviewMovieHeader() {
 @Preview
 @Composable
 private fun PreviewMovieResume() {
-    MovieResume(detail = MovieDetail)
+    MovieResume(
+        detail = MovieDetail,
+        videos = listOf(VideoList),
+        onVideoClick = {}
+    )
+}
+
+@Preview
+@Composable
+private fun PreviewMovieItemList() {
+    VideoItemList(
+        video = VideoList,
+        onVideoClick = {}
+    )
 }
 
 @Preview
@@ -402,6 +503,12 @@ val MovieDetail = MovieDetail(
     tagline = "An offer you can't refuse.",//
     title = "The Godfather",//
     voteAverage = 8.707//
+)
+
+val VideoList = VideoList(
+    id = "627e772c006eee3428a4ae9f",
+    thumbnailUrl = "",
+    youtubeUrl = ""
 )
 
 val CastList = CastList(

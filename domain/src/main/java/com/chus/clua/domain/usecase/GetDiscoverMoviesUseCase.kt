@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
-@Singleton
 class GetDiscoverMoviesUseCase @Inject constructor(
     private val repository: MoviesRepository,
     @IoDispatcher

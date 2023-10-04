@@ -3,20 +3,18 @@ package com.chus.clua.presentation.moviedetail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chus.clua.domain.Either
-import com.chus.clua.domain.fold
 import com.chus.clua.domain.model.MovieCredits
 import com.chus.clua.domain.model.MovieData
-import com.chus.clua.domain.onRight
-import com.chus.clua.domain.usecase.GetMovieCreditsUseCase
+import com.chus.clua.domain.model.MovieVideos
 import com.chus.clua.domain.usecase.GetMovieDetailUseCase
+import com.chus.clua.domain.usecase.ToggleFavoriteMovieUseCase
 import com.chus.clua.presentation.mapper.toCastList
 import com.chus.clua.presentation.mapper.toCrewList
 import com.chus.clua.presentation.mapper.toMovieDetail
+import com.chus.clua.presentation.mapper.toVideoList
 import com.chus.clua.presentation.navigation.NavigationScreens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -27,7 +25,7 @@ import kotlinx.coroutines.launch
 class MovieDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val movieDetailUseCase: GetMovieDetailUseCase,
-    private val movieCreditsUseCase: GetMovieCreditsUseCase
+    private val toggleFavoriteMovieUseCase: ToggleFavoriteMovieUseCase
 ) : ViewModel() {
 
     private val _detailState: MutableStateFlow<MovieDetailViewState> by lazy {
@@ -38,44 +36,41 @@ class MovieDetailViewModel @Inject constructor(
     init {
         val movieId = savedStateHandle.get<Int>(NavigationScreens.MOVIE_DETAIL.param) ?: Int.MIN_VALUE
         viewModelScope.launch {
-            val credits = async { getCredits(movieId) }
-            val detail = async { getDetail(movieId) }
-            updateAll(credits.await(), detail.await())
+            val (isFavorite, data, credits, videos) = movieDetailUseCase(movieId)
+            updateState(isFavorite, data, credits, videos)
         }
     }
 
     fun toggleOnFavorites() {
-        _detailState.value.movieDetail?.id?.let { movieId ->
-            // TODO: toggle on favorites 
+        _detailState.value.movieDetail?.let { movie ->
+            viewModelScope.launch {
+                toggleFavoriteMovieUseCase(movie.id, _detailState.value.isFavorite)
+                _detailState.update {
+                    it.copy(isFavorite = !_detailState.value.isFavorite)
+                }
+            }
         }
     }
 
-    private suspend fun getDetail(movieId: Int) =
-        movieDetailUseCase(movieId)
-
-    private suspend fun getCredits(movieId: Int) =
-        movieCreditsUseCase(movieId)
-
-    private fun updateAll(
-        credits: Either<Exception, MovieCredits>,
-        detail: Either<Exception, MovieData>
+    private fun updateState(
+        isFavorite: Boolean,
+        data: MovieData?,
+        credits: MovieCredits?,
+        videos: MovieVideos?
     ) {
-        credits.onRight { data ->
+        if (data == null) {
+            _detailState.update { it.copy(error = true) }
+        } else {
             _detailState.update {
                 it.copy(
-                    cast = data.toCastList(),
-                    crew = data.toCrewList()
+                    isFavorite = isFavorite,
+                    movieDetail = data.toMovieDetail(),
+                    cast = credits?.toCastList() ?: emptyList(),
+                    crew = credits?.toCrewList() ?: emptyList(),
+                    videos = videos?.videos?.map { video -> video.toVideoList() } ?: emptyList()
                 )
             }
         }
-        detail.fold(
-            leftOp = {
-                _detailState.update { it.copy(error = true) }
-            },
-            rightOp = { data ->
-                _detailState.update { it.copy(movieDetail = data.toMovieDetail()) }
-            }
-        )
     }
 
 }
