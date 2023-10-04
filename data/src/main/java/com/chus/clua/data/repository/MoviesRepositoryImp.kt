@@ -1,7 +1,5 @@
 package com.chus.clua.data.repository
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.chus.clua.data.datasource.CacheDataSource
@@ -13,7 +11,6 @@ import com.chus.clua.data.mapper.toMovie
 import com.chus.clua.data.mapper.toMovieCredits
 import com.chus.clua.data.mapper.toMovieDetail
 import com.chus.clua.data.mapper.toMovieVideos
-import com.chus.clua.data.paging.MoviesPagingSource
 import com.chus.clua.domain.Either
 import com.chus.clua.domain.map
 import com.chus.clua.domain.model.Movie
@@ -35,7 +32,7 @@ class MoviesRepositoryImp @Inject constructor(
 ) : MoviesRepository {
 
     override fun getDiscoverMovies(): Flow<PagingData<Movie>> =
-        pagerDataSource.pager().map { pagingData ->
+        pagerDataSource.getMoviePage().map { pagingData ->
             pagingData.map { model ->
                 model.toMovie().also { movie ->
                     cacheDataSource.addMovie(movie)

@@ -11,14 +11,14 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface PagerDataSource {
-    fun pager(): Flow<PagingData<MovieResponseModel>>
+    fun getMoviePage(): Flow<PagingData<MovieResponseModel>>
 }
 
 @Singleton
 class PagerDataSourceImp @Inject constructor(
     private val pagingSource: MoviesPagingSource
 ): PagerDataSource {
-    override fun pager(): Flow<PagingData<MovieResponseModel>> {
+    override fun getMoviePage(): Flow<PagingData<MovieResponseModel>> {
         return Pager(
             config = PagingConfig(pageSize = 20),
             pagingSourceFactory = { pagingSource }

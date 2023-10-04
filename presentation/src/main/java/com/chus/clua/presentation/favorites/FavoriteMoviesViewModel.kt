@@ -27,7 +27,6 @@ class FavoriteMoviesViewModel @Inject constructor(
             favoriteMoviesUseCase()
                 .distinctUntilChanged()
                 .collect { list ->
-                    // TODO:
                     _moviesFlow.value = list.map { it.toMovieList() }
                 }
         }
