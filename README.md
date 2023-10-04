@@ -17,10 +17,11 @@
  <img src="static/dark_webview.png" width=30% height=30%>
 </p>
 
-<img src="static/preview0.gif" align="right" width="32%"/>
+<img src="static/preview.mp4" align="right" width="32%"/>
 
 ### 🏗️ Architecture 
 - Clean architecture
+- Single Activity
 - MVVM
 
 ### 💻 Tech Stack
