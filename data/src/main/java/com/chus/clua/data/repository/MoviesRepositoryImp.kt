@@ -5,6 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.chus.clua.data.datasource.CacheDataSource
+import com.chus.clua.data.datasource.PagerDataSource
 import com.chus.clua.data.datasource.RemoteDataSource
 import com.chus.clua.data.db.MoviesDao
 import com.chus.clua.data.mapper.toEntity
@@ -27,22 +28,20 @@ import kotlinx.coroutines.flow.map
 
 @Singleton
 class MoviesRepositoryImp @Inject constructor(
+    private val pagerDataSource: PagerDataSource,
     private val remoteDataSource: RemoteDataSource,
-    private val pagingSource: MoviesPagingSource,
     private val cacheDataSource: CacheDataSource,
     private val moviesDao: MoviesDao
 ) : MoviesRepository {
 
-    override fun getDiscoverMovies(): Flow<PagingData<Movie>> = Pager(
-        config = PagingConfig(pageSize = 20),
-        pagingSourceFactory = { pagingSource }
-    ).flow.map { pagingData ->
-        pagingData.map { model ->
-            model.toMovie().also { movie ->
-                cacheDataSource.addMovie(movie)
+    override fun getDiscoverMovies(): Flow<PagingData<Movie>> =
+        pagerDataSource.pager().map { pagingData ->
+            pagingData.map { model ->
+                model.toMovie().also { movie ->
+                    cacheDataSource.addMovie(movie)
+                }
             }
         }
-    }
 
     override suspend fun searchMovies(query: String): Either<Exception, List<Movie>> {
         return remoteDataSource.searchMovies(query).map { response ->

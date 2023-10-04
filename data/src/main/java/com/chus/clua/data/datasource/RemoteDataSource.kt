@@ -10,30 +10,38 @@ import com.chus.clua.domain.Either
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class RemoteDataSource @Inject constructor(private val movieApi: MovieApi) {
+interface RemoteDataSource {
+    suspend fun getDiscoverMovies(page: Int): Either<Exception, MoviesResponseModel>
+    suspend fun searchMovies(query: String): Either<Exception, MoviesResponseModel>
+    suspend fun getMovieDetail(movieId: Int): Either<Exception, MovieDetailResponse>
+    suspend fun getMovieCredits(movieId: Int): Either<Exception, MovieCreditsResponse>
+    suspend fun getMovieVideos(movieId: Int): Either<Exception, MovieVideosResponse>
+}
 
-    suspend fun getDiscoverMovies(page: Int): Either<Exception, MoviesResponseModel> =
+@Singleton
+class RemoteDataSourceImp @Inject constructor(private val movieApi: MovieApi) : RemoteDataSource {
+
+    override suspend fun getDiscoverMovies(page: Int): Either<Exception, MoviesResponseModel> =
         serviceHandler {
             movieApi.getDiscoverMovies(page = page)
         }
 
-    suspend fun searchMovies(query: String): Either<Exception, MoviesResponseModel> =
+    override suspend fun searchMovies(query: String): Either<Exception, MoviesResponseModel> =
         serviceHandler {
             movieApi.searchMovies(query = query)
         }
 
-    suspend fun getMovieDetail(movieId: Int): Either<Exception, MovieDetailResponse> =
+    override suspend fun getMovieDetail(movieId: Int): Either<Exception, MovieDetailResponse> =
         serviceHandler {
             movieApi.movieDetail(movieId = movieId)
         }
 
-    suspend fun getMovieCredits(movieId: Int): Either<Exception, MovieCreditsResponse> =
+    override suspend fun getMovieCredits(movieId: Int): Either<Exception, MovieCreditsResponse> =
         serviceHandler {
             movieApi.movieCredits(movieId = movieId)
         }
 
-    suspend fun getMovieVideos(movieId: Int): Either<Exception, MovieVideosResponse> =
+    override suspend fun getMovieVideos(movieId: Int): Either<Exception, MovieVideosResponse> =
         serviceHandler {
             movieApi.movieVideos(movieId = movieId)
         }
