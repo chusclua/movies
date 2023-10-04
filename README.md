@@ -17,6 +17,8 @@
  <img src="static/dark_webview.png" width=30% height=30%>
 </p>
 
+<img src="static/preview0.gif" align="right" width="32%"/>
+
 ### 🏗️ Architecture 
 - Clean architecture
 - MVVM

@@ -227,8 +227,7 @@ private fun MovieResume(
             )
             Spacer(modifier = Modifier.padding(horizontal = 8.dp))
             Column(
-                modifier = Modifier.defaultMinSize(minHeight = 160.dp),
-                //verticalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.defaultMinSize(minHeight = 160.dp)
             ) {
                 Text(
                     text = detail?.title.orEmpty(),
@@ -261,9 +260,7 @@ private fun MovieResume(
                 }
                 Spacer(modifier = Modifier.weight(1F))
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
-//                    horizontalArrangement = Arrangement.SpaceBetween,
-//                    verticalAlignment = Alignment.CenterVertically
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
                         text = detail?.releaseDate.orEmpty(),
