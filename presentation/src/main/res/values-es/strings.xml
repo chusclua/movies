@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Movies</string>
+
     <string name="movies">Películas</string>
     <string name="favorites">Favoritas</string>
     <string name="search">Buscar</string>
+
+    <string name="favorites_empty_list_message">Añade películas a tu lista de favoritos</string>
+
     <string name="detail_error">Huy… Algo salió mal.</string>
     <string name="detail_cast">Elenco</string>
     <string name="detail_crew">Equipo</string>

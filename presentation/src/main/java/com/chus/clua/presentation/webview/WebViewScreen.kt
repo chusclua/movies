@@ -9,10 +9,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewState
@@ -22,6 +24,7 @@ import com.google.accompanist.web.rememberWebViewState
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun WebViewScreen(
+    title: String?,
     url: String?,
     onBackClick: () -> Unit
 ) {
@@ -30,10 +33,16 @@ fun WebViewScreen(
         TopAppBar(
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
-                titleContentColor = MaterialTheme.colorScheme.primary,
-                actionIconContentColor = MaterialTheme.colorScheme.primary
+                titleContentColor = MaterialTheme.colorScheme.primary
             ),
-            title = { },
+            title = {
+                Text(
+                    text = title.orEmpty(),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                    style = MaterialTheme.typography.titleLarge
+                )
+            },
             navigationIcon = {
                 IconButton(onClick = onBackClick) {
                     Icon(
@@ -61,5 +70,9 @@ fun WebViewScreen(
 @Preview
 @Composable
 private fun PreviewNewsWebViewScreen() {
-    WebViewScreen(url = "", onBackClick = {})
+    WebViewScreen(
+        title = "The GodFather",
+        url = "",
+        onBackClick = {}
+    )
 }

@@ -10,10 +10,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
-import com.chus.clua.presentation.moviedetail.DetailScreenRoute
+import com.chus.clua.presentation.movie_detail.DetailScreenRoute
 import com.chus.clua.presentation.favorites.FavoritesScreenRoute
 import com.chus.clua.presentation.movies.MoviesScreenRoute
-import com.chus.clua.presentation.peopledetail.PeopleDetailScreenRoute
+import com.chus.clua.presentation.person_detail.PeopleDetailScreenRoute
 import com.chus.clua.presentation.search.SearchScreenRoute
 import com.chus.clua.presentation.webview.WebViewScreen
 import java.net.URLEncoder
@@ -29,18 +29,27 @@ fun NavGraph(
         startDestination = BottomNavigationScreens.Movies.route
     ) {
         composable(route = BottomNavigationScreens.Movies.route) {
-            MoviesScreenRoute(onMovieClick = navController::navigateToMovieDetail, paddingValues)
+            MoviesScreenRoute(
+                onMovieClick = navController::navigateToMovieDetail,
+                paddingValues = paddingValues
+            )
         }
         composable(route = BottomNavigationScreens.Favorites.route) {
-            FavoritesScreenRoute(onMovieClick = navController::navigateToMovieDetail, paddingValues)
+            FavoritesScreenRoute(
+                onMovieClick = navController::navigateToMovieDetail,
+                paddingValues = paddingValues
+            )
         }
         composable(route = BottomNavigationScreens.Search.route) {
-            SearchScreenRoute(onMovieClick = navController::navigateToMovieDetail, paddingValues)
+            SearchScreenRoute(
+                onMovieClick = navController::navigateToMovieDetail,
+                paddingValues = paddingValues
+            )
         }
         composable(
-            route = NavigationScreens.MOVIE_DETAIL.route,
+            route = NavigationScreens.MovieDetails.route,
             arguments = listOf(
-                navArgument(NavigationScreens.MOVIE_DETAIL.param) {
+                navArgument(NavigationScreens.MovieDetails.paramId) {
                     type = NavType.IntType
                 }
             )
@@ -52,9 +61,9 @@ fun NavGraph(
             )
         }
         composable(
-            route = NavigationScreens.PEOPLE_DETAIL.route,
+            route = NavigationScreens.PeopleDetail.route,
             arguments = listOf(
-                navArgument(NavigationScreens.PEOPLE_DETAIL.param) {
+                navArgument(NavigationScreens.PeopleDetail.paramId) {
                     type = NavType.IntType
                 }
             )
@@ -62,14 +71,18 @@ fun NavGraph(
             PeopleDetailScreenRoute()
         }
         composable(
-            route = NavigationScreens.WEBVIEW.route,
+            route = NavigationScreens.WebView.route,
             arguments = listOf(
-                navArgument(NavigationScreens.WEBVIEW.param) {
+                navArgument(NavigationScreens.WebView.paramUrl) {
+                    type = NavType.StringType
+                },
+                navArgument(NavigationScreens.WebView.paramTitle) {
                     type = NavType.StringType
                 }
             )) { navBackStackEntry ->
             WebViewScreen(
-                url = navBackStackEntry.arguments?.getString(NavigationScreens.WEBVIEW.param),
+                title = navBackStackEntry.arguments?.getString(NavigationScreens.WebView.paramTitle),
+                url = navBackStackEntry.arguments?.getString(NavigationScreens.WebView.paramUrl),
                 onBackClick = navController::popBackStack,
             )
         }
@@ -84,9 +97,9 @@ private fun NavController.navigateToPeopleDetail(peopleId: Int) {
     navigate("people-detail/$peopleId")
 }
 
-private fun NavController.navigateToWebView(url: String) {
+private fun NavController.navigateToWebView(url: String, title: String) {
     val encodedUrl = url.encode()
-    navigate("webview/$encodedUrl")
+    navigate("webview/$encodedUrl/$title")
 }
 
 @Composable

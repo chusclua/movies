@@ -1,6 +1,6 @@
 package com.chus.clua.presentation.model
 
-interface People {
+interface Person {
     val id: Int
     val name: String
     val profilePath: String?

@@ -40,11 +40,11 @@ import com.chus.clua.presentation.model.MovieList
 
 @Composable
 fun MoviesScreenRoute(
+    viewModel: MoviesViewModel = hiltViewModel(),
     onMovieClick: (Int) -> Unit,
     paddingValues: PaddingValues
 ) {
 
-    val viewModel: MoviesViewModel = hiltViewModel()
     val movies = viewModel.moviesFlow.collectAsLazyPagingItems()
 
     MoviesScreen(
@@ -68,8 +68,7 @@ private fun MoviesScreen(
         TopAppBar(
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
-                titleContentColor = MaterialTheme.colorScheme.primary,
-                actionIconContentColor = MaterialTheme.colorScheme.primary
+                titleContentColor = MaterialTheme.colorScheme.primary
             ),
             title = {
                 Text(
@@ -84,12 +83,7 @@ private fun MoviesScreen(
             modifier = Modifier.padding(paddingValues),
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = PaddingValues(
-                start = 12.dp,
-                top = 12.dp,
-                end = 12.dp,
-                bottom = 12.dp
-            )
+            contentPadding = PaddingValues(12.dp)
         ) {
             items(movies.itemCount) { index ->
                 movies[index]?.let { movie ->
@@ -102,6 +96,7 @@ private fun MoviesScreen(
 
 }
 
+// TODO:
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun MovieItemList(

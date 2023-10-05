@@ -7,6 +7,7 @@ import com.chus.clua.presentation.model.VideoList
 fun MovieVideo.toVideoList() =
     VideoList(
         id = id,
+        name = name,
         thumbnailUrl = "$YOUTUBE_THUMBNAIL_URL$key$YOUTUBE_THUMBNAIL_EXTENSION",
         youtubeUrl = "$YOUTUBE_VIDEO_URL$key"
     )

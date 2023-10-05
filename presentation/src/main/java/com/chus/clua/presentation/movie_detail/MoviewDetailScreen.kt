@@ -1,4 +1,4 @@
-package com.chus.clua.presentation.moviedetail
+package com.chus.clua.presentation.movie_detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -10,13 +10,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -64,17 +62,17 @@ import com.chus.clua.presentation.composable.ExpandableText
 import com.chus.clua.presentation.model.CastList
 import com.chus.clua.presentation.model.CrewList
 import com.chus.clua.presentation.model.MovieDetail
-import com.chus.clua.presentation.model.People
+import com.chus.clua.presentation.model.Person
 import com.chus.clua.presentation.model.VideoList
 
 @Composable
 fun DetailScreenRoute(
+    viewModel: MovieDetailViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
-    onVideoClick: (String) -> Unit,
+    onVideoClick: (String, String) -> Unit,
     onPeopleClick: (Int) -> Unit
 ) {
 
-    val viewModel: MovieDetailViewModel = hiltViewModel()
     val state = viewModel.detailState.collectAsStateWithLifecycle()
 
     DetailScreen(
@@ -101,7 +99,7 @@ private fun DetailScreen(
     videos: List<VideoList>,
     error: Boolean,
     onBackClick: () -> Unit,
-    onVideoClick: (String) -> Unit,
+    onVideoClick: (String, String) -> Unit,
     onFavClick: () -> Unit,
     onPeopleClick: (Int) -> Unit
 ) {
@@ -208,7 +206,7 @@ private fun MovieHeader(
 private fun MovieResume(
     detail: MovieDetail?,
     videos: List<VideoList>,
-    onVideoClick: (String) -> Unit,
+    onVideoClick: (String, String) -> Unit,
 ) {
 
     Column {
@@ -309,7 +307,7 @@ private fun MovieResume(
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
 private fun MoviePeopleList(
     title: String,
-    people: List<People>,
+    people: List<Person>,
     onPeopleClick: (Int) -> Unit
 ) {
 
@@ -402,13 +400,13 @@ private fun MovieProductionDetail(
 @OptIn(ExperimentalGlideComposeApi::class)
 private fun VideoItemList(
     video: VideoList,
-    onVideoClick: (String) -> Unit,
+    onVideoClick: (String, String) -> Unit,
 ) {
     Box(
         modifier = Modifier
             .size(width = 120.dp, height = 80.dp)
             .border(1.dp, MaterialTheme.colorScheme.onBackground, RoundedCornerShape(8.dp))
-            .clickable { onVideoClick(video.youtubeUrl) }
+            .clickable { onVideoClick(video.youtubeUrl, video.name) }
     ) {
         GlideImage(
             model = video.thumbnailUrl,
@@ -456,7 +454,7 @@ private fun PreviewMovieResume() {
     MovieResume(
         detail = MovieDetail,
         videos = listOf(VideoList),
-        onVideoClick = {}
+        onVideoClick = { _, _ ->}
     )
 }
 
@@ -465,7 +463,7 @@ private fun PreviewMovieResume() {
 private fun PreviewMovieItemList() {
     VideoItemList(
         video = VideoList,
-        onVideoClick = {}
+        onVideoClick = { _, _ ->}
     )
 }
 
@@ -504,6 +502,7 @@ val MovieDetail = MovieDetail(
 
 val VideoList = VideoList(
     id = "627e772c006eee3428a4ae9f",
+    name = "The Godfather Never Before Seen Footage (Rare Footage 1971)",
     thumbnailUrl = "",
     youtubeUrl = ""
 )

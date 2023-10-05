@@ -1,8 +1,12 @@
 <resources>
     <string name="app_name">Movies</string>
+
     <string name="movies">Movies</string>
     <string name="favorites">Favorites</string>
     <string name="search">Search</string>
+
+    <string name="favorites_empty_list_message">Add movies to your favorite list</string>
+
     <string name="detail_error">Oops… something went wrong.</string>
     <string name="detail_cast">Cast</string>
     <string name="detail_crew">Crew</string>

@@ -1,4 +1,4 @@
-package com.chus.clua.presentation.moviedetail
+package com.chus.clua.presentation.movie_detail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -34,7 +34,7 @@ class MovieDetailViewModel @Inject constructor(
     val detailState: StateFlow<MovieDetailViewState> get() = _detailState
 
     init {
-        val movieId = savedStateHandle.get<Int>(NavigationScreens.MOVIE_DETAIL.param) ?: Int.MIN_VALUE
+        val movieId = savedStateHandle.get<Int>(NavigationScreens.MovieDetails.paramId) ?: Int.MIN_VALUE
         viewModelScope.launch {
             val (isFavorite, data, credits, videos) = movieDetailUseCase(movieId)
             updateState(isFavorite, data, credits, videos)

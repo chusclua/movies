@@ -58,11 +58,11 @@ import com.chus.clua.presentation.model.MovieList
 
 @Composable
 fun SearchScreenRoute(
+    viewModel: SearchViewModel = hiltViewModel(),
     onMovieClick: (Int) -> Unit,
     paddingValues: PaddingValues
 ) {
 
-    val viewModel: SearchViewModel = hiltViewModel()
     val state = viewModel.searchState.collectAsStateWithLifecycle()
 
     SearchScreen(

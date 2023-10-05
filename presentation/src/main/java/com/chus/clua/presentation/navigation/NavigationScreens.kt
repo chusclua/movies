@@ -1,8 +1,15 @@
 package com.chus.clua.presentation.navigation
 
 
-enum class NavigationScreens(val route: String, val param: String) {
-    MOVIE_DETAIL(route = "movie-detail/{movie_id}", param = "movie_id"),
-    PEOPLE_DETAIL(route = "people-detail/{people_id}", param = "people_id"),
-    WEBVIEW(route = "webview/{url}", param = "url")
+sealed class NavigationScreens(val route: String) {
+    object MovieDetails: NavigationScreens(route = "movie-detail/{movie_id}") {
+        const val  paramId = "movie_id"
+    }
+    object PeopleDetail: NavigationScreens(route = "people-detail/{people_id}") {
+        const val paramId = "people_id"
+    }
+    object WebView: NavigationScreens(route = "webview/{url}/{title}") {
+        const val paramUrl = "url"
+        const val paramTitle = "title"
+    }
 }

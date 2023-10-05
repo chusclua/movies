@@ -9,13 +9,27 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.chus.clua.presentation.R
 
 
-enum class BottomNavigationScreens(
+sealed class BottomNavigationScreens(
     @StringRes
     val title: Int,
     val route: String,
     val vector: ImageVector
 ) {
-    Movies(title = R.string.movies, route = "movies", vector = Icons.Filled.List),
-    Favorites(title = R.string.favorites, route = "favorites", vector = Icons.Filled.FavoriteBorder),
-    Search(title = R.string.search, route = "search", vector = Icons.Filled.Search)
+    object Movies : BottomNavigationScreens(
+        title = R.string.movies,
+        route = "movies",
+        vector = Icons.Filled.List
+    )
+
+    object Favorites : BottomNavigationScreens(
+        title = R.string.favorites,
+        route = "favorites",
+        vector = Icons.Filled.FavoriteBorder
+    )
+
+    object Search : BottomNavigationScreens(
+        title = R.string.search,
+        route = "search",
+        vector = Icons.Filled.Search
+    )
 }

@@ -1,4 +1,4 @@
-package com.chus.clua.presentation.moviedetail
+package com.chus.clua.presentation.movie_detail
 
 import com.chus.clua.presentation.model.CastList
 import com.chus.clua.presentation.model.CrewList
