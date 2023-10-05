@@ -20,4 +20,7 @@
         <item quantity="one">País</item>
         <item quantity="other">Paises</item>
     </plurals>
+
+    <string name="show_more">… mostrar más</string>
+    <string name="show_less">\u0020Mostrar menos</string>
 </resources>

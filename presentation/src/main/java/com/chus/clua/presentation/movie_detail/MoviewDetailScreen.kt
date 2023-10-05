@@ -294,10 +294,16 @@ private fun MovieResume(
         }
 
         ExpandableText(
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 16.dp),
             text = detail?.overview.orEmpty(),
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.bodyLarge
         )
+
+//        ExpandableText(
+//            modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
+//            text = detail?.overview.orEmpty(),
+//            style = MaterialTheme.typography.bodyLarge,
+//        )
 
         Divider()
     }
