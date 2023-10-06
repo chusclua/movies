@@ -19,17 +19,16 @@ class GetMovieDetailUseCase @Inject constructor(
     @IoDispatcher
     private val dispatcherIO: CoroutineDispatcher
 ) {
-    suspend operator fun invoke(movieId: Int) =
-        withContext(dispatcherIO) {
-            val isFavorite = async { isFavoriteUseCase(movieId) }
-            val credits = async { movieCreditsUseCase(movieId) }
-            val data = async { movieDataUseCase(movieId) }
-            val videos = async { movieVideosUseCase(movieId) }
-            MovieDetail(
-                isFavorite = isFavorite.await(),
-                movieData = data.await().getOrNull(),
-                movieCredits = credits.await().getOrNull(),
-                movieVideos = videos.await().getOrNull()
-            )
-        }
+    suspend operator fun invoke(movieId: Int): MovieDetail = withContext(dispatcherIO) {
+        val isFavorite = async { isFavoriteUseCase(movieId) }
+        val credits = async { movieCreditsUseCase(movieId) }
+        val data = async { movieDataUseCase(movieId) }
+        val videos = async { movieVideosUseCase(movieId) }
+        MovieDetail(
+            isFavorite = isFavorite.await(),
+            movieData = data.await().getOrNull(),
+            movieCredits = credits.await().getOrNull(),
+            movieVideos = videos.await().getOrNull()
+        )
+    }
 }

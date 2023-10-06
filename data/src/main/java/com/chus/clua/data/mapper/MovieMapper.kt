@@ -1,10 +1,10 @@
 package com.chus.clua.data.mapper
 
-import com.chus.clua.data.network.model.MovieResponseModel
+import com.chus.clua.data.network.model.MovieApiModel
 import com.chus.clua.domain.model.Movie
 
 
-fun MovieResponseModel.toMovie() =
+fun MovieApiModel.toMovie() =
     Movie(
         adult = adult,
         backdropPath = backdropPath,

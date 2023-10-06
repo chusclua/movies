@@ -2,13 +2,17 @@ package com.chus.clua.data.network.model
 
 import com.google.gson.annotations.SerializedName
 
-data class MovieResponseModel(
+data class PersonMovieCastApiModel(
     val adult: Boolean,
     @SerializedName("backdrop_path")
     val backdropPath: String?,
+    val character: String,
+    @SerializedName("credit_id")
+    val creditId: String,
     @SerializedName("genre_ids")
     val genreIds: List<Int>,
     val id: Int,
+    val order: Int,
     @SerializedName("original_language")
     val originalLanguage: String,
     @SerializedName("original_title")

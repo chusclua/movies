@@ -10,7 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
-import com.chus.clua.presentation.movie_detail.DetailScreenRoute
+import com.chus.clua.presentation.movie_detail.MovieDetailScreenRoute
 import com.chus.clua.presentation.favorites.FavoritesScreenRoute
 import com.chus.clua.presentation.movies.MoviesScreenRoute
 import com.chus.clua.presentation.person_detail.PeopleDetailScreenRoute
@@ -54,7 +54,7 @@ fun NavGraph(
                 }
             )
         ) {
-            DetailScreenRoute(
+            MovieDetailScreenRoute(
                 onBackClick = navController::popBackStack,
                 onVideoClick = navController::navigateToWebView,
                 onPeopleClick = navController::navigateToPeopleDetail

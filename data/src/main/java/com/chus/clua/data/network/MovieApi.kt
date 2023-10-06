@@ -1,9 +1,9 @@
 package com.chus.clua.data.network
 
-import com.chus.clua.data.network.model.MovieCreditsResponse
-import com.chus.clua.data.network.model.MovieDetailResponse
-import com.chus.clua.data.network.model.MovieVideosResponse
-import com.chus.clua.data.network.model.MoviesResponseModel
+import com.chus.clua.data.network.model.MovieCreditsApiModel
+import com.chus.clua.data.network.model.MovieDetailApiModel
+import com.chus.clua.data.network.model.MovieVideosApiModel
+import com.chus.clua.data.network.model.MoviesApiModel
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -14,27 +14,27 @@ interface MovieApi {
     suspend fun getDiscoverMovies(
         @Query(PAGE_PARAM) page: Int,
         @Query(SORT_PARAM) sort: String = SORT
-    ): Response<MoviesResponseModel>
+    ): Response<MoviesApiModel>
 
     @GET(SEARCH_PATH)
     suspend fun searchMovies(
         @Query(QUERY_PARAM) query: String
-    ): Response<MoviesResponseModel>
+    ): Response<MoviesApiModel>
 
     @GET(DETAIL_PATH)
     suspend fun movieDetail(
         @Path(MOVIE_ID_PATH) movieId: Int
-    ): Response<MovieDetailResponse>
+    ): Response<MovieDetailApiModel>
 
     @GET(CREDITS_PATH)
     suspend fun movieCredits(
         @Path(MOVIE_ID_PATH) movieId: Int
-    ): Response<MovieCreditsResponse>
+    ): Response<MovieCreditsApiModel>
 
     @GET(VIDEOS_PATH)
     suspend fun movieVideos(
         @Path(MOVIE_ID_PATH) movieId: Int
-    ): Response<MovieVideosResponse>
+    ): Response<MovieVideosApiModel>
 
 }
 

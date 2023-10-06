@@ -2,28 +2,28 @@ package com.chus.clua.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.chus.clua.data.datasource.RemoteDataSource
-import com.chus.clua.data.network.model.MovieResponseModel
+import com.chus.clua.data.datasource.MovieRemoteDataSource
+import com.chus.clua.data.network.model.MovieApiModel
 import com.chus.clua.domain.onRight
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class MoviesPagingSource @Inject constructor(
-    private val dataSource: RemoteDataSource,
-): PagingSource<Int, MovieResponseModel>() {
-    override fun getRefreshKey(state: PagingState<Int, MovieResponseModel>): Int? {
+    private val dataSource: MovieRemoteDataSource,
+): PagingSource<Int, MovieApiModel>() {
+    override fun getRefreshKey(state: PagingState<Int, MovieApiModel>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MovieResponseModel> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MovieApiModel> {
         return try {
             val page = params.key ?: 1
 
-            val articles: MutableList<MovieResponseModel> = mutableListOf()
+            val articles: MutableList<MovieApiModel> = mutableListOf()
             dataSource.getDiscoverMovies(page = page).onRight { data ->
                 articles.addAll(data.results)
             }

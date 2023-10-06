@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chus.clua.domain.model.MovieCredits
-import com.chus.clua.domain.model.MovieData
+import com.chus.clua.domain.model.MovieDataDetail
 import com.chus.clua.domain.model.MovieVideos
 import com.chus.clua.domain.usecase.GetMovieDetailUseCase
 import com.chus.clua.domain.usecase.ToggleFavoriteMovieUseCase
@@ -34,10 +34,11 @@ class MovieDetailViewModel @Inject constructor(
     val detailState: StateFlow<MovieDetailViewState> get() = _detailState
 
     init {
-        val movieId = savedStateHandle.get<Int>(NavigationScreens.MovieDetails.paramId) ?: Int.MIN_VALUE
+        val movieId =
+            savedStateHandle.get<Int>(NavigationScreens.MovieDetails.paramId) ?: Int.MIN_VALUE
         viewModelScope.launch {
-            val (isFavorite, data, credits, videos) = movieDetailUseCase(movieId)
-            updateState(isFavorite, data, credits, videos)
+            val (isFavorite, dataDetail, credits, videos) = movieDetailUseCase(movieId)
+            updateState(isFavorite, dataDetail, credits, videos)
         }
     }
 
@@ -54,13 +55,11 @@ class MovieDetailViewModel @Inject constructor(
 
     private fun updateState(
         isFavorite: Boolean,
-        data: MovieData?,
+        movieDataDetail: MovieDataDetail?,
         credits: MovieCredits?,
         videos: MovieVideos?
     ) {
-        if (data == null) {
-            _detailState.update { it.copy(error = true) }
-        } else {
+        movieDataDetail?.let { data ->
             _detailState.update {
                 it.copy(
                     isFavorite = isFavorite,
@@ -70,6 +69,8 @@ class MovieDetailViewModel @Inject constructor(
                     videos = videos?.videos?.map { video -> video.toVideoList() } ?: emptyList()
                 )
             }
+        } ?: {
+            _detailState.update { it.copy(error = true) }
         }
     }
 

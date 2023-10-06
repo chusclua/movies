@@ -1,7 +1,9 @@
 package com.chus.clua.data.di
 
-import com.chus.clua.data.datasource.RemoteDataSource
-import com.chus.clua.data.datasource.RemoteDataSourceImp
+import com.chus.clua.data.datasource.MovieRemoteDataSource
+import com.chus.clua.data.datasource.MovieRemoteDataSourceImp
+import com.chus.clua.data.datasource.PersonRemoteDataSource
+import com.chus.clua.data.datasource.PersonRemoteDataSourceImp
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -11,5 +13,8 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 abstract class RemoteDataSourceModule {
     @Binds
-    abstract fun provideRemoteDataSource(dataSource: RemoteDataSourceImp): RemoteDataSource
+    abstract fun provideMovieRemoteDataSource(dataSource: MovieRemoteDataSourceImp): MovieRemoteDataSource
+
+    @Binds
+    abstract fun providePersonRemoteDaraSource(dataSourceImp: PersonRemoteDataSourceImp): PersonRemoteDataSource
 }

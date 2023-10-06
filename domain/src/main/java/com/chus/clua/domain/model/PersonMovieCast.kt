@@ -1,20 +1,22 @@
 package com.chus.clua.domain.model
 
 
-data class MovieData(
+data class PersonMovieCast(
+    val adult: Boolean,
     val backdropPath: String?,
-    val belongsToCollection: MovieCollection?,
-    val genres: List<String>,
+    val character: String,
+    val creditId: String,
+    val genreIds: List<Int>,
     val id: Int,
+    val order: Int,
+    val originalLanguage: String,
     val originalTitle: String,
     val overview: String,
     val popularity: Double,
     val posterPath: String?,
-    val productionCompanies: List<String>,
-    val productionCountries: List<String>,
     val releaseDate: String,
-    val tagline: String,
     val title: String,
+    val video: Boolean,
     val voteAverage: Double,
     val voteCount: Int
 )

@@ -2,7 +2,7 @@ package com.chus.clua.data.network.model
 
 import com.google.gson.annotations.SerializedName
 
-data class CrewResponse(
+data class CrewApiModel(
     val adult: Boolean,
     @SerializedName("credit_id")
     val creditId: String,

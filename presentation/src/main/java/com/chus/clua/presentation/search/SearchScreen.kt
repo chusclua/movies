@@ -141,9 +141,7 @@ private fun SearchScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(movies.size) { index ->
-                movies[index].let { movie ->
-                    MovieItemList(movie = movie, onMovieClick = onMovieClick)
-                }
+                MovieItemList(movie = movies[index], onMovieClick = onMovieClick)
             }
         }
     }
@@ -210,6 +208,17 @@ private fun MovieItemList(
 
         }
     }
+}
+
+@Preview
+@Composable
+private fun PreviewSearchScreen() {
+    SearchScreen(
+        movies = listOf(Movie, Movie),
+        onQueryChanged = {},
+        onMovieClick = {},
+        paddingValues = PaddingValues()
+    )
 }
 
 @Preview

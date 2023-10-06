@@ -4,15 +4,15 @@ import com.chus.clua.domain.model.Movie
 import javax.inject.Inject
 import javax.inject.Singleton
 
-interface CacheDataSource {
+interface MovieCacheDataSource {
     fun addMovie(movie: Movie)
     fun getMovie(id: Int): Movie?
 }
 
 @Singleton
-class CacheDataSourceImp @Inject constructor(
+class MovieCacheDataSourceImp @Inject constructor(
     private val cache: MutableMap<Int, Movie>
-) : CacheDataSource {
+) : MovieCacheDataSource {
     override fun addMovie(movie: Movie) {
         cache[movie.id] = movie
     }

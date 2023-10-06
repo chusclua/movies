@@ -1,21 +1,21 @@
 package com.chus.clua.data.mapper
 
-import com.chus.clua.data.network.model.CastResponse
-import com.chus.clua.data.network.model.CrewResponse
-import com.chus.clua.data.network.model.MovieCreditsResponse
+import com.chus.clua.data.network.model.CastApiModel
+import com.chus.clua.data.network.model.CrewApiModel
+import com.chus.clua.data.network.model.MovieCreditsApiModel
 import com.chus.clua.domain.model.MovieCast
 import com.chus.clua.domain.model.MovieCredits
 import com.chus.clua.domain.model.MovieCrew
 
 
-fun MovieCreditsResponse.toMovieCredits() =
+fun MovieCreditsApiModel.toMovieCredits() =
     MovieCredits(
         id = id,
         cast = cast.map { it.toMovieCast() },
         crew = crew.map { it.toMovieCrew() }
     )
 
-private fun CastResponse.toMovieCast() =
+private fun CastApiModel.toMovieCast() =
     MovieCast(
         id = id,
         character = character,
@@ -24,7 +24,7 @@ private fun CastResponse.toMovieCast() =
         popularity = popularity
     )
 
-private fun CrewResponse.toMovieCrew() =
+private fun CrewApiModel.toMovieCrew() =
     MovieCrew(
         id = id,
         job = job,

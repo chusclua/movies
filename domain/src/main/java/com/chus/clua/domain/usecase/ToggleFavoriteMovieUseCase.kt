@@ -15,7 +15,7 @@ class ToggleFavoriteMovieUseCase @Inject constructor(
     private val dispatcherIO: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke(movieId: Int, isFavorite: Boolean) =
+    suspend operator fun invoke(movieId: Int, isFavorite: Boolean): Unit =
         withContext(dispatcherIO) {
             if (isFavorite) {
                 repository.deleteFromFavorite(movieId)

@@ -2,7 +2,7 @@ package com.chus.clua.data.network.model
 
 import com.google.gson.annotations.SerializedName
 
-data class SpokenLanguageResponse(
+data class SpokenLanguageApiModel(
     @SerializedName("english_name")
     val englishName: String,
     @SerializedName("iso_639_1")

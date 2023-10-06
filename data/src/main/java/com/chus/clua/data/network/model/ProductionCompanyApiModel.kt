@@ -2,7 +2,7 @@ package com.chus.clua.data.network.model
 
 import com.google.gson.annotations.SerializedName
 
-data class ProductionCompanyResponse(
+data class ProductionCompanyApiModel(
     val id: Int,
     @SerializedName("logo_path")
     val logoPath: String?,

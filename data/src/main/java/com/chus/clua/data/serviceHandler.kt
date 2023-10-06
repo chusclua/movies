@@ -15,7 +15,7 @@ suspend fun <T> serviceHandler(call: suspend () -> Response<T>): Either<Exceptio
         }
     } catch (httpException: HttpException) {
         Either.Left(Exception(httpException.message()))
-    } catch (e: Throwable) {
-        Either.Left(Exception(e.message))
+    } catch (throwable: Throwable) {
+        Either.Left(Exception(throwable.message))
     }
 }

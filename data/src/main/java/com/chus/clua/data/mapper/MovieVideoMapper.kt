@@ -1,18 +1,18 @@
 package com.chus.clua.data.mapper
 
-import com.chus.clua.data.network.model.MovieVideoResponse
-import com.chus.clua.data.network.model.MovieVideosResponse
+import com.chus.clua.data.network.model.MovieVideoApiModel
+import com.chus.clua.data.network.model.MovieVideosApiModel
 import com.chus.clua.domain.model.MovieVideo
 import com.chus.clua.domain.model.MovieVideos
 
 
-fun MovieVideosResponse.toMovieVideos() =
+fun MovieVideosApiModel.toMovieVideos() =
     MovieVideos(
         id = id,
         videos = results.map { it.toMovieVideo() }
     )
 
-private fun MovieVideoResponse.toMovieVideo() =
+private fun MovieVideoApiModel.toMovieVideo() =
     MovieVideo(
         id = id,
         key = key,

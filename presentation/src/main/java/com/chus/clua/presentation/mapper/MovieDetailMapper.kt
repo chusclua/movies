@@ -1,9 +1,9 @@
 package com.chus.clua.presentation.mapper
 
-import com.chus.clua.domain.model.MovieData
+import com.chus.clua.domain.model.MovieDataDetail
 import com.chus.clua.presentation.model.MovieDetail
 
-fun MovieData.toMovieDetail() =
+fun MovieDataDetail.toMovieDetail() =
     MovieDetail(
         backdropPath = "$BASE_BACKDROP_PATH$backdropPath",
         genres = genres,

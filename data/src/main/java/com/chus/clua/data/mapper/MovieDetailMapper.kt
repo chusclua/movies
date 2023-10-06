@@ -1,13 +1,13 @@
 package com.chus.clua.data.mapper
 
-import com.chus.clua.data.network.model.CollectionResponse
-import com.chus.clua.data.network.model.MovieDetailResponse
+import com.chus.clua.data.network.model.CollectionApiModel
+import com.chus.clua.data.network.model.MovieDetailApiModel
 import com.chus.clua.domain.model.MovieCollection
-import com.chus.clua.domain.model.MovieData
+import com.chus.clua.domain.model.MovieDataDetail
 
 
-fun MovieDetailResponse.toMovieDetail() =
-    MovieData(
+fun MovieDetailApiModel.toMovieDataDetail() =
+    MovieDataDetail(
         backdropPath = backdropPath,
         belongsToCollection = belongsToCollection?.toMovieCollection(),
         genres = genres.map { it.name },
@@ -25,7 +25,7 @@ fun MovieDetailResponse.toMovieDetail() =
         voteCount = voteCount
     )
 
-private fun CollectionResponse.toMovieCollection() =
+private fun CollectionApiModel.toMovieCollection() =
     MovieCollection(
         backdropPath = backdropPath,
         id = id,

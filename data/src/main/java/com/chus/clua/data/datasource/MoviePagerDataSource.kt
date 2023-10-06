@@ -3,22 +3,22 @@ package com.chus.clua.data.datasource
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.chus.clua.data.network.model.MovieResponseModel
+import com.chus.clua.data.network.model.MovieApiModel
 import com.chus.clua.data.paging.MoviesPagingSource
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
 
 
-interface PagerDataSource {
-    fun getMoviePage(): Flow<PagingData<MovieResponseModel>>
+interface MoviePagerDataSource {
+    fun getMoviePage(): Flow<PagingData<MovieApiModel>>
 }
 
 @Singleton
-class PagerDataSourceImp @Inject constructor(
+class MoviePagerDataSourceImp @Inject constructor(
     private val pagingSource: MoviesPagingSource
-): PagerDataSource {
-    override fun getMoviePage(): Flow<PagingData<MovieResponseModel>> {
+): MoviePagerDataSource {
+    override fun getMoviePage(): Flow<PagingData<MovieApiModel>> {
         return Pager(
             config = PagingConfig(pageSize = 20),
             pagingSourceFactory = { pagingSource }

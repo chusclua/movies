@@ -2,7 +2,7 @@ package com.chus.clua.data.network.model
 
 import com.google.gson.annotations.SerializedName
 
-data class CastResponse(
+data class CastApiModel(
     val adult: Boolean,
     @SerializedName("cast_id")
     val castId: Int,

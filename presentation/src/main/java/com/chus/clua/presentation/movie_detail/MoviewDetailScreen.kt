@@ -66,7 +66,7 @@ import com.chus.clua.presentation.model.Person
 import com.chus.clua.presentation.model.VideoList
 
 @Composable
-fun DetailScreenRoute(
+fun MovieDetailScreenRoute(
     viewModel: MovieDetailViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
     onVideoClick: (String, String) -> Unit,
@@ -294,16 +294,12 @@ private fun MovieResume(
         }
 
         ExpandableText(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 16.dp),
             text = detail?.overview.orEmpty(),
             style = MaterialTheme.typography.bodyLarge
         )
-
-//        ExpandableText(
-//            modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
-//            text = detail?.overview.orEmpty(),
-//            style = MaterialTheme.typography.bodyLarge,
-//        )
 
         Divider()
     }
@@ -460,7 +456,7 @@ private fun PreviewMovieResume() {
     MovieResume(
         detail = MovieDetail,
         videos = listOf(VideoList),
-        onVideoClick = { _, _ ->}
+        onVideoClick = { _, _ -> }
     )
 }
 
@@ -469,7 +465,7 @@ private fun PreviewMovieResume() {
 private fun PreviewMovieItemList() {
     VideoItemList(
         video = VideoList,
-        onVideoClick = { _, _ ->}
+        onVideoClick = { _, _ -> }
     )
 }
 

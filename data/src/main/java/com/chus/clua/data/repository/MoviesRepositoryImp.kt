@@ -2,20 +2,20 @@ package com.chus.clua.data.repository
 
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.chus.clua.data.datasource.CacheDataSource
-import com.chus.clua.data.datasource.PagerDataSource
-import com.chus.clua.data.datasource.RemoteDataSource
+import com.chus.clua.data.datasource.MovieCacheDataSource
+import com.chus.clua.data.datasource.MoviePagerDataSource
+import com.chus.clua.data.datasource.MovieRemoteDataSource
 import com.chus.clua.data.db.MoviesDao
 import com.chus.clua.data.mapper.toEntity
 import com.chus.clua.data.mapper.toMovie
 import com.chus.clua.data.mapper.toMovieCredits
-import com.chus.clua.data.mapper.toMovieDetail
+import com.chus.clua.data.mapper.toMovieDataDetail
 import com.chus.clua.data.mapper.toMovieVideos
 import com.chus.clua.domain.Either
 import com.chus.clua.domain.map
 import com.chus.clua.domain.model.Movie
 import com.chus.clua.domain.model.MovieCredits
-import com.chus.clua.domain.model.MovieData
+import com.chus.clua.domain.model.MovieDataDetail
 import com.chus.clua.domain.model.MovieVideos
 import com.chus.clua.domain.repository.MoviesRepository
 import javax.inject.Inject
@@ -25,51 +25,51 @@ import kotlinx.coroutines.flow.map
 
 @Singleton
 class MoviesRepositoryImp @Inject constructor(
-    private val pagerDataSource: PagerDataSource,
-    private val remoteDataSource: RemoteDataSource,
-    private val cacheDataSource: CacheDataSource,
+    private val moviePagerDataSource: MoviePagerDataSource,
+    private val movieRemoteDataSource: MovieRemoteDataSource,
+    private val movieCacheDataSource: MovieCacheDataSource,
     private val moviesDao: MoviesDao
 ) : MoviesRepository {
 
     override fun getDiscoverMovies(): Flow<PagingData<Movie>> =
-        pagerDataSource.getMoviePage().map { pagingData ->
+        moviePagerDataSource.getMoviePage().map { pagingData ->
             pagingData.map { model ->
                 model.toMovie().also { movie ->
-                    cacheDataSource.addMovie(movie)
+                    movieCacheDataSource.addMovie(movie)
                 }
             }
         }
 
     override suspend fun searchMovies(query: String): Either<Exception, List<Movie>> {
-        return remoteDataSource.searchMovies(query).map { response ->
+        return movieRemoteDataSource.searchMovies(query).map { response ->
             response.results.map { model ->
                 model.toMovie().also { movie ->
-                    cacheDataSource.addMovie(movie)
+                    movieCacheDataSource.addMovie(movie)
                 }
             }
         }
     }
 
-    override suspend fun getMovieDetail(movieId: Int): Either<Exception, MovieData> {
-        return remoteDataSource.getMovieDetail(movieId = movieId).map { response ->
-            response.toMovieDetail()
+    override suspend fun getMovieDetail(movieId: Int): Either<Exception, MovieDataDetail> {
+        return movieRemoteDataSource.getMovieDetail(movieId = movieId).map { response ->
+            response.toMovieDataDetail()
         }
     }
 
     override suspend fun getMovieCredits(movieId: Int): Either<Exception, MovieCredits> {
-        return remoteDataSource.getMovieCredits(movieId = movieId).map { response ->
+        return movieRemoteDataSource.getMovieCredits(movieId = movieId).map { response ->
             response.toMovieCredits()
         }
     }
 
     override suspend fun getMovieVideos(movieId: Int): Either<Exception, MovieVideos> {
-        return remoteDataSource.getMovieVideos(movieId = movieId).map { response ->
+        return movieRemoteDataSource.getMovieVideos(movieId = movieId).map { response ->
             response.toMovieVideos()
         }
     }
 
     override fun saveToFavorites(movieId: Int) {
-        cacheDataSource.getMovie(movieId)?.let { movie ->
+        movieCacheDataSource.getMovie(movieId)?.let { movie ->
             moviesDao.insert(movie.toEntity())
         }
     }

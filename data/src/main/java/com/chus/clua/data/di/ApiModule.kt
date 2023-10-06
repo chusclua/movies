@@ -1,6 +1,7 @@
 package com.chus.clua.data.di
 
 import com.chus.clua.data.network.MovieApi
+import com.chus.clua.data.network.PersonApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,10 +11,14 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class MovieApiModule {
+class ApiModule {
 
     @Provides
     @Singleton
-    fun provideNewsApi(retrofit: Retrofit): MovieApi = retrofit.create(MovieApi::class.java)
+    fun provideMovieApi(retrofit: Retrofit): MovieApi = retrofit.create(MovieApi::class.java)
+
+    @Provides
+    @Singleton
+    fun providePersonApi(retrofit: Retrofit): PersonApi = retrofit.create(PersonApi::class.java)
 
 }

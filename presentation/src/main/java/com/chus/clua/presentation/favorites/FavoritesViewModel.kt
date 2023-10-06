@@ -10,25 +10,35 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
 @HiltViewModel
-class FavoriteMoviesViewModel @Inject constructor(
+class FavoritesViewModel @Inject constructor(
     private val favoriteMoviesUseCase: GetFavoriteMoviesUseCase
-): ViewModel() {
+) : ViewModel() {
 
-    private val _moviesFlow: MutableStateFlow<List<MovieList>> =
-        MutableStateFlow(value = emptyList())
-    val moviesFlow: StateFlow<List<MovieList>> get() = _moviesFlow
+    private val _moviesFlow: MutableStateFlow<FavoritesViewState> =
+        MutableStateFlow(value = FavoritesViewState())
+    val moviesFlow: StateFlow<FavoritesViewState> get() = _moviesFlow
 
     init {
         viewModelScope.launch {
             favoriteMoviesUseCase()
                 .distinctUntilChanged()
                 .collect { list ->
-                    _moviesFlow.value = list.map { it.toMovieList() }
+                    _moviesFlow.update {
+                        it.copy(movies = list.map { movie -> movie.toMovieList() })
+                    }
                 }
+        }
+    }
+
+    fun onClearAllClicked() {
+        // TODO:
+        _moviesFlow.update {
+            it.copy(movies = emptyList())
         }
     }
 
