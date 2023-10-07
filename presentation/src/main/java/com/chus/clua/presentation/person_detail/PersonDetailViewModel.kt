@@ -7,6 +7,7 @@ import com.chus.clua.domain.model.PersonDataDetail
 import com.chus.clua.domain.model.PersonMovieCast
 import com.chus.clua.domain.model.PersonMovieCrew
 import com.chus.clua.domain.usecase.GetPersonMovieDetailUseCase
+import com.chus.clua.presentation.mapper.toPersonDetailUi
 import com.chus.clua.presentation.navigation.NavigationScreens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -36,13 +37,13 @@ class PersonDetailViewModel @Inject constructor(
     }
 
     private fun updateState(
-        detail: PersonDataDetail?,
+        personDataDetail: PersonDataDetail?,
         cast: List<PersonMovieCast>,
         crew: List<PersonMovieCrew>
     ) {
-        detail?.let { d ->
+        personDataDetail?.let { data ->
             _detailState.update {
-                it.copy(detail = d)
+                it.copy(detail = data.toPersonDetailUi())
             }
         } ?: {
             _detailState.update {

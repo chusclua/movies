@@ -68,7 +68,10 @@ fun NavGraph(
                 }
             )
         ) {
-            PeopleDetailScreenRoute()
+            PeopleDetailScreenRoute(
+                onBackClick = navController::popBackStack,
+                onHomePageClicked = navController::navigateToWebView
+            )
         }
         composable(
             route = NavigationScreens.WebView.route,

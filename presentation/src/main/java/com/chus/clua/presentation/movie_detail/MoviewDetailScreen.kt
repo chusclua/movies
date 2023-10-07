@@ -61,7 +61,7 @@ import com.chus.clua.presentation.R
 import com.chus.clua.presentation.composable.ExpandableText
 import com.chus.clua.presentation.model.CastList
 import com.chus.clua.presentation.model.CrewList
-import com.chus.clua.presentation.model.MovieDetail
+import com.chus.clua.presentation.model.MovieDetailUi
 import com.chus.clua.presentation.model.Person
 import com.chus.clua.presentation.model.VideoList
 
@@ -93,7 +93,7 @@ fun MovieDetailScreenRoute(
 @Composable
 private fun DetailScreen(
     isFavorite: Boolean,
-    detail: MovieDetail?,
+    detail: MovieDetailUi?,
     cast: List<CastList>,
     crew: List<CrewList>,
     videos: List<VideoList>,
@@ -107,7 +107,7 @@ private fun DetailScreen(
     val snackBarHostState = remember { SnackbarHostState() }
 
     if (error) {
-        val toastMessage = stringResource(id = R.string.detail_error)
+        val toastMessage = stringResource(id = R.string.error_message)
         LaunchedEffect(Unit) {
             snackBarHostState.showSnackbar(toastMessage)
         }
@@ -204,7 +204,7 @@ private fun MovieHeader(
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
 private fun MovieResume(
-    detail: MovieDetail?,
+    detail: MovieDetailUi?,
     videos: List<VideoList>,
     onVideoClick: (String, String) -> Unit,
 ) {
@@ -488,7 +488,7 @@ private fun PreviewMovieProductionDetail() {
     )
 }
 
-val MovieDetail = MovieDetail(
+val MovieDetail = MovieDetailUi(
     backdropPath = "/tmU7GeKVybMWFButWEGl2M4GeiP.jpg",//
     genres = listOf("Drama", "Crime"),//
     id = 238,

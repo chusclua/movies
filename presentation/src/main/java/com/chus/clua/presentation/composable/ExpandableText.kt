@@ -14,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
@@ -29,6 +30,8 @@ private const val MINIMIZED_MAX_LINES = 3
 fun ExpandableText(
     modifier: Modifier = Modifier,
     text: String,
+    textColor: Color = MaterialTheme.colorScheme.onBackground,
+    textAccentColor: Color = MaterialTheme.colorScheme.primary,
     style: TextStyle = LocalTextStyle.current
 ) {
     var isExpanded by remember { mutableStateOf(false) }
@@ -36,7 +39,6 @@ fun ExpandableText(
     var isClickable by remember { mutableStateOf(false) }
     var finalText by remember { mutableStateOf(buildAnnotatedString { append(text) }) }
 
-    val color = MaterialTheme.colorScheme.primary
     val showMore = stringResource(id = R.string.show_more)
     val showLess = stringResource(id = R.string.show_less)
 
@@ -49,7 +51,12 @@ fun ExpandableText(
             isExpanded -> {
                 val annotatedString = buildAnnotatedString {
                     append(text)
-                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold, color = color)) {
+                    withStyle(
+                        style = SpanStyle(
+                            fontWeight = FontWeight.Bold,
+                            color = textAccentColor
+                        )
+                    ) {
                         append(showLess)
                     }
                 }
@@ -65,7 +72,12 @@ fun ExpandableText(
 
                 val annotatedString = buildAnnotatedString {
                     append(adjustedText)
-                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold, color = color)) {
+                    withStyle(
+                        style = SpanStyle(
+                            fontWeight = FontWeight.Bold,
+                            color = textAccentColor
+                        )
+                    ) {
                         append(showMore)
                     }
                 }
@@ -79,8 +91,6 @@ fun ExpandableText(
 
     Text(
         text = if (finalText.text.isEmpty()) buildAnnotatedString { append(text) } else finalText,
-        maxLines = if (isExpanded) Int.MAX_VALUE else MINIMIZED_MAX_LINES,
-        onTextLayout = { textLayoutResultState.value = it },
         modifier = modifier
             .clickable(
                 enabled = isClickable,
@@ -88,6 +98,10 @@ fun ExpandableText(
                 indication = null
             ) { isExpanded = !isExpanded }
             .animateContentSize(animationSpec = tween(100)),
+        color = textColor,
+        maxLines = if (isExpanded) Int.MAX_VALUE else MINIMIZED_MAX_LINES,
+        onTextLayout = { textLayoutResultState.value = it },
+
         style = style
     )
 }

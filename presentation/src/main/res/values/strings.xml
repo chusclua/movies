@@ -7,7 +7,8 @@
 
     <string name="favorites_empty_list_message">Add movies to your favorite list</string>
 
-    <string name="detail_error">Oops… something went wrong.</string>
+    <string name="error_message">Oops… something went wrong.</string>
+
     <string name="detail_cast">Cast</string>
     <string name="detail_crew">Crew</string>
     <string name="detail_as">as</string>
@@ -22,4 +23,6 @@
 
     <string name="show_more">… show more</string>
     <string name="show_less">\u0020Show less</string>
+
+    <string name="see_website">See website</string>
 </resources>
