@@ -5,4 +5,4 @@ data class CrewList(
     val job: String,
     override val name: String,
     override val profilePath: String?,
-): Person
+): PersonList

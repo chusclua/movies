@@ -2,6 +2,7 @@ package com.chus.clua.domain.usecase
 
 import com.chus.clua.domain.Either
 import com.chus.clua.domain.IoDispatcher
+import com.chus.clua.domain.map
 import com.chus.clua.domain.model.PersonCredits
 import com.chus.clua.domain.repository.PersonRepository
 import javax.inject.Inject
@@ -16,6 +17,11 @@ class GetPersonMovieCreditsUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(personId: Int): Either<Exception, PersonCredits> =
         withContext(dispatcherIO) {
-            repository.getPersonMovieCredits(personId = personId)
+            repository.getPersonMovieCredits(personId = personId).map { personCredits ->
+                personCredits.copy(
+                    cast = personCredits.cast.filter { it.posterPath != null },
+                    crew = personCredits.crew.filter { it.posterPath != null }
+                )
+            }
         }
 }

@@ -2,6 +2,7 @@ package com.chus.clua.presentation.favorites
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chus.clua.domain.usecase.DeleteAllFavoriteListUseCase
 import com.chus.clua.domain.usecase.GetFavoriteMoviesUseCase
 import com.chus.clua.presentation.mapper.toFavoriteMovieList
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +16,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
-    private val favoriteMoviesUseCase: GetFavoriteMoviesUseCase
+    private val favoriteMoviesUseCase: GetFavoriteMoviesUseCase,
+    private val deleteAllFavoriteListUseCase: DeleteAllFavoriteListUseCase
 ) : ViewModel() {
 
     private val _moviesFlow: MutableStateFlow<FavoritesViewState> =
@@ -35,9 +37,8 @@ class FavoritesViewModel @Inject constructor(
     }
 
     fun onClearAllClicked() {
-        // TODO:
-        _moviesFlow.update {
-            it.copy(movies = emptyList())
+        viewModelScope.launch {
+            deleteAllFavoriteListUseCase()
         }
     }
 

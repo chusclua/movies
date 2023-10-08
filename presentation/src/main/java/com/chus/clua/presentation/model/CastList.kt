@@ -5,4 +5,4 @@ data class CastList(
     val character: String,
     override val name: String,
     override val profilePath: String?,
-): Person
+): PersonList

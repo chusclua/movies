@@ -62,7 +62,7 @@ import com.chus.clua.presentation.composable.ExpandableText
 import com.chus.clua.presentation.model.CastList
 import com.chus.clua.presentation.model.CrewList
 import com.chus.clua.presentation.model.MovieDetailUi
-import com.chus.clua.presentation.model.Person
+import com.chus.clua.presentation.model.PersonList
 import com.chus.clua.presentation.model.VideoList
 
 @Composable
@@ -309,7 +309,7 @@ private fun MovieResume(
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
 private fun MoviePeopleList(
     title: String,
-    people: List<Person>,
+    people: List<PersonList>,
     onPeopleClick: (peopleId: Int) -> Unit
 ) {
 

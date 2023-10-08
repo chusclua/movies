@@ -70,6 +70,7 @@ fun NavGraph(
         ) {
             PeopleDetailScreenRoute(
                 onBackClick = navController::popBackStack,
+                onMovieClick = navController::navigateToMovieDetail,
                 onHomePageClicked = navController::navigateToWebView
             )
         }

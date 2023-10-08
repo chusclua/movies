@@ -8,6 +8,8 @@ import com.chus.clua.domain.model.PersonMovieCast
 import com.chus.clua.domain.model.PersonMovieCrew
 import com.chus.clua.domain.usecase.GetPersonMovieDetailUseCase
 import com.chus.clua.presentation.mapper.toPersonDetailUi
+import com.chus.clua.presentation.mapper.toPersonMovieCastList
+import com.chus.clua.presentation.mapper.toPersonMovieCrewList
 import com.chus.clua.presentation.navigation.NavigationScreens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -29,7 +31,8 @@ class PersonDetailViewModel @Inject constructor(
     val detailState: StateFlow<PersonDetailState> get() = _detailState
 
     init {
-        val personId = savedStateHandle.get<Int>(NavigationScreens.PeopleDetail.paramId) ?: Int.MIN_VALUE
+        val personId =
+            savedStateHandle.get<Int>(NavigationScreens.PeopleDetail.paramId) ?: Int.MIN_VALUE
         viewModelScope.launch {
             val (detail, cast, crew) = personMovieDetailUseCase(personId)
             updateState(detail, cast, crew)
@@ -43,7 +46,11 @@ class PersonDetailViewModel @Inject constructor(
     ) {
         personDataDetail?.let { data ->
             _detailState.update {
-                it.copy(detail = data.toPersonDetailUi())
+                it.copy(
+                    detail = data.toPersonDetailUi(),
+                    cast = cast.map { it.toPersonMovieCastList() },
+                    crew = crew.map { it.toPersonMovieCrewList() }
+                )
             }
         } ?: {
             _detailState.update {

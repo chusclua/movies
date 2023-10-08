@@ -3,8 +3,10 @@ package com.chus.clua.presentation.person_detail
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,15 +14,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.ArrowForward
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PlainTooltipBox
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -45,12 +51,16 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.chus.clua.presentation.R
 import com.chus.clua.presentation.composable.ExpandableText
 import com.chus.clua.presentation.model.PersonDetailUi
+import com.chus.clua.presentation.model.PersonMovieCastList
+import com.chus.clua.presentation.model.PersonMovieCrewList
+import com.chus.clua.presentation.model.PersonMovieList
 
 
 @Composable
 fun PeopleDetailScreenRoute(
     viewModel: PersonDetailViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
+    onMovieClick: (movieId: Int) -> Unit,
     onHomePageClicked: (url: String, name: String) -> Unit
 ) {
 
@@ -58,8 +68,11 @@ fun PeopleDetailScreenRoute(
 
     PeopleDetailScreen(
         detail = state.value.detail,
+        cast = state.value.cast,
+        crew = state.value.crew,
         error = state.value.error,
         onBackClick = onBackClick,
+        onMovieClick = onMovieClick,
         onHomePageClicked = onHomePageClicked
     )
 
@@ -69,8 +82,11 @@ fun PeopleDetailScreenRoute(
 @Composable
 private fun PeopleDetailScreen(
     detail: PersonDetailUi?,
+    cast: List<PersonMovieCastList>,
+    crew: List<PersonMovieCrewList>,
     error: Boolean,
     onBackClick: () -> Unit,
+    onMovieClick: (movieId: Int) -> Unit,
     onHomePageClicked: (String, String) -> Unit,
 ) {
 
@@ -150,6 +166,18 @@ private fun PeopleDetailScreen(
                 onHomePageClicked = onHomePageClicked
             )
 
+            MovieList(
+                title = stringResource(id = R.string.detail_cast),
+                movies = cast,
+                onMovieClick = onMovieClick
+            )
+
+            MovieList(
+                title = stringResource(id = R.string.detail_crew),
+                movies = crew,
+                onMovieClick = onMovieClick
+            )
+
             Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
         }
@@ -181,7 +209,9 @@ private fun PersonResume(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,
                     onClick = { onHomePageClicked(homePage, name.orEmpty()) }
-                )) {
+                ),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Box(
                     modifier = Modifier
                         .size(width = 40.dp, height = 24.dp)
@@ -210,5 +240,51 @@ private fun PersonResume(
             }
         }
 
+    }
+}
+
+@Composable
+@OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
+private fun MovieList(
+    title: String,
+    movies: List<PersonMovieList>,
+    onMovieClick: (movieId: Int) -> Unit
+) {
+    Column {
+
+        Text(
+            text = title,
+            modifier = Modifier.padding(start = 16.dp, top = 16.dp),
+            style = MaterialTheme.typography.headlineSmall
+        )
+
+        LazyRow(
+            modifier = Modifier.padding(top = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp)
+        ) {
+
+            items(items = movies) { movie ->
+                val toolTipText = when (movie) {
+                    is PersonMovieCastList -> "${stringResource(id = R.string.detail_as).replaceFirstChar(Char::titlecase)} ${movie.character}"
+                    is PersonMovieCrewList -> "${movie.job}"
+                    else -> ""
+                }
+                PlainTooltipBox(
+                    tooltip = { Text(toolTipText) }
+                ) {
+                    GlideImage(
+                        model = movie.posterPath,
+                        contentScale = ContentScale.Crop,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(width = 100.dp, height = 140.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                            .tooltipAnchor()
+                            .clickable { onMovieClick(movie.id) }
+                    )
+                }
+            }
+        }
     }
 }
