@@ -41,7 +41,7 @@ import com.chus.clua.presentation.model.MovieList
 @Composable
 fun MoviesScreenRoute(
     viewModel: MoviesViewModel = hiltViewModel(),
-    onMovieClick: (Int) -> Unit,
+    onMovieClick: (movieId: Int) -> Unit,
     paddingValues: PaddingValues
 ) {
 
@@ -59,7 +59,7 @@ fun MoviesScreenRoute(
 @Composable
 private fun MoviesScreen(
     movies: LazyPagingItems<MovieList>,
-    onMovieClick: (Int) -> Unit,
+    onMovieClick: (movieId: Int) -> Unit,
     paddingValues: PaddingValues,
 ) {
 
@@ -96,12 +96,11 @@ private fun MoviesScreen(
 
 }
 
-// TODO:
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun MovieItemList(
+private fun MovieItemList(
     movie: MovieList,
-    onMovieClick: (Int) -> Unit
+    onMovieClick: (movieId: Int) -> Unit
 ) {
     Column(
         modifier = Modifier.clickable {
@@ -110,12 +109,12 @@ fun MovieItemList(
     ) {
         GlideImage(
             model = movie.posterPath,
-            contentScale = ContentScale.Crop,
             contentDescription = "MoviePoster",
             modifier = Modifier
                 .fillMaxWidth()
                 .height(240.dp)
                 .clip(RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)),
+            contentScale = ContentScale.Crop,
         )
         Column(
             modifier = Modifier
@@ -160,10 +159,10 @@ fun MovieItemList(
 @Preview
 @Composable
 private fun PreviewMovieItemList() {
-    MovieItemList(movie = Movie) { }
+    MovieItemList(movie = MovieList) { }
 }
 
-private val Movie = MovieList(
+private val MovieList = MovieList(
     id = 238,
     title = "The Godfather Part II",
     posterPath = "https://image.tmdb.org/t/p/w342/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",

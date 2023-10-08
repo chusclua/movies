@@ -31,9 +31,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -48,7 +51,7 @@ import com.chus.clua.presentation.model.PersonDetailUi
 fun PeopleDetailScreenRoute(
     viewModel: PersonDetailViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
-    onHomePageClicked: (String, String) -> Unit
+    onHomePageClicked: (url: String, name: String) -> Unit
 ) {
 
     val state = viewModel.detailState.collectAsStateWithLifecycle()
@@ -86,55 +89,71 @@ private fun PeopleDetailScreen(
         }
     ) { innerPadding ->
 
-        Box(
+        val scrollState = rememberScrollState()
+
+        Column(
             modifier = Modifier
+                .padding(innerPadding)
                 .fillMaxSize()
+                .verticalScroll(scrollState)
                 .background(color = MaterialTheme.colorScheme.primaryContainer)
         ) {
-            IconButton(
-                onClick = onBackClick,
-                modifier = Modifier.align(Alignment.TopStart)
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.ArrowBack,
-                    contentDescription = "Back",
-                    tint = Color.White
+
+            Box {
+                IconButton(
+                    onClick = onBackClick,
+                    modifier = Modifier.align(Alignment.TopStart)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = "Back",
+                        tint = Color.White
+                    )
+                }
+
+                GlideImage(
+                    model = detail?.profilePath.orEmpty(),
+                    contentScale = ContentScale.Crop,
+                    contentDescription = "PeopleProfile",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(520.dp)
+                        .align(Alignment.TopEnd)
+                        .padding(start = 20.dp, top = 60.dp)
+                        .clip(RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp)),
                 )
+
+                Text(
+                    text = detail?.name.orEmpty(),
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(all = 8.dp),
+                    color = Color.White,
+                    textAlign = TextAlign.End,
+                    style = MaterialTheme.typography.displayMedium.copy(
+                        shadow = Shadow(
+                            color = Color.Black.copy(alpha = 0.7F),
+                            offset = Offset(5.0f, 10.0f),
+                            blurRadius = 3f
+                        )
+                    )
+                )
+
             }
 
-            GlideImage(
-                model = detail?.profilePath.orEmpty(),
-                contentScale = ContentScale.Crop,
-                contentDescription = "PeopleProfile",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(520.dp)
-                    .align(Alignment.TopEnd)
-                    .padding(start = 20.dp, top = 60.dp)
-                    .clip(RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp)),
+            Spacer(modifier = Modifier.padding(vertical = 8.dp))
+
+            PersonResume(
+                name = detail?.name,
+                biography = detail?.biography,
+                homepage = detail?.homepage,
+                onHomePageClicked = onHomePageClicked
             )
 
-            val scrollState = rememberScrollState()
-
-            Column(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(innerPadding)
-                    .verticalScroll(scrollState)
-            ) {
-
-                PersonResume(
-                    name = detail?.name,
-                    biography = detail?.biography,
-                    homepage = detail?.homepage,
-                    onHomePageClicked = onHomePageClicked
-                )
-
-                Spacer(modifier = Modifier.padding(vertical = 8.dp))
-                Text(text = "sdgfhsdfsdhfsdfgsd shdjkhsfhsdhfjksdhjfhsdjfkhsdj shdjkhskdjhfjkshfjksdhfjksdhfjksdhfjkhsdfjkhsjfkhdsj hjskdfhjksdhfjksdhfjkhsdjkfhsdjfhsdjkfhsdjkfhsd jhsdjhfjksdhfkjsdhfjkd sdgfhsdfsdhfsdfgsd shdjkhsfhsdhfjksdhjfhsdjfkhsdj shdjkhskdjhfjkshfjksdhfjksdhfjksdhfjkhsdfjkhsjfkhdsj hjskdfhjksdhfjksdhfjkhsdjkfhsdjfhsdjkfhsdjkfhsd jhsdjhfjksdhfkjsdhfjkd sdgfhsdfsdhfsdfgsd shdjkhsfhsdhfjksdhjfhsdjfkhsdj shdjkhskdjhfjkshfjksdhfjksdhfjksdhfjkhsdfjkhsjfkhdsj hjskdfhjksdhfjksdhfjkhsdjkfhsdjfhsdjkfhsdjkfhsd jhsdjhfjksdhfkjsdhfjkd sdgfhsdfsdhfsdfgsd shdjkhsfhsdhfjksdhjfhsdjfkhsdj shdjkhskdjhfjkshfjksdhfjksdhfjksdhfjkhsdfjkhsjfkhdsj hjskdfhjksdhfjksdhfjkhsdjkfhsdjfhsdjkfhsdjkfhsd jhsdjhfjksdhfkjsdhfjkd sdgfhsdfsdhfsdfgsd shdjkhsfhsdhfjksdhjfhsdjfkhsdj shdjkhskdjhfjkshfjksdhfjksdhfjksdhfjkhsdfjkhsjfkhdsj hjskdfhjksdhfjksdhfjkhsdjkfhsdjfhsdjkfhsdjkfhsd jhsdjhfjksdhfkjsdhfjkd sdgfhsdfsdhfsdfgsd shdjkhsfhsdhfjksdhjfhsdjfkhsdj shdjkhskdjhfjkshfjksdhfjksdhfjksdhfjkhsdfjkhsjfkhdsj hjskdfhjksdhfjksdhfjkhsdjkfhsdjfhsdjkfhsdjkfhsd jhsdjhfjksdhfkjsdhfjkd")
-            }
+            Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
         }
+
     }
 }
 
@@ -149,16 +168,10 @@ private fun PersonResume(
         modifier = Modifier
             .padding(start = 80.dp, end = 8.dp)
     ) {
-        Text(
-            text = name.orEmpty(),
-            color = Color.White,
-            style = MaterialTheme.typography.displayMedium
-        )
-        Spacer(modifier = Modifier.padding(vertical = 8.dp))
         ExpandableText(
             text = biography.orEmpty(),
-            textColor = Color.White,
-            textAccentColor = MaterialTheme.colorScheme.inversePrimary,
+            textColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            textAccentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             style = MaterialTheme.typography.bodyLarge
         )
         homepage?.let { homePage ->
@@ -192,7 +205,7 @@ private fun PersonResume(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1F),
-                    color = Color.White
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
         }

@@ -69,8 +69,8 @@ import com.chus.clua.presentation.model.VideoList
 fun MovieDetailScreenRoute(
     viewModel: MovieDetailViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
-    onVideoClick: (String, String) -> Unit,
-    onPeopleClick: (Int) -> Unit
+    onVideoClick: (url: String, title: String) -> Unit,
+    onPeopleClick: (peopleId: Int) -> Unit
 ) {
 
     val state = viewModel.detailState.collectAsStateWithLifecycle()
@@ -99,9 +99,9 @@ private fun DetailScreen(
     videos: List<VideoList>,
     error: Boolean,
     onBackClick: () -> Unit,
-    onVideoClick: (String, String) -> Unit,
+    onVideoClick: (url: String, title: String) -> Unit,
     onFavClick: () -> Unit,
-    onPeopleClick: (Int) -> Unit
+    onPeopleClick: (peopleId: Int) -> Unit
 ) {
 
     val snackBarHostState = remember { SnackbarHostState() }
@@ -206,7 +206,7 @@ private fun MovieHeader(
 private fun MovieResume(
     detail: MovieDetailUi?,
     videos: List<VideoList>,
-    onVideoClick: (String, String) -> Unit,
+    onVideoClick: (url: String, title: String) -> Unit,
 ) {
 
     Column {
@@ -310,7 +310,7 @@ private fun MovieResume(
 private fun MoviePeopleList(
     title: String,
     people: List<Person>,
-    onPeopleClick: (Int) -> Unit
+    onPeopleClick: (peopleId: Int) -> Unit
 ) {
 
     Column {
@@ -402,7 +402,7 @@ private fun MovieProductionDetail(
 @OptIn(ExperimentalGlideComposeApi::class)
 private fun VideoItemList(
     video: VideoList,
-    onVideoClick: (String, String) -> Unit,
+    onVideoClick: (url: String, title: String) -> Unit,
 ) {
     Box(
         modifier = Modifier

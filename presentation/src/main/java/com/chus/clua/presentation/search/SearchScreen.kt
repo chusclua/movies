@@ -6,6 +6,7 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -59,7 +60,7 @@ import com.chus.clua.presentation.model.MovieList
 @Composable
 fun SearchScreenRoute(
     viewModel: SearchViewModel = hiltViewModel(),
-    onMovieClick: (Int) -> Unit,
+    onMovieClick: (movieId: Int) -> Unit,
     paddingValues: PaddingValues
 ) {
 
@@ -78,8 +79,8 @@ fun SearchScreenRoute(
 @Composable
 private fun SearchScreen(
     movies: List<MovieList>,
-    onQueryChanged: (String) -> Unit,
-    onMovieClick: (Int) -> Unit,
+    onQueryChanged: (query: String) -> Unit,
+    onMovieClick: (movieId: Int) -> Unit,
     paddingValues: PaddingValues,
 ) {
 
@@ -136,7 +137,7 @@ private fun SearchScreen(
         }
         LazyColumn(
             modifier = Modifier
-                .padding(start = 16.dp, top = 16.dp, end = 16.dp)
+                .padding(start = 8.dp, top = 8.dp, end = 8.dp)
                 .nestedScroll(nestedScrollConnection),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
@@ -151,12 +152,12 @@ private fun SearchScreen(
 @Composable
 private fun MovieItemList(
     movie: MovieList,
-    onMovieClick: (Int) -> Unit
+    onMovieClick: (movieId: Int) -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(120.dp)
+            .height(180.dp)
             .clip(RoundedCornerShape(10.dp))
             .clickable {
                 onMovieClick(movie.id)
@@ -168,33 +169,24 @@ private fun MovieItemList(
             contentDescription = "MoviePoster",
             modifier = Modifier
                 .fillMaxHeight()
-                .width(100.dp)
+                .width(140.dp)
         )
-        Column(
+        Box(
             modifier = Modifier
-                .background(
-                    MaterialTheme.colorScheme.primaryContainer,
-                )
                 .fillMaxHeight()
                 .weight(1F)
-                .padding(start = 16.dp, top = 16.dp, bottom = 8.dp, end = 16.dp),
-            verticalArrangement = Arrangement.SpaceBetween,
+                .background(MaterialTheme.colorScheme.primaryContainer)
+                .clickable {
+                    onMovieClick(movie.id)
+                }
         ) {
-            Text(
-                text = movie.title,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 2,
-                style = MaterialTheme.typography.titleMedium
-            )
             Row(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(top = 16.dp, end = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = movie.year,
-                    modifier = Modifier.weight(1F),
-                    style = MaterialTheme.typography.titleMedium
-                )
                 Icon(
                     imageVector = Icons.Filled.Star,
                     contentDescription = "Rate"
@@ -205,7 +197,23 @@ private fun MovieItemList(
                     style = MaterialTheme.typography.titleMedium
                 )
             }
-
+            Column(
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(start = 16.dp, bottom = 16.dp),
+                verticalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Text(
+                    text = movie.year,
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    text = movie.title,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 2,
+                    style = MaterialTheme.typography.titleLarge
+                )
+            }
         }
     }
 }
