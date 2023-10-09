@@ -1,5 +1,6 @@
 package com.chus.clua.domain.usecase
 
+import com.chus.clua.domain.Either
 import com.chus.clua.domain.IoDispatcher
 import com.chus.clua.domain.getOrNull
 import com.chus.clua.domain.model.MovieDetail
@@ -19,16 +20,24 @@ class GetMovieDetailUseCase @Inject constructor(
     @IoDispatcher
     private val dispatcherIO: CoroutineDispatcher
 ) {
-    suspend operator fun invoke(movieId: Int): MovieDetail = withContext(dispatcherIO) {
-        val isFavorite = async { isFavoriteUseCase(movieId) }
-        val credits = async { movieCreditsUseCase(movieId) }
-        val data = async { movieDataUseCase(movieId) }
-        val videos = async { movieVideosUseCase(movieId) }
-        MovieDetail(
-            isFavorite = isFavorite.await(),
-            movieData = data.await().getOrNull(),
-            movieCredits = credits.await().getOrNull(),
-            movieVideos = videos.await().getOrNull()
-        )
-    }
+    suspend operator fun invoke(movieId: Int): Either<Exception, MovieDetail> =
+        withContext(dispatcherIO) {
+            val isFavorite = async { isFavoriteUseCase(movieId) }
+            val credits = async { movieCreditsUseCase(movieId) }
+            val data = async { movieDataUseCase(movieId) }
+            val videos = async { movieVideosUseCase(movieId) }
+            data.await().getOrNull()?.let { data ->
+                Either.Right(
+                    MovieDetail(
+                        isFavorite = isFavorite.await(),
+                        movieData = data,
+                        movieCredits = credits.await().getOrNull(),
+                        movieVideos = videos.await().getOrNull()
+                    )
+                )
+            } ?: run {
+                Either.Left(Exception())
+            }
+
+        }
 }

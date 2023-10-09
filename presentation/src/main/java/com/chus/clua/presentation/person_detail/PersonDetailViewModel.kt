@@ -3,6 +3,7 @@ package com.chus.clua.presentation.person_detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chus.clua.domain.fold
 import com.chus.clua.domain.model.PersonDataDetail
 import com.chus.clua.domain.model.PersonMovieCast
 import com.chus.clua.domain.model.PersonMovieCrew
@@ -34,28 +35,31 @@ class PersonDetailViewModel @Inject constructor(
         val personId =
             savedStateHandle.get<Int>(NavigationScreens.PeopleDetail.paramId) ?: Int.MIN_VALUE
         viewModelScope.launch {
-            val (detail, cast, crew) = personMovieDetailUseCase(personId)
-            updateState(detail, cast, crew)
+            personMovieDetailUseCase(personId).fold(
+                leftOp = {
+                    _detailState.update {
+                        it.copy(error = true)
+                    }
+                },
+                rightOp = { detail ->
+                    val (personDataDetail, cast, crew) = detail
+                    updateState(personDataDetail, cast, crew)
+                }
+            )
         }
     }
 
     private fun updateState(
-        personDataDetail: PersonDataDetail?,
+        personDataDetail: PersonDataDetail,
         cast: List<PersonMovieCast>,
         crew: List<PersonMovieCrew>
     ) {
-        personDataDetail?.let { data ->
-            _detailState.update {
-                it.copy(
-                    detail = data.toPersonDetailUi(),
-                    cast = cast.map { it.toPersonMovieCastList() },
-                    crew = crew.map { it.toPersonMovieCrewList() }
-                )
-            }
-        } ?: {
-            _detailState.update {
-                it.copy(error = true)
-            }
+        _detailState.update {
+            it.copy(
+                detail = personDataDetail.toPersonDetailUi(),
+                cast = cast.map { it.toPersonMovieCastList() },
+                crew = crew.map { it.toPersonMovieCrewList() }
+            )
         }
     }
 }

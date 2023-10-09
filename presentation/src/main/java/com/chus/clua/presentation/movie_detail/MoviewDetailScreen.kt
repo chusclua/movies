@@ -313,39 +313,41 @@ private fun MoviePeopleList(
     onPeopleClick: (peopleId: Int) -> Unit
 ) {
 
-    Column {
+    if (people.isNotEmpty()) {
+        Column {
 
-        Text(
-            text = title,
-            modifier = Modifier.padding(start = 16.dp, top = 16.dp),
-            style = MaterialTheme.typography.headlineSmall
-        )
+            Text(
+                text = title,
+                modifier = Modifier.padding(start = 16.dp, top = 16.dp),
+                style = MaterialTheme.typography.headlineSmall
+            )
 
-        LazyRow(
-            modifier = Modifier.padding(top = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp)
-        ) {
-            items(items = people) { people ->
-                val toolTipText = when (people) {
-                    is CastList -> "${people.name} ${stringResource(id = R.string.detail_as)} ${people.character}"
-                    is CrewList -> "${people.job}: ${people.name}"
-                    else -> ""
-                }
-                PlainTooltipBox(
-                    tooltip = { Text(toolTipText) }
-                ) {
-                    GlideImage(
-                        model = people.profilePath,
-                        contentScale = ContentScale.Crop,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .border(4.dp, MaterialTheme.colorScheme.onBackground, CircleShape)
-                            .clip(CircleShape)
-                            .size(120.dp)
-                            .tooltipAnchor()
-                            .clickable { onPeopleClick(people.id) }
-                    )
+            LazyRow(
+                modifier = Modifier.padding(top = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp)
+            ) {
+                items(items = people) { people ->
+                    val toolTipText = when (people) {
+                        is CastList -> "${people.name} ${stringResource(id = R.string.detail_as)} ${people.character}"
+                        is CrewList -> "${people.job}: ${people.name}"
+                        else -> ""
+                    }
+                    PlainTooltipBox(
+                        tooltip = { Text(toolTipText) }
+                    ) {
+                        GlideImage(
+                            model = people.profilePath,
+                            contentScale = ContentScale.Crop,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .border(4.dp, MaterialTheme.colorScheme.onBackground, CircleShape)
+                                .clip(CircleShape)
+                                .size(120.dp)
+                                .tooltipAnchor()
+                                .clickable { onPeopleClick(people.id) }
+                        )
+                    }
                 }
             }
         }

@@ -3,6 +3,7 @@ package com.chus.clua.presentation.movie_detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chus.clua.domain.fold
 import com.chus.clua.domain.model.MovieCredits
 import com.chus.clua.domain.model.MovieDataDetail
 import com.chus.clua.domain.model.MovieVideos
@@ -37,8 +38,15 @@ class MovieDetailViewModel @Inject constructor(
         val movieId =
             savedStateHandle.get<Int>(NavigationScreens.MovieDetails.paramId) ?: Int.MIN_VALUE
         viewModelScope.launch {
-            val (isFavorite, dataDetail, credits, videos) = movieDetailUseCase(movieId)
-            updateState(isFavorite, dataDetail, credits, videos)
+            movieDetailUseCase(movieId).fold(
+                leftOp = {
+                    _detailState.update { it.copy(error = true) }
+                },
+                rightOp = { detail ->
+                    val (isFavorite, movieDataDetail, credits, videos) = detail
+                    updateState(isFavorite, movieDataDetail, credits, videos)
+                }
+            )
         }
     }
 
@@ -55,22 +63,18 @@ class MovieDetailViewModel @Inject constructor(
 
     private fun updateState(
         isFavorite: Boolean,
-        movieDataDetail: MovieDataDetail?,
+        movieDataDetail: MovieDataDetail,
         credits: MovieCredits?,
         videos: MovieVideos?
     ) {
-        movieDataDetail?.let { data ->
-            _detailState.update {
-                it.copy(
-                    isFavorite = isFavorite,
-                    movieDetail = data.toMovieDetail(),
-                    cast = credits?.toCastList() ?: emptyList(),
-                    crew = credits?.toCrewList() ?: emptyList(),
-                    videos = videos?.videos?.map { video -> video.toVideoList() } ?: emptyList()
-                )
-            }
-        } ?: {
-            _detailState.update { it.copy(error = true) }
+        _detailState.update {
+            it.copy(
+                isFavorite = isFavorite,
+                movieDetail = movieDataDetail.toMovieDetail(),
+                cast = credits?.toCastList() ?: emptyList(),
+                crew = credits?.toCrewList() ?: emptyList(),
+                videos = videos?.videos?.map { video -> video.toVideoList() } ?: emptyList()
+            )
         }
     }
 

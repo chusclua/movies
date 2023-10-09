@@ -7,7 +7,7 @@ import com.chus.clua.presentation.model.PersonDetailUi
 fun PersonDataDetail.toPersonDetailUi() =
     PersonDetailUi(
         biography = biography,
-        homepage = homepage?.replace("http", "https"),
+        homepage = homePage?.replace("http", "https"),
         id = id,
         name = name,
         popularity = popularity,
