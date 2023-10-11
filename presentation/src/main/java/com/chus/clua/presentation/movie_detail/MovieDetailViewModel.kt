@@ -4,9 +4,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chus.clua.domain.fold
-import com.chus.clua.domain.model.MovieCredits
+import com.chus.clua.domain.model.MovieCast
+import com.chus.clua.domain.model.MovieCrew
 import com.chus.clua.domain.model.MovieDataDetail
-import com.chus.clua.domain.model.MovieVideos
+import com.chus.clua.domain.model.MovieVideo
 import com.chus.clua.domain.usecase.GetMovieDetailUseCase
 import com.chus.clua.domain.usecase.ToggleFavoriteMovieUseCase
 import com.chus.clua.presentation.mapper.toCastList
@@ -43,8 +44,8 @@ class MovieDetailViewModel @Inject constructor(
                     _detailState.update { it.copy(error = true) }
                 },
                 rightOp = { detail ->
-                    val (isFavorite, movieDataDetail, credits, videos) = detail
-                    updateState(isFavorite, movieDataDetail, credits, videos)
+                    val (isFavorite, movieDataDetail, cast, crew, videos) = detail
+                    updateState(isFavorite, movieDataDetail, cast, crew, videos)
                 }
             )
         }
@@ -64,16 +65,17 @@ class MovieDetailViewModel @Inject constructor(
     private fun updateState(
         isFavorite: Boolean,
         movieDataDetail: MovieDataDetail,
-        credits: MovieCredits?,
-        videos: MovieVideos?
+        cast: List<MovieCast>,
+        crew: List<MovieCrew>,
+        videos: List<MovieVideo>
     ) {
         _detailState.update {
             it.copy(
                 isFavorite = isFavorite,
                 movieDetail = movieDataDetail.toMovieDetail(),
-                cast = credits?.toCastList() ?: emptyList(),
-                crew = credits?.toCrewList() ?: emptyList(),
-                videos = videos?.videos?.map { video -> video.toVideoList() } ?: emptyList()
+                cast = cast.map { it.toCastList() },
+                crew = crew.map { it.toCrewList() },
+                videos = videos.map { video -> video.toVideoList() }
             )
         }
     }

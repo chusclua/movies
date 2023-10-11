@@ -7,7 +7,7 @@ import com.chus.clua.domain.fold
 import com.chus.clua.domain.model.PersonDataDetail
 import com.chus.clua.domain.model.PersonMovieCast
 import com.chus.clua.domain.model.PersonMovieCrew
-import com.chus.clua.domain.usecase.GetPersonMovieDetailUseCase
+import com.chus.clua.domain.usecase.GetPersonDetailUseCase
 import com.chus.clua.presentation.mapper.toPersonDetailUi
 import com.chus.clua.presentation.mapper.toPersonMovieCastList
 import com.chus.clua.presentation.mapper.toPersonMovieCrewList
@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class PersonDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val personMovieDetailUseCase: GetPersonMovieDetailUseCase
+    private val personDetailUseCase: GetPersonDetailUseCase
 ) : ViewModel() {
 
     private val _detailState: MutableStateFlow<PersonDetailState> by lazy {
@@ -35,7 +35,7 @@ class PersonDetailViewModel @Inject constructor(
         val personId =
             savedStateHandle.get<Int>(NavigationScreens.PeopleDetail.paramId) ?: Int.MIN_VALUE
         viewModelScope.launch {
-            personMovieDetailUseCase(personId).fold(
+            personDetailUseCase(personId).fold(
                 leftOp = {
                     _detailState.update {
                         it.copy(error = true)

@@ -1,6 +1,7 @@
 package com.chus.clua.presentation.search
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
@@ -16,10 +17,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -57,6 +60,8 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.chus.clua.presentation.R
 import com.chus.clua.presentation.model.MovieList
 
+private const val SEARCHBAR_DELAY = 500
+
 @Composable
 fun SearchScreenRoute(
     viewModel: SearchViewModel = hiltViewModel(),
@@ -68,6 +73,7 @@ fun SearchScreenRoute(
 
     SearchScreen(
         movies = state.value.movies,
+        search = state.value.search,
         onQueryChanged = viewModel::search,
         onMovieClick = onMovieClick,
         paddingValues = paddingValues
@@ -75,32 +81,15 @@ fun SearchScreenRoute(
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun SearchScreen(
     movies: List<MovieList>,
+    search: Boolean,
     onQueryChanged: (query: String) -> Unit,
     onMovieClick: (movieId: Int) -> Unit,
     paddingValues: PaddingValues,
 ) {
-
-    val keyboardController = LocalSoftwareKeyboardController.current
-    var text by rememberSaveable { mutableStateOf("") }
-    var showSearchView by rememberSaveable { mutableStateOf(true) }
-
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                showSearchView = false
-                return super.onPreScroll(available, source)
-            }
-
-            override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity {
-                showSearchView = true
-                return super.onPostFling(consumed, available)
-            }
-        }
-    }
 
     Column(
         modifier = Modifier
@@ -109,10 +98,29 @@ private fun SearchScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
+        val keyboardController = LocalSoftwareKeyboardController.current
+        var text by rememberSaveable { mutableStateOf("") }
+        var showSearchView by rememberSaveable { mutableStateOf(true) }
+
+        val nestedScrollConnection = remember {
+            object : NestedScrollConnection {
+                override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                    showSearchView = false
+                    return super.onPreScroll(available, source)
+                }
+
+                override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity {
+                    showSearchView = true
+                    return super.onPostFling(consumed, available)
+                }
+            }
+        }
+
         AnimatedVisibility(
             visible = showSearchView,
             enter = expandVertically(
                 expandFrom = Alignment.CenterVertically,
+                animationSpec = tween(delayMillis = SEARCHBAR_DELAY)
             ),
             exit = shrinkVertically(
                 shrinkTowards = Alignment.CenterVertically
@@ -135,16 +143,62 @@ private fun SearchScreen(
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search") },
             ) {}
         }
-        LazyColumn(
-            modifier = Modifier
-                .padding(start = 8.dp, top = 8.dp, end = 8.dp)
-                .nestedScroll(nestedScrollConnection),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            items(movies.size) { index ->
-                MovieItemList(movie = movies[index], onMovieClick = onMovieClick)
-            }
+        if (movies.isEmpty() && search) {
+            EmptySearchList(paddingValues = paddingValues)
+        } else {
+            SearchList(
+                movies = movies,
+                onMovieClick = onMovieClick,
+                nestedScrollConnection = nestedScrollConnection
+            )
         }
+    }
+
+}
+
+@Composable
+private fun SearchList(
+    movies: List<MovieList>,
+    onMovieClick: (movieId: Int) -> Unit,
+    nestedScrollConnection: NestedScrollConnection
+) {
+    LazyColumn(
+        modifier = Modifier
+            .padding(start = 8.dp, top = 8.dp, end = 8.dp)
+            .nestedScroll(nestedScrollConnection),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        items(movies.size) { index ->
+            MovieItemList(movie = movies[index], onMovieClick = onMovieClick)
+        }
+    }
+
+
+}
+
+@Composable
+private fun EmptySearchList(
+    paddingValues: PaddingValues
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Icon(
+            imageVector = Icons.Filled.Search,
+            contentDescription = "EmptySearch",
+            modifier = Modifier.size(100.dp),
+            tint = MaterialTheme.colorScheme.primary
+        )
+        Text(
+            modifier = Modifier
+                .padding(top = 8.dp),
+            text = stringResource(id = R.string.empty_search),
+            color = MaterialTheme.colorScheme.primary
+        )
     }
 }
 
@@ -223,6 +277,19 @@ private fun MovieItemList(
 private fun PreviewSearchScreen() {
     SearchScreen(
         movies = listOf(Movie, Movie),
+        search = false,
+        onQueryChanged = {},
+        onMovieClick = {},
+        paddingValues = PaddingValues()
+    )
+}
+
+@Preview
+@Composable
+private fun PreviewEmptySearchScreen() {
+    SearchScreen(
+        movies = emptyList(),
+        search = true,
         onQueryChanged = {},
         onMovieClick = {},
         paddingValues = PaddingValues()

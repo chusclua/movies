@@ -10,7 +10,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
 
-class GetPersonMovieDetailUseCase @Inject constructor(
+class GetPersonDetailUseCase @Inject constructor(
     private val personDataDetailUseCase: GetPersonDataDetailUseCase,
     private val personMovieCreditsUseCase: GetPersonMovieCreditsUseCase,
     @IoDispatcher

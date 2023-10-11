@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -23,6 +24,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -31,6 +33,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -85,11 +88,21 @@ private fun MoviesScreen(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(12.dp)
         ) {
+            item {
+
+            }
             items(movies.itemCount) { index ->
                 movies[index]?.let { movie ->
                     MovieItemList(movie = movie, onMovieClick = onMovieClick)
                 }
             }
+        }
+
+        if (movies.loadState.refresh is LoadState.Loading) {
+            CircularProgressIndicator(
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.align(CenterHorizontally)
+            )
         }
     }
 
@@ -132,15 +145,8 @@ private fun MovieItemList(
                 style = MaterialTheme.typography.titleMedium
             )
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = movie.year,
-                    modifier = Modifier.weight(1F),
-                    style = MaterialTheme.typography.titleMedium
-                )
                 Icon(
                     imageVector = Icons.Filled.Star,
                     contentDescription = "Rate"

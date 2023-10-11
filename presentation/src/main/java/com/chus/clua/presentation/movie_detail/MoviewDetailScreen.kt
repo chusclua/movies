@@ -491,17 +491,17 @@ private fun PreviewMovieProductionDetail() {
 }
 
 val MovieDetail = MovieDetailUi(
-    backdropPath = "/tmU7GeKVybMWFButWEGl2M4GeiP.jpg",//
-    genres = listOf("Drama", "Crime"),//
+    backdropPath = "/tmU7GeKVybMWFButWEGl2M4GeiP.jpg",
+    genres = listOf("Drama", "Crime"),
     id = 238,
     overview = "Spanning the years 1945 to 1955, a chronicle of the fictional Italian-American Corleone crime family. When organized crime family patriarch, Vito Corleone barely survives an attempt on his life, his youngest son, Michael steps in to take care of the would-be killers, launching a campaign of bloody revenge.",
-    posterPath = "/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",//
+    posterPath = "/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
     productionCompanies = listOf("Paramount", "Alfran Productions"),
     productionCountries = listOf("United States of America"),
-    releaseDate = "1972-03-14",//
-    tagline = "An offer you can't refuse.",//
-    title = "The Godfather",//
-    voteAverage = 8.707//
+    releaseDate = "1972-03-14",
+    tagline = "An offer you can't refuse.",
+    title = "The Godfather",
+    voteAverage = 8.707
 )
 
 val VideoList = VideoList(

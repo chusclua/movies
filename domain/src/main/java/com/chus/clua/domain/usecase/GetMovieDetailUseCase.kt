@@ -31,13 +31,13 @@ class GetMovieDetailUseCase @Inject constructor(
                     MovieDetail(
                         isFavorite = isFavorite.await(),
                         movieData = data,
-                        movieCredits = credits.await().getOrNull(),
-                        movieVideos = videos.await().getOrNull()
+                        cast =  credits.await().getOrNull()?.cast ?: emptyList(),
+                        crew =  credits.await().getOrNull()?.crew ?: emptyList(),
+                        videos = videos.await().getOrNull()?.videos ?: emptyList()
                     )
                 )
             } ?: run {
                 Either.Left(Exception())
             }
-
         }
 }

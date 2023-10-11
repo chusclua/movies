@@ -94,9 +94,13 @@ private fun FavoritesScreen(
             }
         )
         if (movies.isEmpty()) {
-            EmptyFavoriteList(paddingValues)
+            EmptyFavoriteList(paddingValues = paddingValues)
         } else {
-            FavoriteList(paddingValues, movies, onMovieClick)
+            FavoriteList(
+                movies = movies,
+                onMovieClick = onMovieClick,
+                paddingValues = paddingValues
+            )
         }
     }
 
@@ -104,9 +108,9 @@ private fun FavoritesScreen(
 
 @Composable
 private fun FavoriteList(
-    paddingValues: PaddingValues,
     movies: List<FavoriteMovieList>,
-    onMovieClick: (Int) -> Unit
+    onMovieClick: (Int) -> Unit,
+    paddingValues: PaddingValues,
 ) {
     LazyColumn(
         modifier = Modifier
@@ -178,11 +182,13 @@ fun MovieItemList(
         ) {
             Icon(
                 imageVector = Icons.Filled.Star,
-                contentDescription = "Rate"
+                contentDescription = "Rate",
+                tint = Color.White,
             )
             Spacer(modifier = Modifier.padding(horizontal = 2.dp))
             Text(
                 text = String.format("%.1f", movie.voteAverage),
+                color = Color.White,
                 style = MaterialTheme.typography.titleSmall
             )
         }
@@ -194,10 +200,12 @@ fun MovieItemList(
         ) {
             Text(
                 text = movie.year,
+                color = Color.White,
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
                 text = movie.title,
+                color = Color.White,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 2,
                 style = MaterialTheme.typography.headlineSmall.copy(

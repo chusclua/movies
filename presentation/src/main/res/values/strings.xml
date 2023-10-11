@@ -24,5 +24,7 @@
     <string name="show_more">… show more</string>
     <string name="show_less">\u0020Show less</string>
 
+    <string name="empty_search">No movie matches your search</string>
+
     <string name="see_website">See website</string>
 </resources>

@@ -40,6 +40,7 @@ class SearchViewModel @Inject constructor(
                     _searchState.update {
                         it.copy(
                             movies = movies.map { movie -> movie.toMovieList() },
+                            search = true
                         )
                     }
                 }

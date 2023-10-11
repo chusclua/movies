@@ -1,16 +1,16 @@
 package com.chus.clua.presentation.mapper
 
-import com.chus.clua.domain.model.MovieCredits
+import com.chus.clua.domain.model.MovieCrew
 import com.chus.clua.presentation.model.CrewList
 
 
-fun MovieCredits.toCrewList() = this.crew.map { cast ->
+fun MovieCrew.toCrewList() =
     CrewList(
-        id = cast.id,
-        job = cast.job,
-        name = cast.name,
-        profilePath = "$BASE_PROFILE_PATH${cast.profilePath}"
+        id = id,
+        job = job,
+        name = name,
+        profilePath = "$BASE_PROFILE_PATH$profilePath"
     )
-}
+
 
 private const val BASE_PROFILE_PATH = "https://image.tmdb.org/t/p/w185"

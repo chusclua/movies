@@ -25,4 +25,6 @@
     <string name="show_less">\u0020Mostrar menos</string>
 
     <string name="see_website">Ver sitio web</string>
+
+    <string name="empty_search">Ninguna película coincide con tu búsqueda</string>
 </resources>
