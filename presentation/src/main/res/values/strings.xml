@@ -5,6 +5,9 @@
     <string name="favorites">Favorites</string>
     <string name="search">Search</string>
 
+    <string name="top_rated">Top rated</string>
+    <string name="discover">Discover</string>
+
     <string name="favorites_empty_list_message">Add movies to your favorite list</string>
 
     <string name="error_message">Oops… something went wrong.</string>

@@ -1,4 +1,4 @@
-package com.chus.clua.presentation.composable
+package com.chus.clua.presentation.compose.composables
 
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon

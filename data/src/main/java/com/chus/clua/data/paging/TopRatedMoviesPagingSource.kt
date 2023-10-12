@@ -8,10 +8,11 @@ import com.chus.clua.domain.onRight
 import javax.inject.Inject
 import javax.inject.Singleton
 
+
 @Singleton
-class MoviesPagingSource @Inject constructor(
+class TopRatedMoviesPagingSource @Inject constructor(
     private val dataSource: MovieRemoteDataSource,
-): PagingSource<Int, MovieApiModel>() {
+) : PagingSource<Int, MovieApiModel>() {
     override fun getRefreshKey(state: PagingState<Int, MovieApiModel>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
@@ -24,7 +25,7 @@ class MoviesPagingSource @Inject constructor(
             val page = params.key ?: 1
 
             val apiModels: MutableList<MovieApiModel> = mutableListOf()
-            dataSource.getDiscoverMovies(page = page).onRight { data ->
+            dataSource.getTopRatedMovies(page = page).onRight { data ->
                 apiModels.addAll(data.results)
             }
 

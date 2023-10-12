@@ -114,8 +114,8 @@ private fun FavoriteList(
 ) {
     LazyColumn(
         modifier = Modifier
-            .padding(paddingValues)
-            .padding(8.dp),
+            .padding(paddingValues),
+        contentPadding = PaddingValues(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(movies.size) { index ->

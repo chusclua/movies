@@ -50,7 +50,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.chus.clua.presentation.R
-import com.chus.clua.presentation.composable.ExpandableText
+import com.chus.clua.presentation.compose.composables.ExpandableText
 import com.chus.clua.presentation.model.PersonDetailUi
 import com.chus.clua.presentation.model.PersonMovieCastList
 import com.chus.clua.presentation.model.PersonMovieCrewList
@@ -79,7 +79,6 @@ fun PeopleDetailScreenRoute(
 
 }
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 private fun PeopleDetailScreen(
     detail: PersonDetailUi?,
@@ -117,7 +116,8 @@ private fun PeopleDetailScreen(
         ) {
 
             PersonHeader(
-                detail = detail,
+                profilePath = detail?.profilePath,
+                name = detail?.name,
                 onBackClick = onBackClick
             )
 
@@ -152,7 +152,8 @@ private fun PeopleDetailScreen(
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
 private fun PersonHeader(
-    detail: PersonDetailUi?,
+    profilePath: String?,
+    name: String?,
     onBackClick: () -> Unit
 ) {
     Box {
@@ -168,7 +169,7 @@ private fun PersonHeader(
         }
 
         GlideImage(
-            model = detail?.profilePath.orEmpty(),
+            model = profilePath.orEmpty(),
             contentScale = ContentScale.Crop,
             contentDescription = "PeopleProfile",
             modifier = Modifier
@@ -180,10 +181,10 @@ private fun PersonHeader(
         )
 
         Text(
-            text = detail?.name.orEmpty(),
+            text = name.orEmpty(),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(all = 8.dp),
+                .padding(start = 28.dp, end = 8.dp, bottom = 8.dp),
             color = Color.White,
             textAlign = TextAlign.End,
             style = MaterialTheme.typography.displayMedium.copy(
@@ -313,7 +314,8 @@ private fun MovieList(
 @Composable
 private fun PreviewPersonHeader() {
     PersonHeader(
-        detail = PersonDetailUi,
+        profilePath = PersonDetailUi.profilePath,
+        name = PersonDetailUi.name,
         onBackClick = {}
     )
 }

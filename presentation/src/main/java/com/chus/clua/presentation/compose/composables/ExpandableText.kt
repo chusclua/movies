@@ -1,4 +1,4 @@
-package com.chus.clua.presentation.composable
+package com.chus.clua.presentation.compose.composables
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween

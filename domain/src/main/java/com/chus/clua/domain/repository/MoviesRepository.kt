@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface MoviesRepository {
     fun getDiscoverMovies(): Flow<PagingData<Movie>>
+    fun getTopRatedMovies(): Flow<PagingData<Movie>>
     suspend fun searchMovies(query: String): Either<Exception, List<Movie>>
     suspend fun getMovieDetail(movieId: Int): Either<Exception, MovieDataDetail>
     suspend fun getMovieCredits(movieId: Int): Either<Exception, MovieCredits>

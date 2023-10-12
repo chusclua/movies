@@ -40,6 +40,15 @@ class MoviesRepositoryImp @Inject constructor(
             }
         }
 
+    override fun getTopRatedMovies(): Flow<PagingData<Movie>> =
+        moviePagerDataSource.getTopRatedMoviePage().map { pagingData ->
+            pagingData.map { model ->
+                model.toMovie().also { movie ->
+                    movieCacheDataSource.addMovie(movie)
+                }
+            }
+        }
+
     override suspend fun searchMovies(query: String): Either<Exception, List<Movie>> {
         return movieRemoteDataSource.searchMovies(query).map { response ->
             response.results.map { model ->

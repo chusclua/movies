@@ -12,6 +12,7 @@ import javax.inject.Singleton
 
 interface MovieRemoteDataSource {
     suspend fun getDiscoverMovies(page: Int): Either<Exception, MoviesApiModel>
+    suspend fun getTopRatedMovies(page: Int): Either<Exception, MoviesApiModel>
     suspend fun searchMovies(query: String): Either<Exception, MoviesApiModel>
     suspend fun getMovieDetail(movieId: Int): Either<Exception, MovieDetailApiModel>
     suspend fun getMovieCredits(movieId: Int): Either<Exception, MovieCreditsApiModel>
@@ -24,6 +25,11 @@ class MovieRemoteDataSourceImp @Inject constructor(private val movieApi: MovieAp
     override suspend fun getDiscoverMovies(page: Int): Either<Exception, MoviesApiModel> =
         serviceHandler {
             movieApi.getDiscoverMovies(page = page)
+        }
+
+    override suspend fun getTopRatedMovies(page: Int): Either<Exception, MoviesApiModel> =
+        serviceHandler {
+            movieApi.getTopRatedMovies(page = page)
         }
 
     override suspend fun searchMovies(query: String): Either<Exception, MoviesApiModel> =

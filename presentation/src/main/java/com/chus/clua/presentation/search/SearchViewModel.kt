@@ -20,7 +20,7 @@ class SearchViewModel @Inject constructor(
     private val searchMoviesUseCase: SearchMoviesUseCase,
 ) : ViewModel() {
 
-    private var recommendationJob: Job? = null
+    private var searchJob: Job? = null
 
     private val _searchState: MutableStateFlow<SearchState> by lazy { MutableStateFlow(SearchState()) }
     val searchState: StateFlow<SearchState> get() = _searchState
@@ -28,14 +28,14 @@ class SearchViewModel @Inject constructor(
 
     fun search(query: String) {
         if (query.isEmpty()) {
-            recommendationJob?.cancel()
+            searchJob?.cancel()
             return
         }
-        recommendationJob?.cancel()
-        recommendationJob = viewModelScope.launch {
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
             delay(QUERY_DEBOUNCE)
             searchMoviesUseCase(query).fold(
-                leftOp = {},
+                leftOp = { },
                 rightOp = { movies ->
                     _searchState.update {
                         it.copy(

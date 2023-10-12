@@ -10,7 +10,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.chus.clua.presentation.composable.MainBottomAppBar
+import com.chus.clua.presentation.compose.composables.MainBottomAppBar
 import com.chus.clua.presentation.navigation.BottomNavigationScreens
 import com.chus.clua.presentation.navigation.NavGraph
 import com.chus.clua.presentation.navigation.shouldShowMainBottomBar

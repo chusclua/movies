@@ -109,7 +109,10 @@ private fun SearchScreen(
                     return super.onPreScroll(available, source)
                 }
 
-                override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity {
+                override suspend fun onPostFling(
+                    consumed: Velocity,
+                    available: Velocity
+                ): Velocity {
                     showSearchView = true
                     return super.onPostFling(consumed, available)
                 }
@@ -164,8 +167,8 @@ private fun SearchList(
 ) {
     LazyColumn(
         modifier = Modifier
-            .padding(start = 8.dp, top = 8.dp, end = 8.dp)
             .nestedScroll(nestedScrollConnection),
+        contentPadding = PaddingValues(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(movies.size) { index ->

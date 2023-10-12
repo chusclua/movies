@@ -16,6 +16,11 @@ interface MovieApi {
         @Query(SORT_PARAM) sort: String = SORT
     ): Response<MoviesApiModel>
 
+    @GET(TOP_RATED)
+    suspend fun getTopRatedMovies(
+        @Query(PAGE_PARAM) page: Int
+    ): Response<MoviesApiModel>
+
     @GET(SEARCH_PATH)
     suspend fun searchMovies(
         @Query(QUERY_PARAM) query: String
@@ -39,6 +44,7 @@ interface MovieApi {
 }
 
 private const val DISCOVER_PATH = "/3/discover/movie"
+private const val TOP_RATED = "/3/movie/top_rated"
 private const val SEARCH_PATH = "/3/search/movie"
 private const val DETAIL_PATH = "/3/movie/{movie_id}"
 private const val CREDITS_PATH = "/3/movie/{movie_id}/credits"

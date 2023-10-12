@@ -58,7 +58,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.chus.clua.presentation.R
-import com.chus.clua.presentation.composable.ExpandableText
+import com.chus.clua.presentation.compose.composables.ExpandableText
 import com.chus.clua.presentation.model.CastList
 import com.chus.clua.presentation.model.CrewList
 import com.chus.clua.presentation.model.MovieDetailUi
@@ -196,7 +196,10 @@ private fun MovieHeader(
                 .align(Alignment.BottomEnd)
                 .padding(bottom = 16.dp, end = 16.dp),
         ) {
-            Icon(favIcon, null)
+            Icon(
+                imageVector = favIcon,
+                contentDescription = "Favorite"
+            )
         }
     }
 }

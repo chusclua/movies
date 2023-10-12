@@ -6,6 +6,9 @@
     <string name="favorites">Favoritas</string>
     <string name="search">Buscar</string>
 
+    <string name="top_rated">Top valoradas</string>
+    <string name="discover">Descubrir</string>
+
     <string name="favorites_empty_list_message">Añade películas a tu lista de favoritos</string>
 
     <string name="error_message">Huy… Algo salió mal.</string>
