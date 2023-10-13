@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.chus.clua.data.datasource.MovieRemoteDataSource
 import com.chus.clua.data.network.model.MovieApiModel
-import com.chus.clua.domain.onRight
+import com.chus.clua.domain.getOrNull
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -24,10 +24,8 @@ class TopRatedMoviesPagingSource @Inject constructor(
         return try {
             val page = params.key ?: 1
 
-            val apiModels: MutableList<MovieApiModel> = mutableListOf()
-            dataSource.getTopRatedMovies(page = page).onRight { data ->
-                apiModels.addAll(data.results)
-            }
+            val apiModels: List<MovieApiModel> =
+            dataSource.getTopRatedMovies(page = page).getOrNull()?.results ?: emptyList()
 
             LoadResult.Page(
                 data = apiModels,

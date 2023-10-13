@@ -198,7 +198,8 @@ private fun MovieHeader(
         ) {
             Icon(
                 imageVector = favIcon,
-                contentDescription = "Favorite"
+                contentDescription = "Favorite",
+                tint = MaterialTheme.colorScheme.secondary
             )
         }
     }

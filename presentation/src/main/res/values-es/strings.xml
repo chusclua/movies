@@ -6,10 +6,15 @@
     <string name="favorites">Favoritas</string>
     <string name="search">Buscar</string>
 
+    <string name="dismiss">Descartar</string>
+    <string name="confirm">Confirmar</string>
+
     <string name="top_rated">Top valoradas</string>
     <string name="discover">Descubrir</string>
 
     <string name="favorites_empty_list_message">Añade películas a tu lista de favoritos</string>
+    <string name="favorites_delete_all_title">Eliminar todas las películas favoritas</string>
+    <string name="favorites_delete_all_message">¿Estás seguro de que quieres eliminar todas tus películas favoritas?</string>
 
     <string name="error_message">Huy… Algo salió mal.</string>
     <string name="detail_cast">Elenco</string>

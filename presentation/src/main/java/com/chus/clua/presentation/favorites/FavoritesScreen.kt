@@ -11,21 +11,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,6 +42,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.chus.clua.presentation.R
+import com.chus.clua.presentation.compose.composables.AppAlertDialog
+import com.chus.clua.presentation.compose.composables.AppEmptyScreen
+import com.chus.clua.presentation.compose.composables.AppTopBar
 import com.chus.clua.presentation.model.FavoriteMovieList
 
 @Composable
@@ -63,7 +66,6 @@ fun FavoritesScreenRoute(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun FavoritesScreen(
     movies: List<FavoriteMovieList>,
     onClearAllClicked: () -> Unit,
@@ -71,21 +73,26 @@ private fun FavoritesScreen(
     paddingValues: PaddingValues
 ) {
 
+    val openAlertDialog = remember { mutableStateOf(false) }
+
+    if (openAlertDialog.value) {
+        AppAlertDialog(
+            icon = Icons.Default.Info,
+            title = stringResource(id = R.string.favorites_delete_all_title),
+            message = stringResource(id = R.string.favorites_delete_all_message),
+            onDismissRequest = { openAlertDialog.value = false },
+            onConfirmation = {
+                openAlertDialog.value = false
+                onClearAllClicked()
+            }
+        )
+    }
+
     Column {
-        TopAppBar(
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                titleContentColor = MaterialTheme.colorScheme.primary,
-                actionIconContentColor = MaterialTheme.colorScheme.primary
-            ),
-            title = {
-                Text(
-                    text = stringResource(id = R.string.favorites),
-                    style = MaterialTheme.typography.titleLarge
-                )
-            },
+        AppTopBar(
+            title = stringResource(id = R.string.favorites),
             actions = {
-                IconButton(onClick = onClearAllClicked) {
+                IconButton(onClick = { openAlertDialog.value = true }) {
                     Icon(
                         imageVector = Icons.Filled.Delete,
                         contentDescription = "Delete",
@@ -94,7 +101,12 @@ private fun FavoritesScreen(
             }
         )
         if (movies.isEmpty()) {
-            EmptyFavoriteList(paddingValues = paddingValues)
+            AppEmptyScreen(
+                modifier = Modifier.fillMaxSize(),
+                imageVector = Icons.Filled.Favorite,
+                message = stringResource(id = R.string.favorites_empty_list_message) ,
+                paddingValues = paddingValues
+            )
         } else {
             FavoriteList(
                 movies = movies,
@@ -121,32 +133,6 @@ private fun FavoriteList(
         items(movies.size) { index ->
             MovieItemList(movie = movies[index], onMovieClick = onMovieClick)
         }
-    }
-}
-
-@Composable
-private fun EmptyFavoriteList(
-    paddingValues: PaddingValues
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Icon(
-            imageVector = Icons.Filled.Favorite,
-            contentDescription = "Favorites",
-            modifier = Modifier.size(100.dp),
-            tint = MaterialTheme.colorScheme.primary
-        )
-        Text(
-            modifier = Modifier
-                .padding(top = 8.dp),
-            text = stringResource(id = R.string.favorites_empty_list_message),
-            color = MaterialTheme.colorScheme.primary
-        )
     }
 }
 
@@ -227,12 +213,6 @@ private fun PreviewMovieItemList() {
         movie = Movie,
         onMovieClick = {}
     )
-}
-
-@Preview
-@Composable
-private fun PreviewEmptyFavoriteList() {
-    EmptyFavoriteList(PaddingValues())
 }
 
 private val Movie = FavoriteMovieList(

@@ -107,42 +107,46 @@ private fun PeopleDetailScreen(
 
         val scrollState = rememberScrollState()
 
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-                .verticalScroll(scrollState)
-                .background(color = MaterialTheme.colorScheme.primaryContainer)
-        ) {
+        if (!error) {
 
-            PersonHeader(
-                profilePath = detail?.profilePath,
-                name = detail?.name,
-                onBackClick = onBackClick
-            )
+            Column(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize()
+                    .verticalScroll(scrollState)
+                    .background(color = MaterialTheme.colorScheme.primaryContainer)
+            ) {
 
-            Spacer(modifier = Modifier.padding(vertical = 8.dp))
+                PersonHeader(
+                    profilePath = detail?.profilePath,
+                    name = detail?.name,
+                    onBackClick = onBackClick
+                )
 
-            PersonResume(
-                name = detail?.name,
-                biography = detail?.biography,
-                homepage = detail?.homepage,
-                onHomePageClicked = onHomePageClicked
-            )
+                Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
-            MovieList(
-                title = stringResource(id = R.string.detail_cast),
-                movies = cast,
-                onMovieClick = onMovieClick
-            )
+                PersonResume(
+                    name = detail?.name,
+                    biography = detail?.biography,
+                    homepage = detail?.homepage,
+                    onHomePageClicked = onHomePageClicked
+                )
 
-            MovieList(
-                title = stringResource(id = R.string.detail_crew),
-                movies = crew,
-                onMovieClick = onMovieClick
-            )
+                MovieList(
+                    title = stringResource(id = R.string.detail_cast),
+                    movies = cast,
+                    onMovieClick = onMovieClick
+                )
 
-            Spacer(modifier = Modifier.padding(vertical = 8.dp))
+                MovieList(
+                    title = stringResource(id = R.string.detail_crew),
+                    movies = crew,
+                    onMovieClick = onMovieClick
+                )
+
+                Spacer(modifier = Modifier.padding(vertical = 8.dp))
+
+            }
 
         }
 

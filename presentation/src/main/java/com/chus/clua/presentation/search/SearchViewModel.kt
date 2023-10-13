@@ -40,7 +40,7 @@ class SearchViewModel @Inject constructor(
                     _searchState.update {
                         it.copy(
                             movies = movies.map { movie -> movie.toMovieList() },
-                            search = true
+                            error = movies.isEmpty()
                         )
                     }
                 }
@@ -49,7 +49,7 @@ class SearchViewModel @Inject constructor(
     }
 
     companion object {
-        private const val QUERY_DEBOUNCE = 1000L
+        private const val QUERY_DEBOUNCE = 500L
     }
 
 }

@@ -17,12 +17,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -58,6 +56,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.chus.clua.presentation.R
+import com.chus.clua.presentation.compose.composables.AppEmptyScreen
 import com.chus.clua.presentation.model.MovieList
 
 private const val SEARCHBAR_DELAY = 500
@@ -73,7 +72,7 @@ fun SearchScreenRoute(
 
     SearchScreen(
         movies = state.value.movies,
-        search = state.value.search,
+        error = state.value.error,
         onQueryChanged = viewModel::search,
         onMovieClick = onMovieClick,
         paddingValues = paddingValues
@@ -85,7 +84,7 @@ fun SearchScreenRoute(
 @Composable
 private fun SearchScreen(
     movies: List<MovieList>,
-    search: Boolean,
+    error: Boolean,
     onQueryChanged: (query: String) -> Unit,
     onMovieClick: (movieId: Int) -> Unit,
     paddingValues: PaddingValues,
@@ -146,8 +145,13 @@ private fun SearchScreen(
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search") },
             ) {}
         }
-        if (movies.isEmpty() && search) {
-            EmptySearchList(paddingValues = paddingValues)
+        if (error) {
+            AppEmptyScreen(
+                modifier = Modifier.fillMaxSize(),
+                imageVector = Icons.Filled.Search,
+                message = stringResource(id = R.string.empty_search),
+                paddingValues = paddingValues
+            )
         } else {
             SearchList(
                 movies = movies,
@@ -177,32 +181,6 @@ private fun SearchList(
     }
 
 
-}
-
-@Composable
-private fun EmptySearchList(
-    paddingValues: PaddingValues
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Icon(
-            imageVector = Icons.Filled.Search,
-            contentDescription = "EmptySearch",
-            modifier = Modifier.size(100.dp),
-            tint = MaterialTheme.colorScheme.primary
-        )
-        Text(
-            modifier = Modifier
-                .padding(top = 8.dp),
-            text = stringResource(id = R.string.empty_search),
-            color = MaterialTheme.colorScheme.primary
-        )
-    }
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -280,7 +258,7 @@ private fun MovieItemList(
 private fun PreviewSearchScreen() {
     SearchScreen(
         movies = listOf(Movie, Movie),
-        search = false,
+        error = false,
         onQueryChanged = {},
         onMovieClick = {},
         paddingValues = PaddingValues()
@@ -292,7 +270,7 @@ private fun PreviewSearchScreen() {
 private fun PreviewEmptySearchScreen() {
     SearchScreen(
         movies = emptyList(),
-        search = true,
+        error = true,
         onQueryChanged = {},
         onMovieClick = {},
         paddingValues = PaddingValues()

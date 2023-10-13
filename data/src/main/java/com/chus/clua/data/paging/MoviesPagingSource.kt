@@ -4,14 +4,14 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.chus.clua.data.datasource.MovieRemoteDataSource
 import com.chus.clua.data.network.model.MovieApiModel
-import com.chus.clua.domain.onRight
+import com.chus.clua.domain.getOrNull
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class MoviesPagingSource @Inject constructor(
     private val dataSource: MovieRemoteDataSource,
-): PagingSource<Int, MovieApiModel>() {
+) : PagingSource<Int, MovieApiModel>() {
     override fun getRefreshKey(state: PagingState<Int, MovieApiModel>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
@@ -23,10 +23,8 @@ class MoviesPagingSource @Inject constructor(
         return try {
             val page = params.key ?: 1
 
-            val apiModels: MutableList<MovieApiModel> = mutableListOf()
-            dataSource.getDiscoverMovies(page = page).onRight { data ->
-                apiModels.addAll(data.results)
-            }
+            val apiModels: List<MovieApiModel> =
+                dataSource.getDiscoverMovies(page = page).getOrNull()?.results ?: emptyList()
 
             LoadResult.Page(
                 data = apiModels,

@@ -20,12 +20,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
@@ -51,6 +48,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.chus.clua.presentation.R
+import com.chus.clua.presentation.compose.composables.AppTopBar
 import com.chus.clua.presentation.compose.extensions.rememberLazyGridState
 import com.chus.clua.presentation.model.MovieList
 
@@ -73,7 +71,6 @@ fun MoviesScreenRoute(
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MoviesScreen(
     movies: LazyPagingItems<MovieList>,
@@ -84,18 +81,7 @@ private fun MoviesScreen(
 
     Column {
 
-        TopAppBar(
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                titleContentColor = MaterialTheme.colorScheme.primary
-            ),
-            title = {
-                Text(
-                    text = stringResource(id = R.string.movies),
-                    style = MaterialTheme.typography.titleLarge
-                )
-            }
-        )
+        AppTopBar(title = stringResource(id = R.string.movies))
 
         val listState = movies.rememberLazyGridState()
 
