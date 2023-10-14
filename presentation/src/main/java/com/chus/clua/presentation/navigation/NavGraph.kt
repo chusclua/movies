@@ -107,7 +107,7 @@ private fun NavController.navigateToWebView(url: String, title: String) {
 }
 
 @Composable
-fun NavHostController.shouldShowMainBottomBar(vararg routes: String): Boolean {
+fun NavHostController.shouldShowMainBottomBar(routes: List<String>): Boolean {
     val navBackStackEntry by this.currentBackStackEntryAsState()
     val route = navBackStackEntry?.destination?.route.toString()
     return route in routes

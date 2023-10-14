@@ -27,7 +27,7 @@ class SearchViewModel @Inject constructor(
 
 
     fun search(query: String) {
-        if (query.isEmpty()) {
+        if (query.length < QUERY_MIN_LENGTH) {
             searchJob?.cancel()
             return
         }
@@ -50,6 +50,7 @@ class SearchViewModel @Inject constructor(
 
     companion object {
         private const val QUERY_DEBOUNCE = 500L
+        private const val QUERY_MIN_LENGTH = 3
     }
 
 }

@@ -5,13 +5,13 @@ import com.chus.clua.domain.IoDispatcher
 import com.chus.clua.domain.map
 import com.chus.clua.domain.model.MovieVideos
 import com.chus.clua.domain.repository.MoviesRepository
+import dagger.Reusable
 import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
 
-@Singleton
+@Reusable
 class GetMovieVideosUseCase @Inject constructor(
     private val repository: MoviesRepository,
     @IoDispatcher

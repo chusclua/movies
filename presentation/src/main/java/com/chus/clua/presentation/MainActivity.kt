@@ -49,7 +49,7 @@ private fun MainScreen() {
     )
 
     val shouldShowMainBars =
-        navController.shouldShowMainBottomBar(*bottomNavigationScreens.map { it.route }.toTypedArray())
+        navController.shouldShowMainBottomBar(bottomNavigationScreens.map { it.route })
 
     Scaffold(
         bottomBar = {

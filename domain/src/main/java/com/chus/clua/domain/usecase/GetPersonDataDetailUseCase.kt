@@ -5,11 +5,12 @@ import com.chus.clua.domain.IoDispatcher
 import com.chus.clua.domain.flatMap
 import com.chus.clua.domain.model.PersonDataDetail
 import com.chus.clua.domain.repository.PersonRepository
+import dagger.Reusable
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
-
+@Reusable
 class GetPersonDataDetailUseCase @Inject constructor(
     private val repository: PersonRepository,
     @IoDispatcher

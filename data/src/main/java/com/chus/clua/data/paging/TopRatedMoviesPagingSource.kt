@@ -25,7 +25,7 @@ class TopRatedMoviesPagingSource @Inject constructor(
             val page = params.key ?: 1
 
             val apiModels: List<MovieApiModel> =
-            dataSource.getTopRatedMovies(page = page).getOrNull()?.results ?: emptyList()
+            dataSource.getTopRatedMovies(page = page).getOrNull()?.results.orEmpty()
 
             LoadResult.Page(
                 data = apiModels,

@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -99,7 +100,7 @@ private fun SearchScreen(
 
         val keyboardController = LocalSoftwareKeyboardController.current
         var text by rememberSaveable { mutableStateOf("") }
-        var showSearchView by rememberSaveable { mutableStateOf(true) }
+        var showSearchView by remember { mutableStateOf(true) }
 
         val nestedScrollConnection = remember {
             object : NestedScrollConnection {
@@ -175,12 +176,10 @@ private fun SearchList(
         contentPadding = PaddingValues(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        items(movies.size) { index ->
-            MovieItemList(movie = movies[index], onMovieClick = onMovieClick)
+        items(movies) { movie ->
+            MovieItemList(movie = movie, onMovieClick = onMovieClick)
         }
     }
-
-
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -235,7 +234,7 @@ private fun MovieItemList(
             Column(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
-                    .padding(start = 16.dp, bottom = 16.dp),
+                    .padding(16.dp),
                 verticalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(

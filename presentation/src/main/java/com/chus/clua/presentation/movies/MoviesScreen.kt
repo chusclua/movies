@@ -141,15 +141,14 @@ private fun MoviesScreen(
                 }
             }
         }
-
         if (movies.loadState.refresh is LoadState.Loading) {
             CircularProgressIndicator(
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.align(CenterHorizontally)
             )
         }
-    }
 
+    }
 
 }
 
@@ -214,7 +213,7 @@ private fun DiscoverItemList(
             contentDescription = "MoviePoster",
             modifier = Modifier
                 .fillMaxWidth()
-                .height(220.dp)
+                .height(200.dp)
                 .clip(RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)),
             contentScale = ContentScale.Crop,
         )

@@ -4,14 +4,14 @@ import com.chus.clua.domain.Either
 import com.chus.clua.domain.IoDispatcher
 import com.chus.clua.domain.getOrNull
 import com.chus.clua.domain.model.MovieDetail
+import dagger.Reusable
 import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
 
-@Singleton
+@Reusable
 class GetMovieDetailUseCase @Inject constructor(
     private val isFavoriteUseCase: IsFavoriteUseCase,
     private val movieDataUseCase: GetMovieDataUseCase,
@@ -31,9 +31,9 @@ class GetMovieDetailUseCase @Inject constructor(
                     MovieDetail(
                         isFavorite = isFavorite.await(),
                         movieData = data,
-                        cast =  credits.await().getOrNull()?.cast ?: emptyList(),
-                        crew =  credits.await().getOrNull()?.crew ?: emptyList(),
-                        videos = videos.await().getOrNull()?.videos ?: emptyList()
+                        cast =  credits.await().getOrNull()?.cast.orEmpty(),
+                        crew =  credits.await().getOrNull()?.crew.orEmpty(),
+                        videos = videos.await().getOrNull()?.videos.orEmpty()
                     )
                 )
             } ?: run {

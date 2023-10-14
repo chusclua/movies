@@ -5,11 +5,12 @@ import com.chus.clua.domain.IoDispatcher
 import com.chus.clua.domain.map
 import com.chus.clua.domain.model.PersonCredits
 import com.chus.clua.domain.repository.PersonRepository
+import dagger.Reusable
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
-
+@Reusable
 class GetPersonMovieCreditsUseCase @Inject constructor(
     private val repository: PersonRepository,
     @IoDispatcher

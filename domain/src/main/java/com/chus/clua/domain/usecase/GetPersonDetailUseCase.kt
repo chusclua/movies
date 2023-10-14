@@ -4,12 +4,14 @@ import com.chus.clua.domain.Either
 import com.chus.clua.domain.IoDispatcher
 import com.chus.clua.domain.getOrNull
 import com.chus.clua.domain.model.PersonDetail
+import dagger.Reusable
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
 
+@Reusable
 class GetPersonDetailUseCase @Inject constructor(
     private val personDataDetailUseCase: GetPersonDataDetailUseCase,
     private val personMovieCreditsUseCase: GetPersonMovieCreditsUseCase,
@@ -24,8 +26,8 @@ class GetPersonDetailUseCase @Inject constructor(
                 Either.Right(
                     PersonDetail(
                         detail = data,
-                        cast = credits.await().getOrNull()?.cast ?: emptyList(),
-                        crew = credits.await().getOrNull()?.crew ?: emptyList()
+                        cast = credits.await().getOrNull()?.cast.orEmpty(),
+                        crew = credits.await().getOrNull()?.crew.orEmpty()
                     )
                 )
             } ?: run {

@@ -247,7 +247,7 @@ private fun MovieResume(
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(items = detail?.genres ?: emptyList()) { genre ->
+                    items(items = detail?.genres.orEmpty()) { genre ->
                         Text(
                             text = genre,
                             modifier = Modifier
@@ -304,7 +304,6 @@ private fun MovieResume(
             text = detail?.overview.orEmpty(),
             style = MaterialTheme.typography.bodyLarge
         )
-
         Divider()
     }
 }
