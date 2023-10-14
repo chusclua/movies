@@ -16,7 +16,7 @@ import javax.inject.Singleton
 class DatabaseModule {
 
     @Provides
-    fun provideNewsDao(appDatabase: AppDataBase): MoviesDao {
+    fun provideMoviesDao(appDatabase: AppDataBase): MoviesDao {
         return appDatabase.moviesDao()
     }
 

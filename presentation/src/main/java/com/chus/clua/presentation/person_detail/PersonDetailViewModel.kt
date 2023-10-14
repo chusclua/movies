@@ -3,15 +3,14 @@ package com.chus.clua.presentation.person_detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chus.clua.domain.AppError
 import com.chus.clua.domain.fold
-import com.chus.clua.domain.model.PersonDataDetail
-import com.chus.clua.domain.model.PersonMovieCast
-import com.chus.clua.domain.model.PersonMovieCrew
+import com.chus.clua.domain.model.PersonDetail
 import com.chus.clua.domain.usecase.GetPersonDetailUseCase
 import com.chus.clua.presentation.mapper.toPersonDetailUi
 import com.chus.clua.presentation.mapper.toPersonMovieCastList
 import com.chus.clua.presentation.mapper.toPersonMovieCrewList
-import com.chus.clua.presentation.navigation.NavigationScreens
+import com.chus.clua.presentation.navigation.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,27 +32,21 @@ class PersonDetailViewModel @Inject constructor(
 
     init {
         val personId =
-            savedStateHandle.get<Int>(NavigationScreens.PeopleDetail.paramId) ?: Int.MIN_VALUE
+            savedStateHandle.get<Int>(Screens.PeopleDetail.paramId) ?: Int.MIN_VALUE
         viewModelScope.launch {
             personDetailUseCase(personId).fold(
-                leftOp = {
-                    _detailState.update {
-                        it.copy(error = true)
-                    }
-                },
-                rightOp = { detail ->
-                    val (personDataDetail, cast, crew) = detail
-                    updateState(personDataDetail, cast, crew)
-                }
+                leftOp = ::onLeft,
+                rightOp = ::onRight
             )
         }
     }
 
-    private fun updateState(
-        personDataDetail: PersonDataDetail,
-        cast: List<PersonMovieCast>,
-        crew: List<PersonMovieCrew>
-    ) {
+    private fun onLeft(appError: AppError) {
+        _detailState.update { it.copy(error = true) }
+    }
+
+    private fun onRight(personDetail: PersonDetail) {
+        val (personDataDetail, cast, crew) = personDetail
         _detailState.update {
             it.copy(
                 detail = personDataDetail.toPersonDetailUi(),

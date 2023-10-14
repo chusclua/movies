@@ -32,7 +32,7 @@ class GetPersonDetailUseCase @Inject constructor(
                     )
                 )
             } ?: run {
-                Either.Left(AppError.InsufficientData("person detail null"))
+                Either.Left(AppError.InsufficientData("person data null"))
             }
         }
 }

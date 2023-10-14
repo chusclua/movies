@@ -3,18 +3,16 @@ package com.chus.clua.presentation.movie_detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chus.clua.domain.AppError
 import com.chus.clua.domain.fold
-import com.chus.clua.domain.model.MovieCast
-import com.chus.clua.domain.model.MovieCrew
-import com.chus.clua.domain.model.MovieDataDetail
-import com.chus.clua.domain.model.MovieVideo
+import com.chus.clua.domain.model.MovieDetail
 import com.chus.clua.domain.usecase.GetMovieDetailUseCase
 import com.chus.clua.domain.usecase.ToggleFavoriteMovieUseCase
 import com.chus.clua.presentation.mapper.toCastList
 import com.chus.clua.presentation.mapper.toCrewList
 import com.chus.clua.presentation.mapper.toMovieDetail
 import com.chus.clua.presentation.mapper.toVideoList
-import com.chus.clua.presentation.navigation.NavigationScreens
+import com.chus.clua.presentation.navigation.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,16 +35,11 @@ class MovieDetailViewModel @Inject constructor(
 
     init {
         val movieId =
-            savedStateHandle.get<Int>(NavigationScreens.MovieDetails.paramId) ?: Int.MIN_VALUE
+            savedStateHandle.get<Int>(Screens.MovieDetail.paramId) ?: Int.MIN_VALUE
         viewModelScope.launch {
             movieDetailUseCase(movieId).fold(
-                leftOp = {
-                    _detailState.update { it.copy(error = true) }
-                },
-                rightOp = { detail ->
-                    val (isFavorite, movieDataDetail, cast, crew, videos) = detail
-                    updateState(isFavorite, movieDataDetail, cast, crew, videos)
-                }
+                leftOp = ::onLeft,
+                rightOp = ::onRight
             )
         }
     }
@@ -62,13 +55,12 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
-    private fun updateState(
-        isFavorite: Boolean,
-        movieDataDetail: MovieDataDetail,
-        cast: List<MovieCast>,
-        crew: List<MovieCrew>,
-        videos: List<MovieVideo>
-    ) {
+    private fun onLeft(appError: AppError) {
+        _detailState.update { it.copy(error = true) }
+    }
+
+    private fun onRight(movieDetail: MovieDetail) {
+        val (isFavorite, movieDataDetail, cast, crew, videos) = movieDetail
         _detailState.update {
             it.copy(
                 isFavorite = isFavorite,

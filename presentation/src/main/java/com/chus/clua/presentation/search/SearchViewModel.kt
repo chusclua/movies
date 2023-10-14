@@ -2,7 +2,9 @@ package com.chus.clua.presentation.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chus.clua.domain.AppError
 import com.chus.clua.domain.fold
+import com.chus.clua.domain.model.Movie
 import com.chus.clua.domain.usecase.SearchMoviesUseCase
 import com.chus.clua.presentation.mapper.toMovieList
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,20 +37,22 @@ class SearchViewModel @Inject constructor(
         searchJob = viewModelScope.launch {
             delay(QUERY_DEBOUNCE)
             searchMoviesUseCase(query).fold(
-                leftOp = {
-                    _searchState.update {
-                        it.copy(error = true)
-                    }
-                },
-                rightOp = { movies ->
-                    _searchState.update {
-                        it.copy(
-                            movies = movies.map { movie -> movie.toMovieList() },
-                            empty = movies.isEmpty(),
-                            error = false
-                        )
-                    }
-                }
+                leftOp = ::onLeft,
+                rightOp = ::onRight
+            )
+        }
+    }
+
+    private fun onLeft(appError: AppError) {
+        _searchState.update { it.copy(error = true) }
+    }
+
+    private fun onRight(movies: List<Movie>) {
+        _searchState.update {
+            it.copy(
+                movies = movies.map { movie -> movie.toMovieList() },
+                empty = movies.isEmpty(),
+                error = false
             )
         }
     }

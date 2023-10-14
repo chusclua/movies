@@ -47,9 +47,9 @@ fun NavGraph(
             )
         }
         composable(
-            route = NavigationScreens.MovieDetails.route,
+            route = Screens.MovieDetail.route,
             arguments = listOf(
-                navArgument(NavigationScreens.MovieDetails.paramId) {
+                navArgument(Screens.MovieDetail.paramId) {
                     type = NavType.IntType
                 }
             )
@@ -61,9 +61,9 @@ fun NavGraph(
             )
         }
         composable(
-            route = NavigationScreens.PeopleDetail.route,
+            route = Screens.PeopleDetail.route,
             arguments = listOf(
-                navArgument(NavigationScreens.PeopleDetail.paramId) {
+                navArgument(Screens.PeopleDetail.paramId) {
                     type = NavType.IntType
                 }
             )
@@ -75,18 +75,18 @@ fun NavGraph(
             )
         }
         composable(
-            route = NavigationScreens.WebView.route,
+            route = Screens.WebView.route,
             arguments = listOf(
-                navArgument(NavigationScreens.WebView.paramUrl) {
+                navArgument(Screens.WebView.paramUrl) {
                     type = NavType.StringType
                 },
-                navArgument(NavigationScreens.WebView.paramTitle) {
+                navArgument(Screens.WebView.paramTitle) {
                     type = NavType.StringType
                 }
             )) { navBackStackEntry ->
             WebViewScreen(
-                title = navBackStackEntry.arguments?.getString(NavigationScreens.WebView.paramTitle),
-                url = navBackStackEntry.arguments?.getString(NavigationScreens.WebView.paramUrl),
+                title = navBackStackEntry.arguments?.getString(Screens.WebView.paramTitle),
+                url = navBackStackEntry.arguments?.getString(Screens.WebView.paramUrl),
                 onBackClick = navController::popBackStack,
             )
         }

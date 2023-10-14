@@ -6,11 +6,11 @@ import java.lang.reflect.Type
 import retrofit2.Call
 import retrofit2.CallAdapter
 
-class EitherCallAdapter<R>(
+class EitherCallAdapter(
     private val successType: Type
-) : CallAdapter<R, Call<Either<AppError, R>>> {
+) : CallAdapter<Type, Call<Either<AppError, Type>>> {
 
-    override fun adapt(call: Call<R>): Call<Either<AppError, R>> = EitherCall(call, successType)
+    override fun adapt(call: Call<Type>): Call<Either<AppError, Type>> = EitherCall(call, successType)
 
     override fun responseType(): Type = successType
 }

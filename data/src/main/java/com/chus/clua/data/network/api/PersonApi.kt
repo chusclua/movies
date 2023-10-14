@@ -1,4 +1,4 @@
-package com.chus.clua.data.network
+package com.chus.clua.data.network.api
 
 import com.chus.clua.data.network.model.PersonDetailApiModel
 import com.chus.clua.data.network.model.PersonMovieCreditsApiModel

@@ -12,6 +12,6 @@ import dagger.hilt.components.SingletonComponent
 class MapModule {
 
     @Provides
-    fun provideMap(): MutableMap<Int, Movie> = mutableMapOf()
+    fun provideMoviesMap(): MutableMap<Int, Movie> = mutableMapOf()
 
 }

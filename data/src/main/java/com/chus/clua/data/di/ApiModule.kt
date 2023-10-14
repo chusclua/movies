@@ -1,7 +1,7 @@
 package com.chus.clua.data.di
 
-import com.chus.clua.data.network.MovieApi
-import com.chus.clua.data.network.PersonApi
+import com.chus.clua.data.network.api.MovieApi
+import com.chus.clua.data.network.api.PersonApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

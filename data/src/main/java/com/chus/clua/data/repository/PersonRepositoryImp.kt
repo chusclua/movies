@@ -13,7 +13,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PersonRepositoryImp @Inject constructor(private val dataSource: PersonRemoteDataSource): PersonRepository {
+class PersonRepositoryImp @Inject constructor(
+    private val dataSource: PersonRemoteDataSource
+) : PersonRepository {
 
     override suspend fun getPersonDataDetail(personId: Int): Either<AppError, PersonDataDetail> {
         return dataSource.getPersonDataDetail(personId = personId).map { apiModel ->

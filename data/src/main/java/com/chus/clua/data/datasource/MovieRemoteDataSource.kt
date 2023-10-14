@@ -1,6 +1,6 @@
 package com.chus.clua.data.datasource
 
-import com.chus.clua.data.network.MovieApi
+import com.chus.clua.data.network.api.MovieApi
 import com.chus.clua.data.network.model.MovieCreditsApiModel
 import com.chus.clua.data.network.model.MovieDetailApiModel
 import com.chus.clua.data.network.model.MovieVideosApiModel
@@ -20,7 +20,9 @@ interface MovieRemoteDataSource {
 }
 
 @Singleton
-class MovieRemoteDataSourceImp @Inject constructor(private val movieApi: MovieApi) : MovieRemoteDataSource {
+class MovieRemoteDataSourceImp @Inject constructor(
+    private val movieApi: MovieApi
+) : MovieRemoteDataSource {
 
     override suspend fun getDiscoverMovies(page: Int): Either<AppError, MoviesApiModel> =
         movieApi.getDiscoverMovies(page = page)

@@ -1,6 +1,5 @@
 package com.chus.clua.data.network.adapter
 
-import com.chus.clua.domain.AppError
 import com.chus.clua.domain.Either
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
@@ -24,7 +23,7 @@ class EitherCallAdapterFactory @Inject constructor() : CallAdapter.Factory() {
                 when (getRawType(callType)) {
                     Either::class.java -> {
                         val resultType = getParameterUpperBound(1, callType as ParameterizedType)
-                        EitherCallAdapter<Any>(resultType)
+                        EitherCallAdapter(resultType)
                     }
                     else -> null
                 }

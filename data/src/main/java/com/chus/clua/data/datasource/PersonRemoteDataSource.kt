@@ -1,6 +1,6 @@
 package com.chus.clua.data.datasource
 
-import com.chus.clua.data.network.PersonApi
+import com.chus.clua.data.network.api.PersonApi
 import com.chus.clua.data.network.model.PersonDetailApiModel
 import com.chus.clua.data.network.model.PersonMovieCreditsApiModel
 import com.chus.clua.domain.AppError
