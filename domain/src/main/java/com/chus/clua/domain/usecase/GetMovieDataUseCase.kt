@@ -1,5 +1,6 @@
 package com.chus.clua.domain.usecase
 
+import com.chus.clua.domain.AppError
 import com.chus.clua.domain.Either
 import com.chus.clua.domain.IoDispatcher
 import com.chus.clua.domain.flatMap
@@ -18,11 +19,11 @@ class GetMovieDataUseCase @Inject constructor(
     private val dispatcherIO: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke(movieId: Int): Either<Exception, MovieDataDetail> =
+    suspend operator fun invoke(movieId: Int): Either<AppError, MovieDataDetail> =
         withContext(dispatcherIO) {
             repository.getMovieDetail(movieId).flatMap { movieData ->
                 if (movieData.backdropPath == null || movieData.posterPath == null) {
-                    Either.Left(Exception())
+                    Either.Left(AppError.InsufficientData("backdrop or poster path null"))
                 } else {
                     Either.Right(movieData)
                 }

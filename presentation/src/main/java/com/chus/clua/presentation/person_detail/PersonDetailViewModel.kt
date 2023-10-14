@@ -58,7 +58,7 @@ class PersonDetailViewModel @Inject constructor(
             it.copy(
                 detail = personDataDetail.toPersonDetailUi(),
                 cast = cast.map { it.toPersonMovieCastList() },
-                crew = crew.map { it.toPersonMovieCrewList() }
+                crew = crew.map { it.toPersonMovieCrewList() },
             )
         }
     }

@@ -11,6 +11,7 @@ import com.chus.clua.data.mapper.toMovie
 import com.chus.clua.data.mapper.toMovieCredits
 import com.chus.clua.data.mapper.toMovieDataDetail
 import com.chus.clua.data.mapper.toMovieVideos
+import com.chus.clua.domain.AppError
 import com.chus.clua.domain.Either
 import com.chus.clua.domain.map
 import com.chus.clua.domain.model.Movie
@@ -49,7 +50,7 @@ class MoviesRepositoryImp @Inject constructor(
             }
         }
 
-    override suspend fun searchMovies(query: String): Either<Exception, List<Movie>> {
+    override suspend fun searchMovies(query: String): Either<AppError, List<Movie>> {
         return movieRemoteDataSource.searchMovies(query).map { response ->
             response.results.map { model ->
                 model.toMovie().also { movie ->
@@ -59,19 +60,19 @@ class MoviesRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun getMovieDetail(movieId: Int): Either<Exception, MovieDataDetail> {
+    override suspend fun getMovieDetail(movieId: Int): Either<AppError, MovieDataDetail> {
         return movieRemoteDataSource.getMovieDetail(movieId = movieId).map { response ->
             response.toMovieDataDetail()
         }
     }
 
-    override suspend fun getMovieCredits(movieId: Int): Either<Exception, MovieCredits> {
+    override suspend fun getMovieCredits(movieId: Int): Either<AppError, MovieCredits> {
         return movieRemoteDataSource.getMovieCredits(movieId = movieId).map { response ->
             response.toMovieCredits()
         }
     }
 
-    override suspend fun getMovieVideos(movieId: Int): Either<Exception, MovieVideos> {
+    override suspend fun getMovieVideos(movieId: Int): Either<AppError, MovieVideos> {
         return movieRemoteDataSource.getMovieVideos(movieId = movieId).map { response ->
             response.toMovieVideos()
         }

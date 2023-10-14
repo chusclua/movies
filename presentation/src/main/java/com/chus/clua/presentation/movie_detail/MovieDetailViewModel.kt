@@ -75,7 +75,7 @@ class MovieDetailViewModel @Inject constructor(
                 movieDetail = movieDataDetail.toMovieDetail(),
                 cast = cast.map { it.toCastList() },
                 crew = crew.map { it.toCrewList() },
-                videos = videos.map { video -> video.toVideoList() }
+                videos = videos.map { video -> video.toVideoList() },
             )
         }
     }

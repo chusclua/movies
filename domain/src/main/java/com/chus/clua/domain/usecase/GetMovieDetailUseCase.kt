@@ -1,5 +1,6 @@
 package com.chus.clua.domain.usecase
 
+import com.chus.clua.domain.AppError
 import com.chus.clua.domain.Either
 import com.chus.clua.domain.IoDispatcher
 import com.chus.clua.domain.getOrNull
@@ -20,7 +21,7 @@ class GetMovieDetailUseCase @Inject constructor(
     @IoDispatcher
     private val dispatcherIO: CoroutineDispatcher
 ) {
-    suspend operator fun invoke(movieId: Int): Either<Exception, MovieDetail> =
+    suspend operator fun invoke(movieId: Int): Either<AppError, MovieDetail> =
         withContext(dispatcherIO) {
             val isFavorite = async { isFavoriteUseCase(movieId) }
             val credits = async { movieCreditsUseCase(movieId) }
@@ -37,7 +38,7 @@ class GetMovieDetailUseCase @Inject constructor(
                     )
                 )
             } ?: run {
-                Either.Left(Exception())
+                Either.Left(AppError.InsufficientData("movie data null"))
             }
         }
 }

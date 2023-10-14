@@ -2,6 +2,7 @@ package com.chus.clua.data.di
 
 import com.chus.clua.data.BuildConfig
 import com.chus.clua.data.network.RequestInterceptor
+import com.chus.clua.data.network.adapter.EitherCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,9 +20,10 @@ class RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(client: OkHttpClient): Retrofit =
+    fun provideRetrofit(client: OkHttpClient, callAdapterFactory: EitherCallAdapterFactory): Retrofit =
         Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(callAdapterFactory)
             .baseUrl(BuildConfig.BASE_URL)
             .client(client)
             .build()

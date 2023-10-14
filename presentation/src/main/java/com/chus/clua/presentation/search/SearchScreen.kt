@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -30,6 +31,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -73,6 +75,7 @@ fun SearchScreenRoute(
 
     SearchScreen(
         movies = state.value.movies,
+        empty = state.value.empty,
         error = state.value.error,
         onQueryChanged = viewModel::search,
         onMovieClick = onMovieClick,
@@ -85,6 +88,7 @@ fun SearchScreenRoute(
 @Composable
 private fun SearchScreen(
     movies: List<MovieList>,
+    empty: Boolean,
     error: Boolean,
     onQueryChanged: (query: String) -> Unit,
     onMovieClick: (movieId: Int) -> Unit,
@@ -102,21 +106,8 @@ private fun SearchScreen(
         var text by rememberSaveable { mutableStateOf("") }
         var showSearchView by remember { mutableStateOf(true) }
 
-        val nestedScrollConnection = remember {
-            object : NestedScrollConnection {
-                override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                    showSearchView = false
-                    return super.onPreScroll(available, source)
-                }
-
-                override suspend fun onPostFling(
-                    consumed: Velocity,
-                    available: Velocity
-                ): Velocity {
-                    showSearchView = true
-                    return super.onPostFling(consumed, available)
-                }
-            }
+        val onScrollList: (Boolean) -> Unit= { isScrolling ->
+            showSearchView = !isScrolling
         }
 
         AnimatedVisibility(
@@ -146,18 +137,18 @@ private fun SearchScreen(
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search") },
             ) {}
         }
-        if (error) {
+        if (empty || error) {
             AppEmptyScreen(
                 modifier = Modifier.fillMaxSize(),
                 imageVector = Icons.Filled.Search,
-                message = stringResource(id = R.string.empty_search),
+                message = stringResource(id = if (error) R.string.error_message else R.string.empty_search),
                 paddingValues = paddingValues
             )
         } else {
             SearchList(
                 movies = movies,
                 onMovieClick = onMovieClick,
-                nestedScrollConnection = nestedScrollConnection
+                onScrollList = onScrollList
             )
         }
     }
@@ -168,11 +159,36 @@ private fun SearchScreen(
 private fun SearchList(
     movies: List<MovieList>,
     onMovieClick: (movieId: Int) -> Unit,
-    nestedScrollConnection: NestedScrollConnection
+    onScrollList: (isScrolling: Boolean) -> Unit,
 ) {
+
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                onScrollList(true)
+                return super.onPreScroll(available, source)
+            }
+
+            override suspend fun onPostFling(
+                consumed: Velocity,
+                available: Velocity
+            ): Velocity {
+                onScrollList(false)
+                return super.onPostFling(consumed, available)
+            }
+        }
+    }
+
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(movies) {
+        listState.animateScrollToItem(0)
+    }
+
     LazyColumn(
         modifier = Modifier
             .nestedScroll(nestedScrollConnection),
+        state = listState,
         contentPadding = PaddingValues(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
@@ -257,6 +273,7 @@ private fun MovieItemList(
 private fun PreviewSearchScreen() {
     SearchScreen(
         movies = listOf(Movie, Movie),
+        empty = false,
         error = false,
         onQueryChanged = {},
         onMovieClick = {},
@@ -269,6 +286,20 @@ private fun PreviewSearchScreen() {
 private fun PreviewEmptySearchScreen() {
     SearchScreen(
         movies = emptyList(),
+        empty = true,
+        error = false,
+        onQueryChanged = {},
+        onMovieClick = {},
+        paddingValues = PaddingValues()
+    )
+}
+
+@Preview
+@Composable
+private fun PreviewErrorSearchScreen() {
+    SearchScreen(
+        movies = emptyList(),
+        empty = true,
         error = true,
         onQueryChanged = {},
         onMovieClick = {},

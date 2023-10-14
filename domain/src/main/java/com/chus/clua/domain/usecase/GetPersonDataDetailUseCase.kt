@@ -1,5 +1,6 @@
 package com.chus.clua.domain.usecase
 
+import com.chus.clua.domain.AppError
 import com.chus.clua.domain.Either
 import com.chus.clua.domain.IoDispatcher
 import com.chus.clua.domain.flatMap
@@ -16,12 +17,12 @@ class GetPersonDataDetailUseCase @Inject constructor(
     @IoDispatcher
     private val dispatcherIO: CoroutineDispatcher
 ) {
-    suspend operator fun invoke(personId: Int): Either<Exception, PersonDataDetail> =
+    suspend operator fun invoke(personId: Int): Either<AppError, PersonDataDetail> =
         withContext(dispatcherIO) {
             repository.getPersonDataDetail(personId = personId).flatMap { personDetail ->
                 personDetail.profilePath?.let {
                     Either.Right(personDetail)
-                } ?: Either.Left(Exception())
+                } ?: Either.Left(AppError.InsufficientData("profilePath path null"))
             }
         }
 }

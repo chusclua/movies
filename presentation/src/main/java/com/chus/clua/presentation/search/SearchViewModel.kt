@@ -35,12 +35,17 @@ class SearchViewModel @Inject constructor(
         searchJob = viewModelScope.launch {
             delay(QUERY_DEBOUNCE)
             searchMoviesUseCase(query).fold(
-                leftOp = { },
+                leftOp = {
+                    _searchState.update {
+                        it.copy(error = true)
+                    }
+                },
                 rightOp = { movies ->
                     _searchState.update {
                         it.copy(
                             movies = movies.map { movie -> movie.toMovieList() },
-                            error = movies.isEmpty()
+                            empty = movies.isEmpty(),
+                            error = false
                         )
                     }
                 }

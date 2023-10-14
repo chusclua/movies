@@ -1,5 +1,6 @@
 package com.chus.clua.domain.usecase
 
+import com.chus.clua.domain.AppError
 import com.chus.clua.domain.Either
 import com.chus.clua.domain.IoDispatcher
 import com.chus.clua.domain.map
@@ -17,7 +18,7 @@ class GetMovieVideosUseCase @Inject constructor(
     @IoDispatcher
     private val dispatcherIO: CoroutineDispatcher
 ) {
-    suspend operator fun invoke(movieId: Int): Either<Exception, MovieVideos> =
+    suspend operator fun invoke(movieId: Int): Either<AppError, MovieVideos> =
         withContext(dispatcherIO) {
             repository.getMovieVideos(movieId).map {
                 it.copy(videos = it.videos.filter { video ->

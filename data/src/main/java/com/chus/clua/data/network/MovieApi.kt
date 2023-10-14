@@ -4,7 +4,8 @@ import com.chus.clua.data.network.model.MovieCreditsApiModel
 import com.chus.clua.data.network.model.MovieDetailApiModel
 import com.chus.clua.data.network.model.MovieVideosApiModel
 import com.chus.clua.data.network.model.MoviesApiModel
-import retrofit2.Response
+import com.chus.clua.domain.AppError
+import com.chus.clua.domain.Either
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -14,32 +15,32 @@ interface MovieApi {
     suspend fun getDiscoverMovies(
         @Query(PAGE_PARAM) page: Int,
         @Query(SORT_PARAM) sort: String = SORT
-    ): Response<MoviesApiModel>
+    ): Either<AppError, MoviesApiModel>
 
     @GET(TOP_RATED)
     suspend fun getTopRatedMovies(
         @Query(PAGE_PARAM) page: Int
-    ): Response<MoviesApiModel>
+    ): Either<AppError, MoviesApiModel>
 
     @GET(SEARCH_PATH)
     suspend fun searchMovies(
         @Query(QUERY_PARAM) query: String
-    ): Response<MoviesApiModel>
+    ): Either<AppError, MoviesApiModel>
 
     @GET(DETAIL_PATH)
     suspend fun movieDetail(
         @Path(MOVIE_ID_PATH) movieId: Int
-    ): Response<MovieDetailApiModel>
+    ): Either<AppError, MovieDetailApiModel>
 
     @GET(CREDITS_PATH)
     suspend fun movieCredits(
         @Path(MOVIE_ID_PATH) movieId: Int
-    ): Response<MovieCreditsApiModel>
+    ): Either<AppError, MovieCreditsApiModel>
 
     @GET(VIDEOS_PATH)
     suspend fun movieVideos(
         @Path(MOVIE_ID_PATH) movieId: Int
-    ): Response<MovieVideosApiModel>
+    ): Either<AppError, MovieVideosApiModel>
 
 }
 

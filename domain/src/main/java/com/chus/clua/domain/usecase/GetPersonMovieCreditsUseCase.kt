@@ -1,5 +1,6 @@
 package com.chus.clua.domain.usecase
 
+import com.chus.clua.domain.AppError
 import com.chus.clua.domain.Either
 import com.chus.clua.domain.IoDispatcher
 import com.chus.clua.domain.map
@@ -16,7 +17,7 @@ class GetPersonMovieCreditsUseCase @Inject constructor(
     @IoDispatcher
     private val dispatcherIO: CoroutineDispatcher
 ) {
-    suspend operator fun invoke(personId: Int): Either<Exception, PersonCredits> =
+    suspend operator fun invoke(personId: Int): Either<AppError, PersonCredits> =
         withContext(dispatcherIO) {
             repository.getPersonMovieCredits(personId = personId).map { personCredits ->
                 personCredits.copy(
