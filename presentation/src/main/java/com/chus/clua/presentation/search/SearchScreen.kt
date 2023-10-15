@@ -41,7 +41,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -59,6 +62,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.chus.clua.presentation.R
+import com.chus.clua.presentation.compose.Movie
 import com.chus.clua.presentation.compose.composables.AppEmptyScreen
 import com.chus.clua.presentation.model.MovieList
 
@@ -225,11 +229,19 @@ private fun MovieItemList(
             modifier = Modifier
                 .fillMaxHeight()
                 .weight(1F)
-                .background(MaterialTheme.colorScheme.primaryContainer)
                 .clickable {
                     onMovieClick(movie.id)
                 }
         ) {
+            GlideImage(
+                model = movie.backdropPath,
+                contentScale = ContentScale.Crop,
+                contentDescription = "MovieBackDrop",
+                alpha = 0.5F,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .align(Alignment.Center)
+            )
             Row(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
@@ -261,7 +273,13 @@ private fun MovieItemList(
                     text = movie.title,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 2,
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        shadow = Shadow(
+                            color = Color.Black.copy(alpha = 0.7F),
+                            offset = Offset(5.0f, 10.0f),
+                            blurRadius = 3f
+                        )
+                    )
                 )
             }
         }
@@ -312,11 +330,3 @@ private fun PreviewErrorSearchScreen() {
 private fun PreviewMovieItemList() {
     MovieItemList(movie = Movie) { }
 }
-
-private val Movie = MovieList(
-    id = 238,
-    title = "The Godfather Part II",
-    posterPath = "https://image.tmdb.org/t/p/w342/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
-    year = "1972",
-    voteAverage = 8.7,
-)

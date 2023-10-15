@@ -9,6 +9,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.chus.clua.presentation.compose.composables.MainBottomAppBar
 import com.chus.clua.presentation.navigation.BottomNavigationScreens
@@ -63,5 +64,16 @@ private fun MainScreen() {
         },
     ) { paddingValues ->
         NavGraph(navController, paddingValues)
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewMainScreen() {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
+    ) {
+        MainScreen()
     }
 }

@@ -11,8 +11,5 @@ fun PersonDataDetail.toPersonDetailUi() =
         id = id,
         name = name,
         popularity = popularity,
-        profilePath = "$BASE_PROFILE_PATH$profilePath"
+        profilePath = buildImageUrl(bigProfilePath = profilePath)
     )
-
-
-private const val BASE_PROFILE_PATH = "https://image.tmdb.org/t/p/h632"

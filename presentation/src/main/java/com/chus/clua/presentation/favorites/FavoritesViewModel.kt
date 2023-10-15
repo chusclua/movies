@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chus.clua.domain.usecase.DeleteAllFavoriteListUseCase
 import com.chus.clua.domain.usecase.GetFavoriteMoviesUseCase
-import com.chus.clua.presentation.mapper.toFavoriteMovieList
+import com.chus.clua.presentation.mapper.toMovieList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +30,7 @@ class FavoritesViewModel @Inject constructor(
                 .distinctUntilChanged()
                 .collect { list ->
                     _moviesFlow.update {
-                        it.copy(movies = list.map { movie -> movie.toFavoriteMovieList() })
+                        it.copy(movies = list.map { movie -> movie.toMovieList() })
                     }
                 }
         }

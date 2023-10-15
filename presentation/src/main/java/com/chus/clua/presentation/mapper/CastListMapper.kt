@@ -9,7 +9,5 @@ fun MovieCast.toCastList() =
         id = id,
         character = character,
         name = name,
-        profilePath = "$BASE_PROFILE_PATH$profilePath"
+        profilePath = buildImageUrl(smallProfilePath = profilePath)
     )
-
-private const val BASE_PROFILE_PATH = "https://image.tmdb.org/t/p/w185"

@@ -7,8 +7,6 @@ import com.chus.clua.presentation.model.PersonMovieCrewList
 fun PersonMovieCrew.toPersonMovieCrewList() =
     PersonMovieCrewList(
         id = id,
-        posterPath = "$BASE_POSTER_PATH$posterPath",
+        posterPath = buildImageUrl(posterPath = posterPath),
         job = job
     )
-
-private const val BASE_POSTER_PATH = "https://image.tmdb.org/t/p/w342"

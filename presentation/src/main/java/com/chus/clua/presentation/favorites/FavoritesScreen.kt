@@ -18,7 +18,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -42,10 +41,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.chus.clua.presentation.R
+import com.chus.clua.presentation.compose.Movie
 import com.chus.clua.presentation.compose.composables.AppAlertDialog
 import com.chus.clua.presentation.compose.composables.AppEmptyScreen
 import com.chus.clua.presentation.compose.composables.AppTopBar
-import com.chus.clua.presentation.model.FavoriteMovieList
+import com.chus.clua.presentation.model.MovieList
 
 @Composable
 fun FavoritesScreenRoute(
@@ -67,7 +67,7 @@ fun FavoritesScreenRoute(
 
 @Composable
 private fun FavoritesScreen(
-    movies: List<FavoriteMovieList>,
+    movies: List<MovieList>,
     onClearAllClicked: () -> Unit,
     onMovieClick: (Int) -> Unit,
     paddingValues: PaddingValues
@@ -120,10 +120,11 @@ private fun FavoritesScreen(
 
 @Composable
 private fun FavoriteList(
-    movies: List<FavoriteMovieList>,
+    movies: List<MovieList>,
     onMovieClick: (Int) -> Unit,
     paddingValues: PaddingValues,
 ) {
+
     LazyColumn(
         modifier = Modifier
             .padding(paddingValues),
@@ -139,7 +140,7 @@ private fun FavoriteList(
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun MovieItemList(
-    movie: FavoriteMovieList,
+    movie: MovieList,
     onMovieClick: (movieId: Int) -> Unit
 ) {
     Box(
@@ -214,11 +215,3 @@ private fun PreviewMovieItemList() {
         onMovieClick = {}
     )
 }
-
-private val Movie = FavoriteMovieList(
-    id = 238,
-    title = "The Godfather Part II",
-    backdropPath = "https://image.tmdb.org/t/p/w342/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
-    year = "1972",
-    voteAverage = 8.7,
-)

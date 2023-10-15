@@ -9,26 +9,26 @@ val <L, R> Either<L, R>.isLeft get() = this is Either.Left
 
 val <L, R> Either<L, R>.isRight get() = this is Either.Right
 
-fun <L, R> Either<L, R>.getOrNull(): R? = if (this is Either.Right) data else null
-
-val <L, R> Either<L, R>.error: L
+private val <L, R> Either<L, R>.error: L
     get() = when (this) {
         is Either.Left -> this.error
         else -> throw NoSuchElementException()
     }
 
-val <L, R> Either<L, R>.data: R
+private val <L, R> Either<L, R>.data: R
     get() = when (this) {
         is Either.Right -> this.data
         else -> throw NoSuchElementException()
     }
 
-fun <E, D> Either<E, D>.fold(leftOp: (E) -> Unit, rightOp: (D) -> Unit) {
+fun <L, R> Either<L, R>.fold(leftOp: (L) -> Unit, rightOp: (R) -> Unit) {
     when (this) {
         is Either.Left -> leftOp(this.error)
         is Either.Right -> rightOp(this.data)
     }
 }
+
+fun <L, R> Either<L, R>.getOrNull(): R? = if (this is Either.Right) data else null
 
 fun <L, R> Either<L, R>.onRight(rightOp: (R) -> Unit) {
     if (this.isRight) { rightOp(this.data) }

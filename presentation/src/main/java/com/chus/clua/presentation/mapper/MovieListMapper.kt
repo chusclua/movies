@@ -9,9 +9,8 @@ fun Movie.toMovieList() =
     MovieList(
         id = id,
         title = title,
-        posterPath = "$BASE_POSTER_PATH$posterPath",
+        backdropPath = buildImageUrl(backDropPath = backdropPath),
+        posterPath = buildImageUrl(posterPath = posterPath),
         year = releaseDate.toYear(),
         voteAverage = voteAverage
     )
-
-private const val BASE_POSTER_PATH = "https://image.tmdb.org/t/p/w342"

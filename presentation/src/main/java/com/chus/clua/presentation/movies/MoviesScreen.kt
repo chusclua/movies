@@ -48,6 +48,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.chus.clua.presentation.R
+import com.chus.clua.presentation.compose.Movie
 import com.chus.clua.presentation.compose.composables.AppTopBar
 import com.chus.clua.presentation.compose.extensions.rememberLazyGridState
 import com.chus.clua.presentation.model.MovieList
@@ -253,19 +254,11 @@ private fun DiscoverItemList(
 @Preview
 @Composable
 private fun PreviewTopRatedItemList() {
-    TopRatedItemList(movie = MovieList) { }
+    TopRatedItemList(movie = Movie) { }
 }
 
 @Preview
 @Composable
 private fun PreviewDiscoverItemList() {
-    DiscoverItemList(movie = MovieList) { }
+    DiscoverItemList(movie = Movie) { }
 }
-
-private val MovieList = MovieList(
-    id = 238,
-    title = "The Godfather Part II",
-    posterPath = "https://image.tmdb.org/t/p/w342/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
-    year = "1972",
-    voteAverage = 8.7,
-)
