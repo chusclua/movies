@@ -28,7 +28,9 @@ fun <L, R> Either<L, R>.fold(leftOp: (L) -> Unit, rightOp: (R) -> Unit) {
     }
 }
 
-fun <L, R> Either<L, R>.getOrNull(): R? = if (this is Either.Right) data else null
+fun <L, R> Either<L, R>.getOrNull(): R? = if (isRight) data else null
+
+fun <L, R> Either<L, R>.getErrorOrNull(): L? = if (isLeft) error else null
 
 fun <L, R> Either<L, R>.onRight(rightOp: (R) -> Unit) {
     if (this.isRight) { rightOp(this.data) }
