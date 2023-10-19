@@ -21,8 +21,8 @@ class GetPersonMovieCreditsUseCase @Inject constructor(
         withContext(dispatcherIO) {
             repository.getPersonMovieCredits(personId = personId).map { personCredits ->
                 personCredits.copy(
-                    cast = personCredits.cast.filter { it.posterPath != null },
-                    crew = personCredits.crew.filter { it.posterPath != null }
+                    cast = personCredits.cast.filter { !it.posterPath.isNullOrEmpty() },
+                    crew = personCredits.crew.filter { !it.posterPath.isNullOrEmpty() }
                 )
             }
         }

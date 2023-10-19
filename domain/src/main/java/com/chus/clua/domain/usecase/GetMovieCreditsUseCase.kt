@@ -23,8 +23,8 @@ class GetMovieCreditsUseCase @Inject constructor(
         withContext(dispatcherIO) {
             repository.getMovieCredits(movieId).map { credits ->
                 credits.copy(
-                    cast = credits.cast.filter { it.profilePath != null },
-                    crew = credits.crew.filter { it.profilePath != null }.sortedBy {
+                    cast = credits.cast.filter { !it.profilePath.isNullOrEmpty() },
+                    crew = credits.crew.filter { !it.profilePath.isNullOrEmpty() }.sortedBy {
                         !it.job.equals("director", ignoreCase = true)
                     }
                 )

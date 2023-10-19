@@ -22,7 +22,7 @@ class GetMovieDataUseCase @Inject constructor(
     suspend operator fun invoke(movieId: Int): Either<AppError, MovieDataDetail> =
         withContext(dispatcherIO) {
             repository.getMovieDetail(movieId).flatMap { movieData ->
-                if (movieData.backdropPath == null || movieData.posterPath == null) {
+                if (movieData.backdropPath.isNullOrEmpty() || movieData.posterPath.isNullOrEmpty()) {
                     Either.Left(AppError.InsufficientData("backdrop or poster path null"))
                 } else {
                     Either.Right(movieData)

@@ -1,4 +1,4 @@
-package com.chus.clua.data.models
+package com.chus.clua.domain.models
 
 import com.chus.clua.domain.model.Movie
 import com.chus.clua.domain.model.MovieCast

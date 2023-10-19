@@ -1,4 +1,4 @@
-package com.chus.clua.data.models
+package com.chus.clua.data.models.movie
 
 import com.chus.clua.data.network.model.CastApiModel
 import com.chus.clua.data.network.model.CollectionApiModel
