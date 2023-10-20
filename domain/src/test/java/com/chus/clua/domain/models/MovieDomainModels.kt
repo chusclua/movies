@@ -6,6 +6,7 @@ import com.chus.clua.domain.model.MovieCollection
 import com.chus.clua.domain.model.MovieCredits
 import com.chus.clua.domain.model.MovieCrew
 import com.chus.clua.domain.model.MovieDataDetail
+import com.chus.clua.domain.model.MovieDetail
 import com.chus.clua.domain.model.MovieVideo
 import com.chus.clua.domain.model.MovieVideos
 
@@ -27,7 +28,7 @@ val Movie = Movie(
     voteCount = 18755
 )
 
-val MovieDetail = MovieDataDetail(
+val MovieDataDetail = MovieDataDetail(
     backdropPath = "/tmU7GeKVybMWFButWEGl2M4GeiP.jpg",
     belongsToCollection = MovieCollection(
         backdropPath = "/zqV8MGXfpLZiFVObLxpAI7wWonJ.jpg",
@@ -86,4 +87,12 @@ val MovieVideo = MovieVideo(
 val MovieVideos = MovieVideos(
     id = 238,
     videos = listOf(MovieVideo)
+)
+
+val MovieDetail = MovieDetail(
+    isFavorite = true,
+    movieData = MovieDataDetail,
+    cast = MovieCredits.cast,
+    crew = MovieCredits.crew,
+    videos = MovieVideos.videos
 )

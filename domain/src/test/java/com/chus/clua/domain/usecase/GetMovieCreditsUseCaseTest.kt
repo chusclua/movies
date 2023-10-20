@@ -25,7 +25,7 @@ import org.junit.Rule
 import org.junit.Test
 import kotlin.random.Random
 
-
+@OptIn(ExperimentalCoroutinesApi::class)
 class GetMovieCreditsUseCaseTest {
 
     @get:Rule
@@ -33,6 +33,8 @@ class GetMovieCreditsUseCaseTest {
 
     @MockK
     lateinit var repository: MoviesRepository
+
+    private val dispatcher = UnconfinedTestDispatcher()
 
     private lateinit var useCase: GetMovieCreditsUseCase
 
@@ -48,10 +50,9 @@ class GetMovieCreditsUseCaseTest {
         }
     )
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setUp() {
-        useCase = GetMovieCreditsUseCase(repository, UnconfinedTestDispatcher())
+        useCase = GetMovieCreditsUseCase(repository, dispatcher)
     }
 
     @Test
