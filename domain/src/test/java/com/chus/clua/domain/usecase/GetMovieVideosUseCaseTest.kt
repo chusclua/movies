@@ -39,7 +39,7 @@ class GetMovieVideosUseCaseTest {
 
     private val dispatcher = UnconfinedTestDispatcher()
 
-    lateinit var useCase: GetMovieVideosUseCase
+    private lateinit var useCase: GetMovieVideosUseCase
 
     private val videos: List<MovieVideo> = (0..19).map {
         if (Random.nextBoolean()) return@map MovieVideo.copy(site = "Vimeo")
@@ -52,7 +52,7 @@ class GetMovieVideosUseCaseTest {
     }
 
     @Test
-    fun nothing() = runTest {
+    fun `when GetMovieVideosUseCase is invoked then obtains a Youtube MovieVideos`() = runTest {
         coEvery { repository.getMovieVideos(any()) } returns Either.Right(MovieVideos.copy(videos = videos))
 
         val either = useCase.invoke(238)
@@ -68,7 +68,7 @@ class GetMovieVideosUseCaseTest {
     }
 
     @Test
-    fun nothing2() = runTest {
+    fun `when GetMovieVideosUseCase is invoked then obtains an error`() = runTest {
         coEvery { repository.getMovieVideos(any()) } returns
             Either.Left(AppError.HttpError(404, "not found"))
 

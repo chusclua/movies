@@ -63,7 +63,7 @@ class GetMovieDetailUseCaseTest {
     }
 
     @Test
-    fun nothing() = runTest {
+    fun `when GetMovieDetailUseCase is invoked then obtains a MovieDetail`() = runTest {
         coEvery { movieDataUseCase.invoke(any()) } returns Either.Right(MovieDataDetail)
 
         val either = useCase.invoke(238)
@@ -74,17 +74,18 @@ class GetMovieDetailUseCaseTest {
     }
 
     @Test
-    fun nothing2() = runTest {
-        coEvery { movieDataUseCase.invoke(any()) } returns
-            Either.Left(AppError.HttpError(404, "not found"))
+    fun `when GetMovieDetailUseCase is invoked and MovieDataDetail is null then obtains an error`() =
+        runTest {
+            coEvery { movieDataUseCase.invoke(any()) } returns
+                Either.Left(AppError.HttpError(404, "not found"))
 
-        val either = useCase.invoke(238)
+            val either = useCase.invoke(238)
 
-        assertTrue(either.isLeft)
-        assertNull(either.getOrNull())
-        assertThat(
-            either.getErrorOrNull(),
-            IsInstanceOf.instanceOf(AppError.InsufficientData::class.java)
-        )
-    }
+            assertTrue(either.isLeft)
+            assertNull(either.getOrNull())
+            assertThat(
+                either.getErrorOrNull(),
+                IsInstanceOf.instanceOf(AppError.InsufficientData::class.java)
+            )
+        }
 }
