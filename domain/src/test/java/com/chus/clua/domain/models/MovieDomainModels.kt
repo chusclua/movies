@@ -9,7 +9,12 @@ import com.chus.clua.domain.model.MovieDataDetail
 import com.chus.clua.domain.model.MovieDetail
 import com.chus.clua.domain.model.MovieVideo
 import com.chus.clua.domain.model.MovieVideos
+import kotlin.random.Random
 
+val MovieList: List<Movie> get() = (1..20).map { index ->
+    if (Random.nextBoolean()) return@map Movie.copy(id = index, backdropPath = null, posterPath = null)
+    Movie.copy(id = index)
+}
 
 val Movie = Movie(
     adult = false,

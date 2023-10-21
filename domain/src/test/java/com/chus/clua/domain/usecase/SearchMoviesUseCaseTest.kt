@@ -6,9 +6,7 @@ import com.chus.clua.domain.getErrorOrNull
 import com.chus.clua.domain.getOrNull
 import com.chus.clua.domain.isLeft
 import com.chus.clua.domain.isRight
-import com.chus.clua.domain.model.MovieVideo
-import com.chus.clua.domain.models.MovieVideo
-import com.chus.clua.domain.models.MovieVideos
+import com.chus.clua.domain.models.MovieList
 import com.chus.clua.domain.repository.MoviesRepository
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
@@ -23,10 +21,9 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import kotlin.random.Random
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class GetMovieVideosUseCaseTest {
+class SearchMoviesUseCaseTest {
 
     @get:Rule
     val mockkRule = MockKRule(this)
@@ -36,37 +33,29 @@ class GetMovieVideosUseCaseTest {
 
     private val dispatcher = UnconfinedTestDispatcher()
 
-    private lateinit var useCase: GetMovieVideosUseCase
-
-    private val videos: List<MovieVideo> = (0..19).map {
-        if (Random.nextBoolean()) return@map MovieVideo.copy(site = "Vimeo")
-        MovieVideo
-    }
+    private lateinit var useCase: SearchMoviesUseCase
 
     @Before
     fun setUp() {
-        useCase = GetMovieVideosUseCase(repository, dispatcher)
+        useCase = SearchMoviesUseCase(repository, dispatcher)
     }
 
     @Test
-    fun `when GetMovieVideosUseCase is invoked then obtains a Youtube MovieVideos`() = runTest {
-        coEvery { repository.getMovieVideos(any()) } returns Either.Right(MovieVideos.copy(videos = videos))
+    fun `when SearchMoviesUseCase is invoked then obtains a valid MovieList`() = runTest {
+        coEvery { repository.searchMovies(any()) } returns Either.Right(MovieList)
 
-        val either = useCase.invoke(238)
+        val either = useCase.invoke("query")
 
         assertTrue(either.isRight)
         assertNull(either.getErrorOrNull())
-        assertTrue(either.getOrNull()?.videos?.all { video ->
-            video.site.equals("youtube", ignoreCase = true)
-        } == true)
+        assert(either.getOrNull()?.none { it.posterPath.isNullOrEmpty() || it.backdropPath.isNullOrEmpty() } == true)
     }
 
     @Test
-    fun `when GetMovieVideosUseCase is invoked then obtains an error`() = runTest {
-        coEvery { repository.getMovieVideos(any()) } returns
-            Either.Left(AppError.HttpError(404, "not found"))
+    fun `when SearchMoviesUseCase is invoked then obtains an error`() = runTest {
+        coEvery { repository.searchMovies(any()) } returns Either.Left(AppError.HttpError(404, "not found"))
 
-        val either = useCase.invoke(238)
+        val either = useCase.invoke("query")
 
         assertTrue(either.isLeft)
         assertNull(either.getOrNull())

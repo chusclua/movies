@@ -16,7 +16,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class GetDiscoverMoviesUseCaseTest {
+class GetTopRatedMoviesUseCaseTest {
 
     @get:Rule
     val mockkRule = MockKRule(this)
@@ -26,16 +26,16 @@ class GetDiscoverMoviesUseCaseTest {
 
     private val dispatcher = UnconfinedTestDispatcher()
 
-    private lateinit var useCase: GetDiscoverMoviesUseCase
+    private lateinit var useCase: GetTopRatedMoviesUseCase
 
     @Before
     fun setUp() {
-        useCase = GetDiscoverMoviesUseCase(repository, dispatcher)
+        useCase = GetTopRatedMoviesUseCase(repository, dispatcher)
     }
 
     @Test
-    fun `when GetDiscoverMoviesUseCase is invoked then obtains a list of Movie with posterPath and backdropPath`() = runTest {
-        every { repository.getDiscoverMovies() } returns flow {
+    fun `when GetTopRatedMoviesUseCase is invoked then obtains a list of Movie with posterPath and backdropPath`() = runTest {
+        every { repository.getTopRatedMovies() } returns flow {
             emit(PagingData.from(MovieList))
         }
 
