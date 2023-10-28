@@ -153,7 +153,7 @@ fun MovieItemList(
             }
     ) {
         GlideImage(
-            model = movie.backdropPath,
+            model = movie.backdropUrl,
             contentScale = ContentScale.Crop,
             contentDescription = "MoviePoster",
             modifier = Modifier

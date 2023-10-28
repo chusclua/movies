@@ -6,11 +6,11 @@ import com.chus.clua.presentation.model.MovieDetailUi
 
 fun MovieDataDetail.toMovieDetail() =
     MovieDetailUi(
-        backdropPath = buildImageUrl(backDropPath = backdropPath),
+        backdropUrl = buildImageUrl(backDropPath = backdropPath),
         genres = genres,
         id = id,
         overview = overview,
-        posterPath = buildImageUrl(posterPath = posterPath),
+        posterUrl = buildImageUrl(posterPath = posterPath),
         productionCompanies = productionCompanies,
         productionCountries = productionCountries,
         releaseDate = releaseDate.toPrettyDate(),

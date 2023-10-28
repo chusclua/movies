@@ -11,5 +11,5 @@ fun PersonDataDetail.toPersonDetailUi() =
         id = id,
         name = name,
         popularity = popularity,
-        profilePath = buildImageUrl(bigProfilePath = profilePath)
+        profileUrl = buildImageUrl(bigProfilePath = profilePath)
     )

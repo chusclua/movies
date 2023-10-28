@@ -9,5 +9,5 @@ fun MovieCrew.toCrewList() =
         id = id,
         job = job,
         name = name,
-        profilePath = buildImageUrl(smallProfilePath = profilePath)
+        profileUrl = buildImageUrl(smallProfilePath = profilePath)
     )

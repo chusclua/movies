@@ -9,8 +9,8 @@ fun Movie.toMovieList() =
     MovieList(
         id = id,
         title = title,
-        backdropPath = buildImageUrl(backDropPath = backdropPath),
-        posterPath = buildImageUrl(posterPath = posterPath),
+        backdropUrl = buildImageUrl(backDropPath = backdropPath),
+        posterUrl = buildImageUrl(posterPath = posterPath),
         year = releaseDate.toYear(),
         voteAverage = voteAverage
     )

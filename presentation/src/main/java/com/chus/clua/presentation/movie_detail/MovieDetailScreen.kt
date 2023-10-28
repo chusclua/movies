@@ -132,7 +132,7 @@ private fun DetailScreen(
             ) {
 
                 MovieHeader(
-                    backdropPath = detail?.backdropPath,
+                    backdropPath = detail?.backdropUrl,
                     isFavorite = isFavorite,
                     onBackClick = onBackClick,
                     onFavClick = onFavClick
@@ -223,7 +223,7 @@ private fun MovieResume(
                 .padding(all = 16.dp)
         ) {
             GlideImage(
-                model = detail?.posterPath,
+                model = detail?.posterUrl,
                 contentScale = ContentScale.Crop,
                 contentDescription = "MoviePoster",
                 modifier = Modifier
@@ -343,7 +343,7 @@ private fun MoviePeopleList(
                         tooltip = { Text(toolTipText) }
                     ) {
                         GlideImage(
-                            model = people.profilePath,
+                            model = people.profileUrl,
                             contentScale = ContentScale.Crop,
                             contentDescription = null,
                             modifier = Modifier
@@ -451,7 +451,7 @@ private fun VideoItemList(
 @Composable
 private fun PreviewMovieHeader() {
     MovieHeader(
-        backdropPath = MovieDetail.backdropPath,
+        backdropPath = MovieDetail.backdropUrl,
         isFavorite = true,
         onBackClick = {},
         onFavClick = {}

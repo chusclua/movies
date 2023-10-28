@@ -7,5 +7,5 @@ data class PersonDetailUi(
     val id: Int,
     val name: String,
     val popularity: Double,
-    val profilePath: String
+    val profileUrl: String
 )

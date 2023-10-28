@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -41,7 +40,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
@@ -218,7 +216,7 @@ private fun MovieItemList(
             }
     ) {
         GlideImage(
-            model = movie.posterPath,
+            model = movie.posterUrl,
             contentScale = ContentScale.Crop,
             contentDescription = "MoviePoster",
             modifier = Modifier
@@ -234,7 +232,7 @@ private fun MovieItemList(
                 }
         ) {
             GlideImage(
-                model = movie.backdropPath,
+                model = movie.backdropUrl,
                 contentScale = ContentScale.Crop,
                 contentDescription = "MovieBackDrop",
                 alpha = 0.5F,

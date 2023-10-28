@@ -1,11 +1,11 @@
 package com.chus.clua.presentation.model
 
 data class MovieDetailUi(
-    val backdropPath: String,
+    val backdropUrl: String,
     val genres: List<String>,
     val id: Int,
     val overview: String,
-    val posterPath: String,
+    val posterUrl: String,
     val productionCompanies: List<String>,
     val productionCountries: List<String>,
     val releaseDate: String,

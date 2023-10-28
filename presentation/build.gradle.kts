@@ -64,4 +64,14 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.compose)
     implementation(libs.accompanist.webview)
+
+    testImplementation(project(":data"))
+
+    implementation(libs.dagger.hilt.android.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.robolectric)
+    kspTest(libs.dagger.hilt.android.compiler)
+    testImplementation(libs.androidx.arch.testing)
+    testImplementation(libs.androidx.paging.testing)
+    testImplementation(libs.turbine)
 }

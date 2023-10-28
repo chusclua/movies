@@ -1,9 +1,8 @@
 package com.chus.clua.presentation.model
 
 
-
 data class PersonMovieCastList(
     override val id: Int,
-    override val posterPath: String,
+    override val posterUrl: String,
     val character: String,
 ) : PersonMovieList

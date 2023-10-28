@@ -7,6 +7,6 @@ import com.chus.clua.presentation.model.PersonMovieCastList
 fun PersonMovieCast.toPersonMovieCastList() =
     PersonMovieCastList(
         id = id,
-        posterPath = buildImageUrl(posterPath = posterPath),
+        posterUrl = buildImageUrl(posterPath = posterPath),
         character = character
     )

@@ -9,5 +9,5 @@ fun MovieCast.toCastList() =
         id = id,
         character = character,
         name = name,
-        profilePath = buildImageUrl(smallProfilePath = profilePath)
+        profileUrl = buildImageUrl(smallProfilePath = profilePath)
     )

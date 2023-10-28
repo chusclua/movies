@@ -165,7 +165,7 @@ private fun TopRatedItemList(
         .clickable { onMovieClick(movie.id) }
     ) {
         GlideImage(
-            model = movie.posterPath,
+            model = movie.posterUrl,
             contentScale = ContentScale.Crop,
             contentDescription = null,
             modifier = Modifier.align(Center)
@@ -210,7 +210,7 @@ private fun DiscoverItemList(
         }
     ) {
         GlideImage(
-            model = movie.posterPath,
+            model = movie.posterUrl,
             contentDescription = "MoviePoster",
             modifier = Modifier
                 .fillMaxWidth()

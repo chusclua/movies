@@ -65,5 +65,5 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.androidx.paging.testing)
     testImplementation(libs.mockk.mockk)
-    testImplementation(libs.mockk.android)
+    //testImplementation(libs.mockk.android)
 }

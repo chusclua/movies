@@ -120,7 +120,7 @@ private fun PeopleDetailScreen(
             ) {
 
                 PersonHeader(
-                    profilePath = detail?.profilePath,
+                    profilePath = detail?.profileUrl,
                     name = detail?.name,
                     onBackClick = onBackClick
                 )
@@ -299,7 +299,7 @@ private fun MovieList(
                         tooltip = { Text(toolTipText) }
                     ) {
                         GlideImage(
-                            model = movie.posterPath,
+                            model = movie.posterUrl,
                             contentScale = ContentScale.Crop,
                             contentDescription = null,
                             modifier = Modifier
@@ -320,7 +320,7 @@ private fun MovieList(
 @Composable
 private fun PreviewPersonHeader() {
     PersonHeader(
-        profilePath = PersonDetail.profilePath,
+        profilePath = PersonDetail.profileUrl,
         name = PersonDetail.name,
         onBackClick = {}
     )
