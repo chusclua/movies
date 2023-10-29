@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val searchMoviesUseCase: SearchMoviesUseCase,
+    private val searchMoviesUseCase: SearchMoviesUseCase
 ) : ViewModel() {
 
     private var searchJob: Job? = null

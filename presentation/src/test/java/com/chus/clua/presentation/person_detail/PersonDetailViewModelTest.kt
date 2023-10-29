@@ -12,6 +12,7 @@ import com.chus.clua.presentation.navigation.Screens
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
 import javax.inject.Inject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -22,6 +23,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
 @Config(application = HiltTestApplication::class)
 @RunWith(RobolectricTestRunner::class)
@@ -74,7 +76,7 @@ class PersonDetailViewModelTest: BaseViewModel() {
                 SavedStateHandle(mapOf(Pair(Screens.PeopleDetail.paramId, 3084))),
                 personDetailUseCase
             )
-            advanceUntilIdle()
+//            advanceUntilIdle()
             viewModel.detailState.test {
                 assertEquals(
                     PersonDetailState(

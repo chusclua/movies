@@ -4,6 +4,6 @@ import com.chus.clua.presentation.model.MovieList
 
 data class SearchState(
     val movies: List<MovieList> = emptyList(),
-    val empty: Boolean = false,
+    val empty: Boolean = true,
     val error: Boolean = false
 )

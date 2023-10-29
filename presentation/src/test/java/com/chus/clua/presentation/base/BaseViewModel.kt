@@ -10,29 +10,18 @@ import org.junit.Rule
 
 @OptIn(ExperimentalCoroutinesApi::class)
 abstract class BaseViewModel {
+
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
     private val testDispatcher = UnconfinedTestDispatcher()
 
     protected fun setUp() {
-        setMain()
-        inject()
-    }
-
-    protected fun tearDown() {
-        resetMain()
-    }
-
-    private fun inject() {
+        Dispatchers.setMain(testDispatcher)
         hiltRule.inject()
     }
 
-    private fun setMain() {
-        Dispatchers.setMain(testDispatcher)
-    }
-
-    private fun resetMain() {
+    protected fun tearDown() {
         Dispatchers.resetMain()
     }
 }
