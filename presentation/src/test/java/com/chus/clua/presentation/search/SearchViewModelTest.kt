@@ -39,7 +39,6 @@ class SearchViewModelTest : BaseViewModel() {
     @After
     fun after() {
         super.tearDown()
-        
     }
 
     @Test
