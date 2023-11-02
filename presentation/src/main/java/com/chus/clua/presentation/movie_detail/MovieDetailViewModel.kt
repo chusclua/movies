@@ -28,11 +28,6 @@ class MovieDetailViewModel @Inject constructor(
     private val toggleFavoriteMovieUseCase: ToggleFavoriteMovieUseCase
 ) : ViewModel() {
 
-    private val _detailState: MutableStateFlow<MovieDetailViewState> by lazy {
-        MutableStateFlow(MovieDetailViewState())
-    }
-    val detailState: StateFlow<MovieDetailViewState> get() = _detailState
-
     init {
         val movieId =
             savedStateHandle.get<Int>(Screens.MovieDetail.paramId) ?: Int.MIN_VALUE
@@ -43,6 +38,11 @@ class MovieDetailViewModel @Inject constructor(
             )
         }
     }
+
+    private val _detailState: MutableStateFlow<MovieDetailViewState> by lazy {
+        MutableStateFlow(MovieDetailViewState())
+    }
+    val detailState: StateFlow<MovieDetailViewState> get() = _detailState
 
     fun toggleOnFavorites() {
         _detailState.value.movieDetail?.let { movie ->
