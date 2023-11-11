@@ -71,6 +71,7 @@ class PersonDetailViewModelTest: BaseViewModel() {
     @Test
     fun `when viewModel is initialized with an Either Left then it has a valid PersonDetailState`() =
         runTest {
+            advanceUntilIdle()
             personApiImp.forceLeft()
             viewModel = PersonDetailViewModel(
                 SavedStateHandle(mapOf(Pair(Screens.PeopleDetail.paramId, 3084))),
