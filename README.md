@@ -1,3 +1,4 @@
+<a href="https://github.com/chusclua/movies/actions">![flujo de trabajo de ejemplo](https://github.com/chusclua/movies/actions/workflows/main.yml/badge.svg)</a>
 # Movies
 
 🎬 Repository to show an example of Compose with Compose navigation, Paging 3, testing and some android technologies.
