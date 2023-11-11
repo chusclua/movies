@@ -81,7 +81,7 @@ class MoviesRepositoryImpTest {
         val movies = repository.getDiscoverMovies().asSnapshot { }
 
         assertEquals(20, movies.size)
-        assertEquals(Movie.copy(id = 100), movies.first())
+        assertEquals(Movie.copy(id = 1), movies.first())
     }
 
     @Test
