@@ -58,7 +58,7 @@ class PersonDetailViewModelTest: BaseViewModel() {
             viewModel.detailState.test {
                 assertEquals(
                     PersonDetailState(
-                        detail = PersonDetail,
+                        detail = null,
                         cast = listOf(PersonMovieCast),
                         crew = listOf(PersonMovieCrew),
                         error = false
@@ -77,7 +77,7 @@ class PersonDetailViewModelTest: BaseViewModel() {
                 SavedStateHandle(mapOf(Pair(Screens.PeopleDetail.paramId, 3084))),
                 personDetailUseCase
             )
-//            advanceUntilIdle()
+            advanceUntilIdle()
             viewModel.detailState.test {
                 assertEquals(
                     PersonDetailState(
