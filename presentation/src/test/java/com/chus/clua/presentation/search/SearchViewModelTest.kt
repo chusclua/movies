@@ -47,7 +47,7 @@ class SearchViewModelTest : BaseViewModel() {
         runTest {
             viewModel.searchState.test {
                 assertEquals(
-                    SearchState(movies = Movies, empty = true, error = false), awaitItem()
+                    SearchState(movies = emptyList(), empty = true, error = false), awaitItem()
                 )
                 cancelAndIgnoreRemainingEvents()
             }
