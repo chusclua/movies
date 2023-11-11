@@ -58,7 +58,7 @@ class PersonDetailViewModelTest: BaseViewModel() {
             viewModel.detailState.test {
                 assertEquals(
                     PersonDetailState(
-                        detail = null,
+                        detail = PersonDetail,
                         cast = listOf(PersonMovieCast),
                         crew = listOf(PersonMovieCrew),
                         error = false
