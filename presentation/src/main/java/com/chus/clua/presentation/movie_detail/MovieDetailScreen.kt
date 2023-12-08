@@ -46,8 +46,11 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -174,6 +177,14 @@ private fun MovieHeader(
     onBackClick: () -> Unit,
     onFavClick: () -> Unit
 ) {
+    val tileSize = with(LocalDensity.current) {
+        100.dp.toPx()
+    }
+    val brush = Brush.verticalGradient(
+        listOf(Color.Black.copy(alpha = 0.75F), Color.Transparent),
+        endY = tileSize,
+        tileMode = TileMode.Clamp
+    )
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -183,7 +194,7 @@ private fun MovieHeader(
             model = backdropPath,
             contentScale = ContentScale.Crop,
             contentDescription = "MovieBackDrop",
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().background(brush),
         )
         IconButton(onClick = onBackClick, modifier = Modifier.align(Alignment.TopStart)) {
             Icon(

@@ -1,12 +1,12 @@
-package com.chus.clua.data.network
-
+package com.chus.clua.data.network.interceptors
 
 import com.chus.clua.data.BuildConfig
 import java.util.Locale
-import okhttp3.Interceptor
-import okhttp3.Response
 import javax.inject.Inject
 import javax.inject.Singleton
+import okhttp3.Interceptor
+import okhttp3.Response
+
 
 @Singleton
 class RequestInterceptor @Inject constructor(): Interceptor {

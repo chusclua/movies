@@ -47,6 +47,8 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.bumptech.glide.integration.compose.Placeholder
+import com.bumptech.glide.integration.compose.placeholder
 import com.chus.clua.presentation.R
 import com.chus.clua.presentation.compose.Movie
 import com.chus.clua.presentation.compose.composables.AppTopBar
@@ -168,7 +170,8 @@ private fun TopRatedItemList(
             model = movie.posterUrl,
             contentScale = ContentScale.Crop,
             contentDescription = null,
-            modifier = Modifier.align(Center)
+            modifier = Modifier.align(Center),
+            failure = placeholder(R.drawable.ic_no_internet)
         )
         Row(
             modifier = Modifier

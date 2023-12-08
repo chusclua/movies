@@ -2,6 +2,8 @@ package com.chus.clua.data.di
 
 import com.chus.clua.data.datasource.MovieRemoteDataSource
 import com.chus.clua.data.datasource.MovieRemoteDataSourceImp
+import com.chus.clua.data.datasource.NetworkCacheDatasource
+import com.chus.clua.data.datasource.NetworkCacheDatasourceImp
 import com.chus.clua.data.datasource.PersonRemoteDataSource
 import com.chus.clua.data.datasource.PersonRemoteDataSourceImp
 import dagger.Binds
@@ -16,5 +18,8 @@ abstract class RemoteDataSourceModule {
     abstract fun provideMovieRemoteDataSource(dataSource: MovieRemoteDataSourceImp): MovieRemoteDataSource
 
     @Binds
-    abstract fun providePersonRemoteDaraSource(dataSourceImp: PersonRemoteDataSourceImp): PersonRemoteDataSource
+    abstract fun providePersonRemoteDaraSource(dataSource: PersonRemoteDataSourceImp): PersonRemoteDataSource
+
+    @Binds
+    abstract fun provideNetworkCacheDataSource(datasource: NetworkCacheDatasourceImp): NetworkCacheDatasource
 }
