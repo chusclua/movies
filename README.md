@@ -7,15 +7,15 @@
 - Light mode
 <p align="left">
  <img src="static/list.png" width=30% height=30%>
- <img src="static/detail.png" width=30% height=30%>
- <img src="static/webview.png" width=30% height=30%>
+ <img src="static/movie_detail.png" width=30% height=30%>
+ <img src="static/person_detail.png" width=30% height=30%>
 </p>
 
 - Dark mode
 <p align="left">
  <img src="static/dark_list.png" width=30% height=30%>
- <img src="static/dark_detail.png" width=30% height=30%>
- <img src="static/dark_webview.png" width=30% height=30%>
+ <img src="static/dark_movie_detail.png" width=30% height=30%>
+ <img src="static/dark_person_detail.png" width=30% height=30%>
 </p>
 
 <img src="static/movie.gif" align="right" width="32%"/>
@@ -40,4 +40,4 @@
 - Hilt testing
 - Paging testing
 
-[NewsAPI](https://www.themoviedb.org/)
+[TMDB](https://www.themoviedb.org/)

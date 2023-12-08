@@ -50,6 +50,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.bumptech.glide.integration.compose.placeholder
 import com.chus.clua.presentation.R
 import com.chus.clua.presentation.compose.PersonDetail
 import com.chus.clua.presentation.compose.PersonMovieCast
@@ -185,6 +186,7 @@ private fun PersonHeader(
                 .align(Alignment.TopEnd)
                 .padding(start = 20.dp, top = 60.dp)
                 .clip(RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp)),
+            failure = placeholder(R.drawable.ic_tmdb)
         )
 
         Text(
@@ -307,7 +309,8 @@ private fun MovieList(
                                 .size(width = 100.dp, height = 140.dp)
                                 .clip(RoundedCornerShape(8.dp))
                                 .tooltipAnchor()
-                                .clickable { onMovieClick(movie.id) }
+                                .clickable { onMovieClick(movie.id) },
+                            failure = placeholder(R.drawable.ic_tmdb)
                         )
                     }
                 }

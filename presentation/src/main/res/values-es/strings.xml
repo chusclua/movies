@@ -17,7 +17,7 @@
     <string name="favorites_delete_all_message">¿Estás seguro de que quieres eliminar todas tus películas favoritas?</string>
 
     <string name="error_message">Huy… Algo salió mal.</string>
-    <string name="detail_cast">Elenco</string>
+    <string name="detail_cast">Reparto</string>
     <string name="detail_crew">Equipo</string>
     <string name="detail_as">como</string>
     <plurals name="detail_companies">
@@ -29,7 +29,7 @@
         <item quantity="other">Paises</item>
     </plurals>
 
-    <string name="show_more">… mostrar más</string>
+    <string name="show_more">\u0020… mostrar más</string>
     <string name="show_less">\u0020Mostrar menos</string>
 
     <string name="see_website">Ver sitio web</string>

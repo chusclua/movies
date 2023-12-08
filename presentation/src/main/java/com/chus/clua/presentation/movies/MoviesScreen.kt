@@ -47,7 +47,6 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.bumptech.glide.integration.compose.Placeholder
 import com.bumptech.glide.integration.compose.placeholder
 import com.chus.clua.presentation.R
 import com.chus.clua.presentation.compose.Movie
@@ -168,10 +167,10 @@ private fun TopRatedItemList(
     ) {
         GlideImage(
             model = movie.posterUrl,
-            contentScale = ContentScale.Crop,
             contentDescription = null,
             modifier = Modifier.align(Center),
-            failure = placeholder(R.drawable.ic_no_internet)
+            contentScale = ContentScale.Crop,
+            failure = placeholder(R.drawable.ic_tmdb)
         )
         Row(
             modifier = Modifier
@@ -220,6 +219,7 @@ private fun DiscoverItemList(
                 .height(200.dp)
                 .clip(RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)),
             contentScale = ContentScale.Crop,
+            failure = placeholder(R.drawable.ic_tmdb)
         )
         Column(
             modifier = Modifier

@@ -60,6 +60,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.bumptech.glide.integration.compose.placeholder
 import com.chus.clua.presentation.R
 import com.chus.clua.presentation.compose.Cast
 import com.chus.clua.presentation.compose.MovieDetail
@@ -194,7 +195,10 @@ private fun MovieHeader(
             model = backdropPath,
             contentScale = ContentScale.Crop,
             contentDescription = "MovieBackDrop",
-            modifier = Modifier.fillMaxSize().background(brush),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(brush),
+            failure = placeholder(R.drawable.ic_tmdb)
         )
         IconButton(onClick = onBackClick, modifier = Modifier.align(Alignment.TopStart)) {
             Icon(
@@ -240,6 +244,7 @@ private fun MovieResume(
                 modifier = Modifier
                     .size(width = 100.dp, height = 160.dp)
                     .clip(RoundedCornerShape(8.dp)),
+                failure = placeholder(R.drawable.ic_tmdb)
             )
             Spacer(modifier = Modifier.padding(horizontal = 8.dp))
             Column(
@@ -296,9 +301,17 @@ private fun MovieResume(
             }
         }
 
+        ExpandableText(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            text = detail?.overview.orEmpty(),
+            style = MaterialTheme.typography.bodyLarge
+        )
+
         LazyRow(
             modifier = Modifier
-                .padding(top = 8.dp)
+                .padding(vertical = 16.dp)
                 .align(CenterHorizontally),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(horizontal = 16.dp)
@@ -311,13 +324,6 @@ private fun MovieResume(
             }
         }
 
-        ExpandableText(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 16.dp),
-            text = detail?.overview.orEmpty(),
-            style = MaterialTheme.typography.bodyLarge
-        )
         Divider()
     }
 }
@@ -362,7 +368,8 @@ private fun MoviePeopleList(
                                 .clip(CircleShape)
                                 .size(120.dp)
                                 .tooltipAnchor()
-                                .clickable { onPeopleClick(people.id) }
+                                .clickable { onPeopleClick(people.id) },
+                            failure = placeholder(R.drawable.ic_tmdb)
                         )
                     }
                 }
@@ -435,7 +442,8 @@ private fun VideoItemList(
             contentDescription = null,
             modifier = Modifier
                 .clip(RoundedCornerShape(8.dp))
-                .align(Center)
+                .align(Center),
+            failure = placeholder(R.drawable.ic_tmdb)
         )
         Box(
             modifier = Modifier

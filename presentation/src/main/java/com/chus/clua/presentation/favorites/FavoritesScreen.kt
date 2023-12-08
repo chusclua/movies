@@ -40,6 +40,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.bumptech.glide.integration.compose.placeholder
 import com.chus.clua.presentation.R
 import com.chus.clua.presentation.compose.Movie
 import com.chus.clua.presentation.compose.composables.AppAlertDialog
@@ -158,7 +159,8 @@ fun MovieItemList(
             contentDescription = "MoviePoster",
             modifier = Modifier
                 .fillMaxSize()
-                .align(Alignment.Center)
+                .align(Alignment.Center),
+            failure = placeholder(R.drawable.ic_tmdb)
         )
         Row(
             modifier = Modifier
