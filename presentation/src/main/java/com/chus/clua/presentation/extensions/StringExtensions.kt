@@ -1,5 +1,7 @@
 package com.chus.clua.presentation.extensions
 
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -23,6 +25,8 @@ fun String.toPrettyDate(): String {
         ""
     }
 }
+
+fun String.encode() = URLEncoder.encode(this, StandardCharsets.UTF_8.toString())
 
 private const val DATE_FORMAT = "yyyy-MM-dd"
 private const val PRETTY_DATE_FORMAT = "dd MMMM yyyy"

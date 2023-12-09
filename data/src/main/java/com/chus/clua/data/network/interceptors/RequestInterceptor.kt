@@ -2,14 +2,11 @@ package com.chus.clua.data.network.interceptors
 
 import com.chus.clua.data.BuildConfig
 import java.util.Locale
-import javax.inject.Inject
-import javax.inject.Singleton
 import okhttp3.Interceptor
 import okhttp3.Response
 
 
-@Singleton
-class RequestInterceptor @Inject constructor(): Interceptor {
+class RequestInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         chain.request().url.newBuilder().apply {
             addQueryParameter(API_KEY_PARAM, BuildConfig.API_KEY)

@@ -32,7 +32,7 @@ class PersonDetailViewModel @Inject constructor(
 
     init {
         val personId =
-            savedStateHandle.get<Int>(Screens.PeopleDetail.paramId) ?: Int.MIN_VALUE
+            savedStateHandle.get<Int>(Screens.PersonDetail.paramId) ?: Int.MIN_VALUE
         viewModelScope.launch {
             personDetailUseCase(personId).fold(
                 leftOp = ::onLeft,

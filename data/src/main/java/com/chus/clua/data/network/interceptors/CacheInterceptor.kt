@@ -2,16 +2,13 @@ package com.chus.clua.data.network.interceptors
 
 import com.chus.clua.data.datasource.NetworkDataSource
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Singleton
 import okhttp3.CacheControl
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 
 
-@Singleton
-class CacheInterceptor @Inject constructor(
+class CacheInterceptor (
     private val networkDataSource: NetworkDataSource
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {

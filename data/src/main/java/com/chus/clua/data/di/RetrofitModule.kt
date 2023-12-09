@@ -2,18 +2,16 @@ package com.chus.clua.data.di
 
 import com.chus.clua.data.BuildConfig
 import com.chus.clua.data.datasource.NetworkCacheDatasource
-import com.chus.clua.data.network.interceptors.RequestInterceptor
 import com.chus.clua.data.network.adapter.EitherCallAdapterFactory
-import com.chus.clua.data.network.interceptors.CacheInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 import javax.inject.Singleton
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -37,10 +35,10 @@ class RetrofitModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(
-        requestInterceptor: RequestInterceptor,
-        cacheInterceptor: CacheInterceptor,
-        cacheDatasource: NetworkCacheDatasource,
-        loggingInterceptor: Interceptor
+        @Named(InterceptorModule.REQUEST) requestInterceptor: Interceptor,
+        @Named(InterceptorModule.CACHE) cacheInterceptor: Interceptor,
+        @Named(InterceptorModule.LOGGING) loggingInterceptor: Interceptor,
+        cacheDatasource: NetworkCacheDatasource
     ): OkHttpClient =
         OkHttpClient().newBuilder()
             .connectTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
@@ -51,13 +49,6 @@ class RetrofitModule {
             .addInterceptor(requestInterceptor)
             .addInterceptor(cacheInterceptor)
             .build()
-
-    @Provides
-    @Singleton
-    fun provideLoggingInterceptor(): Interceptor =
-        HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
 
 }
 

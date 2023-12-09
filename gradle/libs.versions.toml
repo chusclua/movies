@@ -5,11 +5,13 @@ androidxArch = "2.2.0"
 androidxComposeBom = "2023.10.01"
 androidxLifecycle = "2.6.2"
 androidxNavigation = "2.7.4"
+androidxTest = "1.1.5"
 appcompat = "1.6.1"
 dagger = "2.47"
 espressoCore = "3.5.1"
 glideCompose = "1.0.0-alpha.5"
 googleKsp = "1.8.10-1.0.9"
+googleAndroidMaterial = "1.10.0"
 hiltNavigationCompose = "1.0.0"
 junit = "4.13.2"
 kotlin = "1.8.10"
@@ -24,8 +26,6 @@ robolectric = "4.9.2"
 room = "2.5.2"
 turbine = "1.0.0"
 webView = "0.32.0"
-androidx-test-ext-junit = "1.1.5"
-com-google-android-material-material = "1.10.0"
 
 [libraries]
 accompanist-webview = { group = "com.google.accompanist", name = "accompanist-webview", version.ref = "webView" }
@@ -49,6 +49,7 @@ androidx-paging-testing = { group = "androidx.paging", name = "paging-testing", 
 androidx-room = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxTest" }
 dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "dagger" }
 dagger-hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "dagger" }
 dagger-hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "dagger" }
@@ -57,6 +58,7 @@ glide-compose = { group = "com.github.bumptech.glide", name = "compose", version
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+material = { group = "com.google.android.material", name = "material", version.ref = "googleAndroidMaterial" }
 mockk-mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
@@ -64,8 +66,7 @@ retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-
 retrofit-loggin-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "loggingInterceptor" }
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
-androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
-material = { group = "com.google.android.material", name = "material", version.ref = "com-google-android-material-material" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

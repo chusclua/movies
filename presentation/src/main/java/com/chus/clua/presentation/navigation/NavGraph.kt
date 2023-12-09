@@ -10,14 +10,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
+import com.chus.clua.presentation.extensions.encode
 import com.chus.clua.presentation.movie_detail.MovieDetailScreenRoute
 import com.chus.clua.presentation.favorites.FavoritesScreenRoute
 import com.chus.clua.presentation.movies.MoviesScreenRoute
 import com.chus.clua.presentation.person_detail.PeopleDetailScreenRoute
 import com.chus.clua.presentation.search.SearchScreenRoute
 import com.chus.clua.presentation.webview.WebViewScreen
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 
 @Composable
 fun NavGraph(
@@ -57,13 +56,13 @@ fun NavGraph(
             MovieDetailScreenRoute(
                 onBackClick = navController::popBackStack,
                 onVideoClick = navController::navigateToWebView,
-                onPeopleClick = navController::navigateToPeopleDetail
+                onPeopleClick = navController::navigateToPersonDetail
             )
         }
         composable(
-            route = Screens.PeopleDetail.route,
+            route = Screens.PersonDetail.route,
             arguments = listOf(
-                navArgument(Screens.PeopleDetail.paramId) {
+                navArgument(Screens.PersonDetail.paramId) {
                     type = NavType.IntType
                 }
             )
@@ -94,16 +93,34 @@ fun NavGraph(
 }
 
 private fun NavController.navigateToMovieDetail(movieId: Int) {
-    navigate("movie-detail/$movieId")
+    navigate(
+        Screens.MovieDetail.route.replace(
+            "{${Screens.MovieDetail.paramId}}",
+            movieId.toString()
+        )
+    )
 }
 
-private fun NavController.navigateToPeopleDetail(peopleId: Int) {
-    navigate("people-detail/$peopleId")
+private fun NavController.navigateToPersonDetail(personId: Int) {
+    navigate(
+        Screens.PersonDetail.route.replace(
+            "{${Screens.PersonDetail.paramId}}",
+            personId.toString()
+        )
+    )
 }
 
 private fun NavController.navigateToWebView(url: String, title: String) {
-    val encodedUrl = url.encode()
-    navigate("webview/$encodedUrl/$title")
+    navigate(
+        Screens.WebView.route
+            .replace(
+                "{${Screens.WebView.paramUrl}}",
+                url.encode()
+            ).replace(
+                "{${Screens.WebView.paramTitle}}",
+                title
+            )
+    )
 }
 
 @Composable
@@ -118,5 +135,3 @@ fun NavHostController.currentRoute(): String? {
     val navBackStackEntry by this.currentBackStackEntryAsState()
     return navBackStackEntry?.destination?.route
 }
-
-private fun String.encode() = URLEncoder.encode(this, StandardCharsets.UTF_8.toString())

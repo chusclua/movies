@@ -41,7 +41,7 @@ class PersonDetailViewModelTest: BaseViewModel() {
     fun before() {
         super.setUp()
         viewModel = PersonDetailViewModel(
-            SavedStateHandle(mapOf(Pair(Screens.PeopleDetail.paramId, 3084))),
+            SavedStateHandle(mapOf(Pair(Screens.PersonDetail.paramId, 3084))),
             personDetailUseCase
         )
     }
@@ -74,7 +74,7 @@ class PersonDetailViewModelTest: BaseViewModel() {
             advanceUntilIdle()
             personApiImp.forceLeft()
             viewModel = PersonDetailViewModel(
-                SavedStateHandle(mapOf(Pair(Screens.PeopleDetail.paramId, 3084))),
+                SavedStateHandle(mapOf(Pair(Screens.PersonDetail.paramId, 3084))),
                 personDetailUseCase
             )
             advanceUntilIdle()
