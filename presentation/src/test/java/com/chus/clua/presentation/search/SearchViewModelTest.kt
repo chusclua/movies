@@ -47,7 +47,7 @@ class SearchViewModelTest : BaseViewModel() {
         runTest {
             viewModel.searchState.test {
                 assertEquals(
-                    SearchState(movies = emptyList(), empty = true, error = false), awaitItem()
+                    SearchState(movies = emptyList(), empty = false, error = false), awaitItem()
                 )
                 cancelAndIgnoreRemainingEvents()
             }
@@ -59,10 +59,10 @@ class SearchViewModelTest : BaseViewModel() {
 
             viewModel.searchState.test {
 
-                viewModel.search("padrino")
+                viewModel.search("godfather")
 
                 assertEquals(
-                    SearchState(movies = emptyList(), empty = true, error = false), awaitItem()
+                    SearchState(movies = emptyList(), empty = false, error = false), awaitItem()
                 )
 
                 assertEquals(
@@ -78,11 +78,11 @@ class SearchViewModelTest : BaseViewModel() {
         runTest {
             viewModel.searchState.test {
 
-                viewModel.search("padrino")
-                viewModel.search("pa")
+                viewModel.search("godfather")
+                viewModel.search("go")
 
                 assertEquals(
-                    SearchState(movies = emptyList(), empty = true, error = false), awaitItem()
+                    SearchState(movies = emptyList(), empty = false, error = false), awaitItem()
                 )
 
                 cancelAndIgnoreRemainingEvents()
@@ -98,14 +98,14 @@ class SearchViewModelTest : BaseViewModel() {
 
             viewModel.searchState.test {
 
-                viewModel.search("padrino")
+                viewModel.search("godfather")
 
                 assertEquals(
-                    SearchState(movies = emptyList(), empty = true, error = false), awaitItem()
+                    SearchState(movies = emptyList(), empty = false, error = false), awaitItem()
                 )
 
                 assertEquals(
-                    SearchState(movies = emptyList(), empty = true, error = true), awaitItem()
+                    SearchState(movies = emptyList(), empty = false, error = true), awaitItem()
                 )
 
                 cancelAndIgnoreRemainingEvents()

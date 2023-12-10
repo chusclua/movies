@@ -237,7 +237,6 @@ private fun MovieItemList(
                 model = movie.backdropUrl,
                 contentScale = ContentScale.Crop,
                 contentDescription = "MovieBackDrop",
-                alpha = 0.5F,
                 modifier = Modifier
                     .fillMaxSize()
                     .align(Alignment.Center),
@@ -252,11 +251,13 @@ private fun MovieItemList(
             ) {
                 Icon(
                     imageVector = Icons.Filled.Star,
-                    contentDescription = "Rate"
+                    contentDescription = "Rate",
+                    tint = Color.White,
                 )
                 Spacer(modifier = Modifier.padding(horizontal = 2.dp))
                 Text(
                     text = String.format("%.1f", movie.voteAverage),
+                    color = Color.White,
                     style = MaterialTheme.typography.titleMedium
                 )
             }
@@ -268,16 +269,18 @@ private fun MovieItemList(
             ) {
                 Text(
                     text = movie.year,
+                    color = Color.White,
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
                     text = movie.title,
+                    color = Color.White,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 2,
                     style = MaterialTheme.typography.titleLarge.copy(
                         shadow = Shadow(
                             color = Color.Black.copy(alpha = 0.7F),
-                            offset = Offset(5.0f, 10.0f),
+                            offset = Offset(2.5f, 5f),
                             blurRadius = 3f
                         )
                     )
