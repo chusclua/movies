@@ -10,7 +10,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class MoviePagerModule {
+abstract class MoviePagerDataSourceModule {
     @Binds
     abstract fun provideMoviePagerDataSource(pagerDataSourceImp: MoviePagerDataSourceImp): MoviePagerDataSource
 }

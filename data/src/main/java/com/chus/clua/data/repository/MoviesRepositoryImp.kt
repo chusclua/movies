@@ -3,9 +3,9 @@ package com.chus.clua.data.repository
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.chus.clua.data.datasource.MovieCacheDataSource
+import com.chus.clua.data.datasource.MovieLocalDataSource
 import com.chus.clua.data.datasource.MoviePagerDataSource
 import com.chus.clua.data.datasource.MovieRemoteDataSource
-import com.chus.clua.data.db.MoviesDao
 import com.chus.clua.data.mapper.toEntity
 import com.chus.clua.data.mapper.toMovie
 import com.chus.clua.data.mapper.toMovieCredits
@@ -29,7 +29,7 @@ class MoviesRepositoryImp @Inject constructor(
     private val moviePagerDataSource: MoviePagerDataSource,
     private val movieRemoteDataSource: MovieRemoteDataSource,
     private val movieCacheDataSource: MovieCacheDataSource,
-    private val moviesDao: MoviesDao
+    private val movieLocalDataSource: MovieLocalDataSource
 ) : MoviesRepository {
 
     override fun getDiscoverMovies(): Flow<PagingData<Movie>> =
@@ -51,8 +51,8 @@ class MoviesRepositoryImp @Inject constructor(
         }
 
     override suspend fun searchMovies(query: String): Either<AppError, List<Movie>> {
-        return movieRemoteDataSource.searchMovies(query).map { response ->
-            response.results.map { model ->
+        return movieRemoteDataSource.searchMovies(query).map { apiModel ->
+            apiModel.results.map { model ->
                 model.toMovie().also { movie ->
                     movieCacheDataSource.addMovie(movie)
                 }
@@ -61,39 +61,39 @@ class MoviesRepositoryImp @Inject constructor(
     }
 
     override suspend fun getMovieDetail(movieId: Int): Either<AppError, MovieDataDetail> {
-        return movieRemoteDataSource.getMovieDetail(movieId = movieId).map { response ->
-            response.toMovieDataDetail()
+        return movieRemoteDataSource.getMovieDetail(movieId = movieId).map { apiModel ->
+            apiModel.toMovieDataDetail()
         }
     }
 
     override suspend fun getMovieCredits(movieId: Int): Either<AppError, MovieCredits> {
-        return movieRemoteDataSource.getMovieCredits(movieId = movieId).map { response ->
-            response.toMovieCredits()
+        return movieRemoteDataSource.getMovieCredits(movieId = movieId).map { apiModel ->
+            apiModel.toMovieCredits()
         }
     }
 
     override suspend fun getMovieVideos(movieId: Int): Either<AppError, MovieVideos> {
-        return movieRemoteDataSource.getMovieVideos(movieId = movieId).map { response ->
-            response.toMovieVideos()
+        return movieRemoteDataSource.getMovieVideos(movieId = movieId).map { apiModel ->
+            apiModel.toMovieVideos()
         }
     }
 
     override fun saveToFavorites(movieId: Int) {
         movieCacheDataSource.getMovie(movieId)?.let { movie ->
-            moviesDao.insert(movie.toEntity())
+            movieLocalDataSource.insertMovie(movie.toEntity())
         }
     }
 
     override fun deleteFromFavorite(movieId: Int) {
-        moviesDao.delete(movieId)
+        movieLocalDataSource.deleteMovie(movieId)
     }
 
     override fun deleteAll() {
-        moviesDao.deleteAll()
+        movieLocalDataSource.deleteAllMovies()
     }
 
     override fun getFavorites(): Flow<List<Movie>> {
-        return moviesDao.getAll().map { entities ->
+        return movieLocalDataSource.getAllMovies().map { entities ->
             entities.map { entity ->
                 entity.toMovie()
             }
@@ -101,6 +101,6 @@ class MoviesRepositoryImp @Inject constructor(
     }
 
     override fun isFavorite(movieId: Int): Boolean {
-        return moviesDao.contains(movieId)
+        return movieLocalDataSource.containsMovie(movieId)
     }
 }

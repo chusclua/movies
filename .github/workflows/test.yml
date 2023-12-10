@@ -31,6 +31,10 @@ jobs:
       - name: Unit data tests
         run: ./gradlew :data:testDebugUnitTest
 
+      # Run Domain Unit Tests
+      - name: Unit domain tests
+        run: ./gradlew :domain:testDebugUnitTest
+
       # Run Presentation Unit Tests
       - name: Unit presentation tests
         run: ./gradlew :presentation:testDebugUnitTest

@@ -10,7 +10,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class MovieCacheModule {
+abstract class MovieCacheDataSourceModule {
     @Binds
     abstract fun provideMovieCacheDataSource(dataSource: MovieCacheDataSourceImp): MovieCacheDataSource
 }

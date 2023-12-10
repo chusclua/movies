@@ -3,6 +3,7 @@ package com.chus.clua.data.repository
 import androidx.paging.PagingData
 import androidx.paging.testing.asSnapshot
 import com.chus.clua.data.datasource.MovieCacheDataSource
+import com.chus.clua.data.datasource.MovieLocalDataSource
 import com.chus.clua.data.datasource.MoviePagerDataSource
 import com.chus.clua.data.datasource.MovieRemoteDataSource
 import com.chus.clua.data.db.MoviesDao
@@ -57,7 +58,7 @@ class MoviesRepositoryImpTest {
     lateinit var movieCacheDataSource: MovieCacheDataSource
 
     @MockK
-    lateinit var moviesDao: MoviesDao
+    lateinit var movieLocalDataSource: MovieLocalDataSource
 
     private lateinit var repository: MoviesRepository
 
@@ -67,7 +68,7 @@ class MoviesRepositoryImpTest {
             moviePagerDataSource,
             movieRemoteDataSource,
             movieCacheDataSource,
-            moviesDao
+            movieLocalDataSource
         )
     }
 
@@ -205,7 +206,7 @@ class MoviesRepositoryImpTest {
 
     @Test
     fun `when repository getFavorites then it has a valid List of Movie`() = runTest {
-        every { moviesDao.getAll() } returns flow {
+        every { movieLocalDataSource.getAllMovies() } returns flow {
             emit(MovieEntities)
         }
 
