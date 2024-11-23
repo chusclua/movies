@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Movies</string>
+
+    <string name="movies">Movies</string>
+    <string name="favorites">Favorites</string>
+    <string name="search">Search</string>
+
+    <string name="dismiss">Dismiss</string>
+    <string name="confirm">Confirm</string>
+
+    <string name="top_rated">Top rated</string>
+    <string name="discover">Discover</string>
+
+    <string name="favorites_empty_list_message">Add movies to your favorite list</string>
+    <string name="favorites_delete_all_title">Delete all favorite movies</string>
+    <string name="favorites_delete_all_message">Are you sure you want to delete all your favorite movies?</string>
+
+    <string name="error_message">Oops… something went wrong.</string>
+
+    <string name="detail_cast">Cast</string>
+    <string name="detail_crew">Crew</string>
+    <string name="detail_as">as</string>
+    <plurals name="detail_companies">
+        <item quantity="one">Company</item>
+        <item quantity="other">Companies</item>
+    </plurals>
+    <plurals name="detail_countries">
+        <item quantity="one">Country</item>
+        <item quantity="other">Countries</item>
+    </plurals>
+
+    <string name="show_more">\u0020… show more</string>
+    <string name="show_less">\u0020Show less</string>
+
+    <string name="empty_search">No movie matches your search</string>
+
+    <string name="see_website">See website</string>
+</resources>

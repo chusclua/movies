@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Movies</string>
+
+    <string name="movies">Películas</string>
+    <string name="favorites">Favoritas</string>
+    <string name="search">Buscar</string>
+
+    <string name="dismiss">Descartar</string>
+    <string name="confirm">Confirmar</string>
+
+    <string name="top_rated">Top valoradas</string>
+    <string name="discover">Descubrir</string>
+
+    <string name="favorites_empty_list_message">Añade películas a tu lista de favoritos</string>
+    <string name="favorites_delete_all_title">Eliminar todas las películas favoritas</string>
+    <string name="favorites_delete_all_message">¿Estás seguro de que quieres eliminar todas tus películas favoritas?</string>
+
+    <string name="error_message">Huy… Algo salió mal.</string>
+    <string name="detail_cast">Reparto</string>
+    <string name="detail_crew">Equipo</string>
+    <string name="detail_as">como</string>
+    <plurals name="detail_companies">
+        <item quantity="one">Compañía</item>
+        <item quantity="other">Compañias</item>
+    </plurals>
+    <plurals name="detail_countries">
+        <item quantity="one">País</item>
+        <item quantity="other">Paises</item>
+    </plurals>
+
+    <string name="show_more">\u0020… mostrar más</string>
+    <string name="show_less">\u0020Mostrar menos</string>
+
+    <string name="see_website">Ver sitio web</string>
+
+    <string name="empty_search">Ninguna película coincide con tu búsqueda</string>
+</resources>
