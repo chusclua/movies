@@ -85,6 +85,15 @@ class PersonDetailViewModelTest : BaseViewModel() {
                         detail = null,
                         cast = emptyList(),
                         crew = emptyList(),
+                        error = false
+                    ),
+                    awaitItem()
+                )
+                assertEquals(
+                    PersonDetailState(
+                        detail = null,
+                        cast = emptyList(),
+                        crew = emptyList(),
                         error = true
                     ),
                     awaitItem()
