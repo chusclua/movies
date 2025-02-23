@@ -14,17 +14,17 @@ import javax.inject.Singleton
 
 @Singleton
 class PersonRepositoryImp
-    @Inject
-    constructor(
-        private val dataSource: PersonRemoteDataSource,
-    ) : PersonRepository {
-        override suspend fun getPersonDataDetail(personId: Int): Either<AppError, PersonDataDetail> =
-            dataSource.getPersonDetail(personId = personId).map { apiModel ->
-                apiModel.toPersonDetail()
-            }
+@Inject
+constructor(
+    private val dataSource: PersonRemoteDataSource,
+) : PersonRepository {
+    override suspend fun getPersonDataDetail(personId: Int): Either<AppError, PersonDataDetail> =
+        dataSource.getPersonDetail(personId = personId).map { apiModel ->
+            apiModel.toPersonDetail()
+        }
 
-        override suspend fun getPersonMovieCredits(personId: Int): Either<AppError, PersonCredits> =
-            dataSource.getPersonCredits(personId = personId).map { apiModel ->
-                apiModel.toPersonCredits()
-            }
-    }
+    override suspend fun getPersonMovieCredits(personId: Int): Either<AppError, PersonCredits> =
+        dataSource.getPersonCredits(personId = personId).map { apiModel ->
+            apiModel.toPersonCredits()
+        }
+}
